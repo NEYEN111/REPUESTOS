@@ -1,0 +1,11 @@
+{
+  "source_url": "https://raw.githubusercontent.com/jmcastagnetto/ubigeo-peru-aumentado/main/ubigeo_distrito.json",
+  "repository": "https://github.com/jmcastagnetto/ubigeo-peru-aumentado",
+  "retrieved_on": "2026-10-13",
+  "code_system": "INEI",
+  "record_count": 1892,
+  "excluded_records_without_inei_code": [
+    "SAN ANTONIO"
+  ],
+  "note": "Open community compilation of INEI and RENIEC district equivalences. Names title-cased; original six-digit INEI codes preserved."
+}

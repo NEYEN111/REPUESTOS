@@ -1,0 +1,1788 @@
+[
+  {
+    "name": "Motor",
+    "slug": "motor",
+    "subcategories": [
+      {
+        "name": "Soportes de motor",
+        "slug": "soportes-de-motor",
+        "base_price_cents": 18500,
+        "brands": [
+          "Bosch",
+          "Febi Bilstein",
+          "Gates"
+        ],
+        "image": "/static/category/soportes-de-motor.webp",
+        "thumbnail": "/static/category/soportes-de-motor-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/motor-mounts-mounting-hardware_ic_5.jpg",
+        "universal": false
+      },
+      {
+        "name": "Válvulas de motor",
+        "slug": "valvulas-de-motor",
+        "base_price_cents": 6800,
+        "brands": [
+          "Bosch",
+          "Febi Bilstein",
+          "Gates"
+        ],
+        "image": "/static/category/valvulas-de-motor.webp",
+        "thumbnail": "/static/category/valvulas-de-motor-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/replacement-valves-and-valvetrain-parts_ic_5.jpg",
+        "universal": false
+      },
+      {
+        "name": "Pistones y anillos",
+        "slug": "pistones-y-anillos",
+        "base_price_cents": 32000,
+        "brands": [
+          "Bosch",
+          "Febi Bilstein",
+          "Gates"
+        ],
+        "image": "/static/category/pistones-y-anillos.webp",
+        "thumbnail": "/static/category/pistones-y-anillos-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/replacement-pistons-rings-and-connecting-rods_ic_5.jpg",
+        "universal": false
+      },
+      {
+        "name": "Tapas de válvulas",
+        "slug": "tapas-de-valvulas",
+        "base_price_cents": 19500,
+        "brands": [
+          "Bosch",
+          "Febi Bilstein",
+          "Gates"
+        ],
+        "image": "/static/category/tapas-de-valvulas.webp",
+        "thumbnail": "/static/category/tapas-de-valvulas-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/valve-covers-components_ic_5.jpg",
+        "universal": false
+      },
+      {
+        "name": "Kits de cadena de distribución",
+        "slug": "kits-de-cadena-de-distribucion",
+        "base_price_cents": 42000,
+        "brands": [
+          "Bosch",
+          "Febi Bilstein",
+          "Gates"
+        ],
+        "image": "/static/category/kits-de-cadena-de-distribucion.webp",
+        "thumbnail": "/static/category/kits-de-cadena-de-distribucion-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/replacement-timing-gears-chains-and-covers_ic_5.jpg",
+        "universal": false
+      },
+      {
+        "name": "Correas de distribución",
+        "slug": "correas-de-distribucion",
+        "base_price_cents": 9500,
+        "brands": [
+          "Bosch",
+          "Febi Bilstein",
+          "Gates"
+        ],
+        "image": "/static/category/correas-de-distribucion.webp",
+        "thumbnail": "/static/category/correas-de-distribucion-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/timing-belts-components_ic_5.jpg",
+        "universal": false
+      },
+      {
+        "name": "Bombas de aceite",
+        "slug": "bombas-de-aceite",
+        "base_price_cents": 24500,
+        "brands": [
+          "Bosch",
+          "Febi Bilstein",
+          "Gates"
+        ],
+        "image": "/static/category/bombas-de-aceite.webp",
+        "thumbnail": "/static/category/bombas-de-aceite-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/oil-pumps-components_ic_5.jpg",
+        "universal": false
+      }
+    ]
+  },
+  {
+    "name": "Frenos",
+    "slug": "frenos",
+    "subcategories": [
+      {
+        "name": "Pastillas de freno",
+        "slug": "pastillas-de-freno",
+        "base_price_cents": 12990,
+        "brands": [
+          "Bosch",
+          "Brembo",
+          "TRW"
+        ],
+        "image": "/static/category/pastillas-de-freno.webp",
+        "thumbnail": "/static/category/pastillas-de-freno-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/disc-brake-pads_ic_5.jpg",
+        "universal": false
+      },
+      {
+        "name": "Discos de freno",
+        "slug": "discos-de-freno",
+        "base_price_cents": 18900,
+        "brands": [
+          "Bosch",
+          "Brembo",
+          "TRW"
+        ],
+        "image": "/static/category/discos-de-freno.webp",
+        "thumbnail": "/static/category/discos-de-freno-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/brake-rotors_ic_5.jpg",
+        "universal": false
+      },
+      {
+        "name": "Calipers de freno",
+        "slug": "calipers-de-freno",
+        "base_price_cents": 31000,
+        "brands": [
+          "Bosch",
+          "Brembo",
+          "TRW"
+        ],
+        "image": "/static/category/calipers-de-freno.webp",
+        "thumbnail": "/static/category/calipers-de-freno-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/brake-calipers-components_ic_5.jpg",
+        "universal": false
+      },
+      {
+        "name": "Mangueras de freno",
+        "slug": "mangueras-de-freno",
+        "base_price_cents": 6500,
+        "brands": [
+          "Bosch",
+          "Brembo",
+          "TRW"
+        ],
+        "image": "/static/category/mangueras-de-freno.webp",
+        "thumbnail": "/static/category/mangueras-de-freno-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/brake-lines-hoses_ic_5.jpg",
+        "universal": false
+      },
+      {
+        "name": "Bombas de freno",
+        "slug": "bombas-de-freno",
+        "base_price_cents": 24500,
+        "brands": [
+          "Bosch",
+          "Brembo",
+          "TRW"
+        ],
+        "image": "/static/category/bombas-de-freno.webp",
+        "thumbnail": "/static/category/bombas-de-freno-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/brake-master-cylinders-reservoirs_ic_5.jpg",
+        "universal": false
+      },
+      {
+        "name": "Zapatas de freno",
+        "slug": "zapatas-de-freno",
+        "base_price_cents": 11900,
+        "brands": [
+          "Bosch",
+          "Brembo",
+          "TRW"
+        ],
+        "image": "/static/category/zapatas-de-freno.webp",
+        "thumbnail": "/static/category/zapatas-de-freno-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/drum-brake-shoes_ic_5.jpg",
+        "universal": false
+      }
+    ]
+  },
+  {
+    "name": "Suspensión",
+    "slug": "suspension",
+    "subcategories": [
+      {
+        "name": "Amortiguadores",
+        "slug": "amortiguadores",
+        "base_price_cents": 24500,
+        "brands": [
+          "KYB",
+          "Monroe",
+          "TRW"
+        ],
+        "image": "/static/category/amortiguadores.webp",
+        "thumbnail": "/static/category/amortiguadores-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/shocks-struts_ic_5.jpg",
+        "universal": false
+      },
+      {
+        "name": "Trapecios de suspensión",
+        "slug": "trapecios-de-suspension",
+        "base_price_cents": 19000,
+        "brands": [
+          "KYB",
+          "Monroe",
+          "TRW"
+        ],
+        "image": "/static/category/trapecios-de-suspension.webp",
+        "thumbnail": "/static/category/trapecios-de-suspension-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/control-arms-suspension-rods-components_ic_5.jpg",
+        "universal": false
+      },
+      {
+        "name": "Bieletas de suspensión",
+        "slug": "bieletas-de-suspension",
+        "base_price_cents": 6500,
+        "brands": [
+          "KYB",
+          "Monroe",
+          "TRW"
+        ],
+        "image": "/static/category/bieletas-de-suspension.webp",
+        "thumbnail": "/static/category/bieletas-de-suspension-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/suspension-stabilizer-bar-links_ic_5.jpg",
+        "universal": false
+      },
+      {
+        "name": "Resortes de suspensión",
+        "slug": "resortes-de-suspension",
+        "base_price_cents": 15000,
+        "brands": [
+          "KYB",
+          "Monroe",
+          "TRW"
+        ],
+        "image": "/static/category/resortes-de-suspension.webp",
+        "thumbnail": "/static/category/resortes-de-suspension-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/coil-springs-components_ic_5.jpg",
+        "universal": false
+      },
+      {
+        "name": "Rótulas de suspensión",
+        "slug": "rotulas-de-suspension",
+        "base_price_cents": 7500,
+        "brands": [
+          "KYB",
+          "Monroe",
+          "TRW"
+        ],
+        "image": "/static/category/rotulas-de-suspension.webp",
+        "thumbnail": "/static/category/rotulas-de-suspension-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/ball-joints-components_ic_5.jpg",
+        "universal": false
+      },
+      {
+        "name": "Copelas de amortiguador",
+        "slug": "copelas-de-amortiguador",
+        "base_price_cents": 8900,
+        "brands": [
+          "KYB",
+          "Monroe",
+          "TRW"
+        ],
+        "image": "/static/category/copelas-de-amortiguador.webp",
+        "thumbnail": "/static/category/copelas-de-amortiguador-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/shock-strut-mounts-hardware_ic_5.jpg",
+        "universal": false
+      }
+    ]
+  },
+  {
+    "name": "Dirección",
+    "slug": "direccion",
+    "subcategories": [
+      {
+        "name": "Brazos de dirección",
+        "slug": "brazos-de-direccion",
+        "base_price_cents": 12500,
+        "brands": [
+          "TRW",
+          "Moog",
+          "Febi Bilstein"
+        ],
+        "image": "/static/category/brazos-de-direccion.webp",
+        "thumbnail": "/static/category/brazos-de-direccion-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/steering-arms-links-components_ic_5.jpg",
+        "universal": false
+      },
+      {
+        "name": "Terminales de dirección",
+        "slug": "terminales-de-direccion",
+        "base_price_cents": 6800,
+        "brands": [
+          "TRW",
+          "Moog",
+          "Febi Bilstein"
+        ],
+        "image": "/static/category/terminales-de-direccion.webp",
+        "thumbnail": "/static/category/terminales-de-direccion-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/steering-tie-rod-ends_ic_5.jpg",
+        "universal": false
+      },
+      {
+        "name": "Cremalleras de dirección",
+        "slug": "cremalleras-de-direccion",
+        "base_price_cents": 89000,
+        "brands": [
+          "TRW",
+          "Moog",
+          "Febi Bilstein"
+        ],
+        "image": "/static/category/cremalleras-de-direccion.webp",
+        "thumbnail": "/static/category/cremalleras-de-direccion-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/steering-rack-pinion_ic_5.jpg",
+        "universal": false
+      },
+      {
+        "name": "Bombas de dirección",
+        "slug": "bombas-de-direccion",
+        "base_price_cents": 43000,
+        "brands": [
+          "TRW",
+          "Moog",
+          "Febi Bilstein"
+        ],
+        "image": "/static/category/bombas-de-direccion.webp",
+        "thumbnail": "/static/category/bombas-de-direccion-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/power-steering-pumps-reservoirs-components_ic_5.jpg",
+        "universal": false
+      },
+      {
+        "name": "Mangueras de dirección",
+        "slug": "mangueras-de-direccion",
+        "base_price_cents": 12500,
+        "brands": [
+          "TRW",
+          "Moog",
+          "Febi Bilstein"
+        ],
+        "image": "/static/category/mangueras-de-direccion.webp",
+        "thumbnail": "/static/category/mangueras-de-direccion-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/power-steering-lines-hoses_ic_5.jpg",
+        "universal": false
+      },
+      {
+        "name": "Guardapolvos de dirección",
+        "slug": "guardapolvos-de-direccion",
+        "base_price_cents": 3500,
+        "brands": [
+          "TRW",
+          "Moog",
+          "Febi Bilstein"
+        ],
+        "image": "/static/category/guardapolvos-de-direccion.webp",
+        "thumbnail": "/static/category/guardapolvos-de-direccion-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/steering-rack-boots-bellows_ic_5.jpg",
+        "universal": false
+      }
+    ]
+  },
+  {
+    "name": "Transmisión y embrague",
+    "slug": "transmision",
+    "subcategories": [
+      {
+        "name": "Kits de embrague",
+        "slug": "kits-de-embrague",
+        "base_price_cents": 48000,
+        "brands": [
+          "Exedy",
+          "LuK",
+          "Valeo"
+        ],
+        "image": "/static/category/kits-de-embrague.webp",
+        "thumbnail": "/static/category/kits-de-embrague-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/clutch-kits_ic_5.jpg",
+        "universal": false
+      },
+      {
+        "name": "Soportes de transmisión",
+        "slug": "soportes-de-transmision",
+        "base_price_cents": 16500,
+        "brands": [
+          "Exedy",
+          "LuK",
+          "Valeo"
+        ],
+        "image": "/static/category/soportes-de-transmision.webp",
+        "thumbnail": "/static/category/soportes-de-transmision-thumb.webp",
+        "source_url": "https://ic.carid.com/pages/icons/transmission-mounts-ptype_ic_5.jpg",
+        "universal": false
+      },
+      {
+        "name": "Volantes de embrague",
+        "slug": "volantes-de-embrague",
+        "base_price_cents": 54000,
+        "brands": [
+          "Exedy",
+          "LuK",
+          "Valeo"
+        ],
+        "image": "/static/category/volantes-de-embrague.webp",
+        "thumbnail": "/static/category/volantes-de-embrague-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/clutch-flywheels-components_ic_5.jpg",
+        "universal": false
+      },
+      {
+        "name": "Bombines de embrague",
+        "slug": "bombines-de-embrague",
+        "base_price_cents": 12500,
+        "brands": [
+          "Exedy",
+          "LuK",
+          "Valeo"
+        ],
+        "image": "/static/category/bombines-de-embrague.webp",
+        "thumbnail": "/static/category/bombines-de-embrague-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/clutch-hydraulics_ic_5.jpg",
+        "universal": false
+      },
+      {
+        "name": "Collarines de embrague",
+        "slug": "collarines-de-embrague",
+        "base_price_cents": 8900,
+        "brands": [
+          "Exedy",
+          "LuK",
+          "Valeo"
+        ],
+        "image": "/static/category/collarines-de-embrague.webp",
+        "thumbnail": "/static/category/collarines-de-embrague-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/clutch-release-bearings_ic_5.jpg",
+        "universal": false
+      },
+      {
+        "name": "Discos de embrague",
+        "slug": "discos-de-embrague",
+        "base_price_cents": 19500,
+        "brands": [
+          "Exedy",
+          "LuK",
+          "Valeo"
+        ],
+        "image": "/static/category/discos-de-embrague.webp",
+        "thumbnail": "/static/category/discos-de-embrague-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/clutch-disc_ic_5.jpg",
+        "universal": false
+      }
+    ]
+  },
+  {
+    "name": "Refrigeración",
+    "slug": "refrigeracion",
+    "subcategories": [
+      {
+        "name": "Radiadores",
+        "slug": "radiadores",
+        "base_price_cents": 36500,
+        "brands": [
+          "Denso",
+          "Gates",
+          "Valeo"
+        ],
+        "image": "/static/category/radiadores.webp",
+        "thumbnail": "/static/category/radiadores-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/radiators-components_ic_5.jpg",
+        "universal": false
+      },
+      {
+        "name": "Bombas de agua",
+        "slug": "bombas-de-agua",
+        "base_price_cents": 17500,
+        "brands": [
+          "Denso",
+          "Gates",
+          "Valeo"
+        ],
+        "image": "/static/category/bombas-de-agua.webp",
+        "thumbnail": "/static/category/bombas-de-agua-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/water-pumps-components_ic_5.jpg",
+        "universal": false
+      },
+      {
+        "name": "Depósitos de refrigerante",
+        "slug": "depositos-de-refrigerante",
+        "base_price_cents": 7800,
+        "brands": [
+          "Denso",
+          "Gates",
+          "Valeo"
+        ],
+        "image": "/static/category/depositos-de-refrigerante.webp",
+        "thumbnail": "/static/category/depositos-de-refrigerante-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/coolant-overflow-tanks-components_ic_5.jpg",
+        "universal": false
+      },
+      {
+        "name": "Electroventiladores",
+        "slug": "electroventiladores",
+        "base_price_cents": 21000,
+        "brands": [
+          "Denso",
+          "Gates",
+          "Valeo"
+        ],
+        "image": "/static/category/electroventiladores.webp",
+        "thumbnail": "/static/category/electroventiladores-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/radiator-fans-components_ic_5.jpg",
+        "universal": false
+      },
+      {
+        "name": "Termostatos",
+        "slug": "termostatos",
+        "base_price_cents": 6500,
+        "brands": [
+          "Denso",
+          "Gates",
+          "Valeo"
+        ],
+        "image": "/static/category/termostatos.webp",
+        "thumbnail": "/static/category/termostatos-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/thermostats-components_ic_5.jpg",
+        "universal": false
+      },
+      {
+        "name": "Mangueras de radiador",
+        "slug": "mangueras-de-radiador",
+        "base_price_cents": 4500,
+        "brands": [
+          "Denso",
+          "Gates",
+          "Valeo"
+        ],
+        "image": "/static/category/mangueras-de-radiador.webp",
+        "thumbnail": "/static/category/mangueras-de-radiador-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/radiator-hoses-clamps_ic_5.jpg",
+        "universal": false
+      }
+    ]
+  },
+  {
+    "name": "Escape y emisiones",
+    "slug": "escape",
+    "subcategories": [
+      {
+        "name": "Tubos de escape",
+        "slug": "tubos-de-escape",
+        "base_price_cents": 16500,
+        "brands": [
+          "Bosch",
+          "Walker",
+          "Denso"
+        ],
+        "image": "/static/category/tubos-de-escape.webp",
+        "thumbnail": "/static/category/tubos-de-escape-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/exhaust-pipes_ic_5.jpg",
+        "universal": false
+      },
+      {
+        "name": "Catalizadores",
+        "slug": "catalizadores",
+        "base_price_cents": 72000,
+        "brands": [
+          "Bosch",
+          "Walker",
+          "Denso"
+        ],
+        "image": "/static/category/catalizadores.webp",
+        "thumbnail": "/static/category/catalizadores-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/catalytic-converters-components_ic_5.jpg",
+        "universal": false
+      },
+      {
+        "name": "Silenciadores",
+        "slug": "silenciadores",
+        "base_price_cents": 29500,
+        "brands": [
+          "Bosch",
+          "Walker",
+          "Denso"
+        ],
+        "image": "/static/category/silenciadores.webp",
+        "thumbnail": "/static/category/silenciadores-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/mufflers-resonators_ic_5.jpg",
+        "universal": false
+      },
+      {
+        "name": "Abrazaderas de escape",
+        "slug": "abrazaderas-de-escape",
+        "base_price_cents": 2800,
+        "brands": [
+          "Bosch",
+          "Walker",
+          "Denso"
+        ],
+        "image": "/static/category/abrazaderas-de-escape.webp",
+        "thumbnail": "/static/category/abrazaderas-de-escape-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/exhaust-clamps-hangers-gaskets-seals_ic_5.jpg",
+        "universal": false
+      },
+      {
+        "name": "Múltiples de escape",
+        "slug": "multiples-de-escape",
+        "base_price_cents": 38000,
+        "brands": [
+          "Bosch",
+          "Walker",
+          "Denso"
+        ],
+        "image": "/static/category/multiples-de-escape.webp",
+        "thumbnail": "/static/category/multiples-de-escape-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/exhaust-manifolds-components_ic_5.jpg",
+        "universal": false
+      },
+      {
+        "name": "Sensores de oxígeno",
+        "slug": "sensores-de-oxigeno",
+        "base_price_cents": 21500,
+        "brands": [
+          "Bosch",
+          "Walker",
+          "Denso"
+        ],
+        "image": "/static/category/sensores-de-oxigeno.webp",
+        "thumbnail": "/static/category/sensores-de-oxigeno-thumb.webp",
+        "source_url": "https://ic.carid.com/semi-truck/icons/semi-truck-oxygen-sensors-components_ic_5.jpg",
+        "universal": false
+      }
+    ]
+  },
+  {
+    "name": "Sistema eléctrico",
+    "slug": "electrico",
+    "subcategories": [
+      {
+        "name": "Alternadores",
+        "slug": "alternadores",
+        "base_price_cents": 68000,
+        "brands": [
+          "Bosch",
+          "Denso",
+          "ACDelco"
+        ],
+        "image": "/static/category/alternadores.webp",
+        "thumbnail": "/static/category/alternadores-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/alternators-generators-components_5.jpg",
+        "universal": false
+      },
+      {
+        "name": "Motores de arranque",
+        "slug": "motores-de-arranque",
+        "base_price_cents": 52000,
+        "brands": [
+          "Bosch",
+          "Denso",
+          "ACDelco"
+        ],
+        "image": "/static/category/motores-de-arranque.webp",
+        "thumbnail": "/static/category/motores-de-arranque-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/starters-components_5.jpg",
+        "universal": false
+      },
+      {
+        "name": "Baterías",
+        "slug": "baterias",
+        "base_price_cents": 33500,
+        "brands": [
+          "Bosch",
+          "Denso",
+          "ACDelco"
+        ],
+        "image": "/static/category/baterias.webp",
+        "thumbnail": "/static/category/baterias-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/batteries-components_ic_5.jpg",
+        "universal": false
+      },
+      {
+        "name": "Cables de batería",
+        "slug": "cables-de-bateria",
+        "base_price_cents": 4500,
+        "brands": [
+          "Bosch",
+          "Denso",
+          "ACDelco"
+        ],
+        "image": "/static/category/cables-de-bateria.webp",
+        "thumbnail": "/static/category/cables-de-bateria-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/battery-cables_ic_5.jpg",
+        "universal": false
+      },
+      {
+        "name": "Relés y conectores",
+        "slug": "reles-y-conectores",
+        "base_price_cents": 2900,
+        "brands": [
+          "Bosch",
+          "Denso",
+          "ACDelco"
+        ],
+        "image": "/static/category/reles-y-conectores.webp",
+        "thumbnail": "/static/category/reles-y-conectores-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/relays-sensors-connerctors-cables_ic_5.jpg",
+        "universal": false
+      },
+      {
+        "name": "Reguladores de voltaje",
+        "slug": "reguladores-de-voltaje",
+        "base_price_cents": 8500,
+        "brands": [
+          "Bosch",
+          "Denso",
+          "ACDelco"
+        ],
+        "image": "/static/category/reguladores-de-voltaje.webp",
+        "thumbnail": "/static/category/reguladores-de-voltaje-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/voltage-regulators_5.jpg",
+        "universal": false
+      }
+    ]
+  },
+  {
+    "name": "Encendido",
+    "slug": "encendido",
+    "subcategories": [
+      {
+        "name": "Bobinas de encendido",
+        "slug": "bobinas-de-encendido",
+        "base_price_cents": 13500,
+        "brands": [
+          "NGK",
+          "Denso",
+          "Bosch"
+        ],
+        "image": "/static/category/bobinas-de-encendido.webp",
+        "thumbnail": "/static/category/bobinas-de-encendido-thumb.webp",
+        "source_url": "https://ic.carid.com/pages/icons/ignition-coils-components_ic_5.jpg",
+        "universal": false
+      },
+      {
+        "name": "Bujías",
+        "slug": "bujias",
+        "base_price_cents": 3500,
+        "brands": [
+          "NGK",
+          "Denso",
+          "Bosch"
+        ],
+        "image": "/static/category/bujias.webp",
+        "thumbnail": "/static/category/bujias-thumb.webp",
+        "source_url": "https://ic.carid.com/pages/icons/spark-plugs_ic_5.jpg",
+        "universal": false
+      },
+      {
+        "name": "Bujías de precalentamiento",
+        "slug": "bujias-de-precalentamiento",
+        "base_price_cents": 4800,
+        "brands": [
+          "NGK",
+          "Denso",
+          "Bosch"
+        ],
+        "image": "/static/category/bujias-de-precalentamiento.webp",
+        "thumbnail": "/static/category/bujias-de-precalentamiento-thumb.webp",
+        "source_url": "https://ic.carid.com/pages/icons/diesel-glow-plugs-components_ic_5.jpg",
+        "universal": false
+      },
+      {
+        "name": "Cables de bujías",
+        "slug": "cables-de-bujias",
+        "base_price_cents": 11000,
+        "brands": [
+          "NGK",
+          "Denso",
+          "Bosch"
+        ],
+        "image": "/static/category/cables-de-bujias.webp",
+        "thumbnail": "/static/category/cables-de-bujias-thumb.webp",
+        "source_url": "https://ic.carid.com/pages/icons/spark-plug-wires-ignition-wires-components_ic_5.jpg",
+        "universal": false
+      },
+      {
+        "name": "Distribuidores",
+        "slug": "distribuidores",
+        "base_price_cents": 24500,
+        "brands": [
+          "NGK",
+          "Denso",
+          "Bosch"
+        ],
+        "image": "/static/category/distribuidores.webp",
+        "thumbnail": "/static/category/distribuidores-thumb.webp",
+        "source_url": "https://ic.carid.com/pages/icons/distributors-components_ic_5.jpg",
+        "universal": false
+      },
+      {
+        "name": "Cilindros de encendido",
+        "slug": "cilindros-de-encendido",
+        "base_price_cents": 9500,
+        "brands": [
+          "NGK",
+          "Denso",
+          "Bosch"
+        ],
+        "image": "/static/category/cilindros-de-encendido.webp",
+        "thumbnail": "/static/category/cilindros-de-encendido-thumb.webp",
+        "source_url": "https://ic.carid.com/pages/icons/ignition-lock-cylinder_ic_5.jpg",
+        "universal": false
+      }
+    ]
+  },
+  {
+    "name": "Combustible",
+    "slug": "combustible",
+    "subcategories": [
+      {
+        "name": "Bombas de combustible",
+        "slug": "bombas-de-combustible",
+        "base_price_cents": 19500,
+        "brands": [
+          "Bosch",
+          "Denso",
+          "Delphi"
+        ],
+        "image": "/static/category/bombas-de-combustible.webp",
+        "thumbnail": "/static/category/bombas-de-combustible-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/fuel-pumps-components_ic_5.jpg",
+        "universal": false
+      },
+      {
+        "name": "Tanques de combustible",
+        "slug": "tanques-de-combustible",
+        "base_price_cents": 65000,
+        "brands": [
+          "Bosch",
+          "Denso",
+          "Delphi"
+        ],
+        "image": "/static/category/tanques-de-combustible.webp",
+        "thumbnail": "/static/category/tanques-de-combustible-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/fuel-tanks-components_ic_5.jpg",
+        "universal": false
+      },
+      {
+        "name": "Cuerpos de aceleración",
+        "slug": "cuerpos-de-aceleracion",
+        "base_price_cents": 38500,
+        "brands": [
+          "Bosch",
+          "Denso",
+          "Delphi"
+        ],
+        "image": "/static/category/cuerpos-de-aceleracion.webp",
+        "thumbnail": "/static/category/cuerpos-de-aceleracion-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/throttle-bodies_ic_5.jpg",
+        "universal": false
+      },
+      {
+        "name": "Inyectores",
+        "slug": "inyectores",
+        "base_price_cents": 21500,
+        "brands": [
+          "Bosch",
+          "Denso",
+          "Delphi"
+        ],
+        "image": "/static/category/inyectores.webp",
+        "thumbnail": "/static/category/inyectores-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/fuel-injectors-fuel-rails-components_ic_5.jpg",
+        "universal": false
+      },
+      {
+        "name": "Mangueras de combustible",
+        "slug": "mangueras-de-combustible",
+        "base_price_cents": 4200,
+        "brands": [
+          "Bosch",
+          "Denso",
+          "Delphi"
+        ],
+        "image": "/static/category/mangueras-de-combustible.webp",
+        "thumbnail": "/static/category/mangueras-de-combustible-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/fuel-hoses-clamps-gaskets-seals_ic_5.jpg",
+        "universal": false
+      },
+      {
+        "name": "Reguladores de combustible",
+        "slug": "reguladores-de-combustible",
+        "base_price_cents": 11500,
+        "brands": [
+          "Bosch",
+          "Denso",
+          "Delphi"
+        ],
+        "image": "/static/category/reguladores-de-combustible.webp",
+        "thumbnail": "/static/category/reguladores-de-combustible-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/fuel-pressure-regulators-components_ic_5.jpg",
+        "universal": false
+      }
+    ]
+  },
+  {
+    "name": "Iluminación",
+    "slug": "iluminacion",
+    "subcategories": [
+      {
+        "name": "Faros delanteros",
+        "slug": "faros-delanteros",
+        "base_price_cents": 28500,
+        "brands": [
+          "Philips",
+          "Osram",
+          "Hella"
+        ],
+        "image": "/static/category/faros-delanteros.webp",
+        "thumbnail": "/static/category/faros-delanteros-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/headlights_ic_5.jpg",
+        "universal": false
+      },
+      {
+        "name": "Faros posteriores",
+        "slug": "faros-posteriores",
+        "base_price_cents": 21000,
+        "brands": [
+          "Philips",
+          "Osram",
+          "Hella"
+        ],
+        "image": "/static/category/faros-posteriores.webp",
+        "thumbnail": "/static/category/faros-posteriores-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/tail-lights_ic_5.jpg",
+        "universal": false
+      },
+      {
+        "name": "Faros neblineros",
+        "slug": "faros-neblineros",
+        "base_price_cents": 14500,
+        "brands": [
+          "Philips",
+          "Osram",
+          "Hella"
+        ],
+        "image": "/static/category/faros-neblineros.webp",
+        "thumbnail": "/static/category/faros-neblineros-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/fog-lights_ic_5.jpg",
+        "universal": false
+      },
+      {
+        "name": "Luces LED",
+        "slug": "luces-led",
+        "base_price_cents": 6500,
+        "brands": [
+          "Philips",
+          "Osram",
+          "Hella"
+        ],
+        "image": "/static/category/luces-led.webp",
+        "thumbnail": "/static/category/luces-led-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/led-lights_ic_5.jpg",
+        "universal": false
+      },
+      {
+        "name": "Direccionales",
+        "slug": "direccionales",
+        "base_price_cents": 4800,
+        "brands": [
+          "Philips",
+          "Osram",
+          "Hella"
+        ],
+        "image": "/static/category/direccionales.webp",
+        "thumbnail": "/static/category/direccionales-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/signal-lights_ic_5.jpg",
+        "universal": false
+      },
+      {
+        "name": "Focos halógenos",
+        "slug": "focos-halogenos",
+        "base_price_cents": 3500,
+        "brands": [
+          "Philips",
+          "Osram",
+          "Hella"
+        ],
+        "image": "/static/category/focos-halogenos.webp",
+        "thumbnail": "/static/category/focos-halogenos-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/car-bulbs_ic_5.jpg",
+        "universal": false
+      }
+    ]
+  },
+  {
+    "name": "Filtros",
+    "slug": "filtros",
+    "subcategories": [
+      {
+        "name": "Filtros de aire",
+        "slug": "filtros-de-aire",
+        "base_price_cents": 4590,
+        "brands": [
+          "Mann-Filter",
+          "Bosch",
+          "Sakura"
+        ],
+        "image": "/static/category/filtros-de-aire.webp",
+        "thumbnail": "/static/category/filtros-de-aire-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/replacement-air-filters_ic_5.jpg",
+        "universal": false
+      },
+      {
+        "name": "Filtros de aceite",
+        "slug": "filtros-de-aceite",
+        "base_price_cents": 2990,
+        "brands": [
+          "Mann-Filter",
+          "Bosch",
+          "Sakura"
+        ],
+        "image": "/static/category/filtros-de-aceite.webp",
+        "thumbnail": "/static/category/filtros-de-aceite-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/oil-filters-components_ic_5.jpg",
+        "universal": false
+      },
+      {
+        "name": "Filtros de cabina",
+        "slug": "filtros-de-cabina",
+        "base_price_cents": 3990,
+        "brands": [
+          "Mann-Filter",
+          "Bosch",
+          "Sakura"
+        ],
+        "image": "/static/category/filtros-de-cabina.webp",
+        "thumbnail": "/static/category/filtros-de-cabina-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/cabin-air-filters_ic_5.jpg",
+        "universal": false
+      },
+      {
+        "name": "Filtros de combustible",
+        "slug": "filtros-de-combustible",
+        "base_price_cents": 5500,
+        "brands": [
+          "Mann-Filter",
+          "Bosch",
+          "Sakura"
+        ],
+        "image": "/static/category/filtros-de-combustible.webp",
+        "thumbnail": "/static/category/filtros-de-combustible-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/fuel-filters-components_ic_5.jpg",
+        "universal": false
+      },
+      {
+        "name": "Filtros de transmisión",
+        "slug": "filtros-de-transmision",
+        "base_price_cents": 8500,
+        "brands": [
+          "Mann-Filter",
+          "Bosch",
+          "Sakura"
+        ],
+        "image": "/static/category/filtros-de-transmision.webp",
+        "thumbnail": "/static/category/filtros-de-transmision-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/transmission-filters-components_ic_5.jpg",
+        "universal": false
+      }
+    ]
+  },
+  {
+    "name": "Aceites y fluidos",
+    "slug": "aceites",
+    "subcategories": [
+      {
+        "name": "Aceites de motor",
+        "slug": "aceites-de-motor",
+        "base_price_cents": 14500,
+        "brands": [
+          "Mobil",
+          "Castrol",
+          "Liqui Moly"
+        ],
+        "image": "/static/category/aceites-de-motor.webp",
+        "thumbnail": "/static/category/aceites-de-motor-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/motor-oils_ic_5.jpg",
+        "universal": true
+      },
+      {
+        "name": "Aceites de transmisión",
+        "slug": "aceites-de-transmision",
+        "base_price_cents": 6800,
+        "brands": [
+          "Mobil",
+          "Castrol",
+          "Liqui Moly"
+        ],
+        "image": "/static/category/aceites-de-transmision.webp",
+        "thumbnail": "/static/category/aceites-de-transmision-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/transmission-fluids-oils-additives_ic_5.jpg",
+        "universal": true
+      },
+      {
+        "name": "Aditivos de aceite",
+        "slug": "aditivos-de-aceite",
+        "base_price_cents": 4800,
+        "brands": [
+          "Mobil",
+          "Castrol",
+          "Liqui Moly"
+        ],
+        "image": "/static/category/aditivos-de-aceite.webp",
+        "thumbnail": "/static/category/aditivos-de-aceite-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/motor-oil-additives_ic_5.jpg",
+        "universal": true
+      },
+      {
+        "name": "Líquidos de freno",
+        "slug": "liquidos-de-freno",
+        "base_price_cents": 3500,
+        "brands": [
+          "Mobil",
+          "Castrol",
+          "Liqui Moly"
+        ],
+        "image": "/static/category/liquidos-de-freno.webp",
+        "thumbnail": "/static/category/liquidos-de-freno-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/brake-fluids-lubricants_ic_5.jpg",
+        "universal": true
+      },
+      {
+        "name": "Fluidos de dirección",
+        "slug": "fluidos-de-direccion",
+        "base_price_cents": 4200,
+        "brands": [
+          "Mobil",
+          "Castrol",
+          "Liqui Moly"
+        ],
+        "image": "/static/category/fluidos-de-direccion.webp",
+        "thumbnail": "/static/category/fluidos-de-direccion-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/power-steering-fluids_ic_5.jpg",
+        "universal": true
+      },
+      {
+        "name": "Refrigerantes",
+        "slug": "refrigerantes",
+        "base_price_cents": 3900,
+        "brands": [
+          "Mobil",
+          "Castrol",
+          "Liqui Moly"
+        ],
+        "image": "/static/category/refrigerantes.webp",
+        "thumbnail": "/static/category/refrigerantes-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/cooling-system-lubricants_ic_5.jpg",
+        "universal": true
+      }
+    ]
+  },
+  {
+    "name": "Carrocería",
+    "slug": "carroceria",
+    "subcategories": [
+      {
+        "name": "Parachoques",
+        "slug": "parachoques",
+        "base_price_cents": 29500,
+        "brands": [
+          "TYC",
+          "Depo",
+          "Dorman"
+        ],
+        "image": "/static/category/parachoques.webp",
+        "thumbnail": "/static/category/parachoques-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/bumpers_ic_5.jpg",
+        "universal": false
+      },
+      {
+        "name": "Guardafangos",
+        "slug": "guardafangos",
+        "base_price_cents": 18500,
+        "brands": [
+          "TYC",
+          "Depo",
+          "Dorman"
+        ],
+        "image": "/static/category/guardafangos.webp",
+        "thumbnail": "/static/category/guardafangos-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/fenders_ic_5.jpg",
+        "universal": false
+      },
+      {
+        "name": "Espejos retrovisores",
+        "slug": "espejos-retrovisores",
+        "base_price_cents": 14500,
+        "brands": [
+          "TYC",
+          "Depo",
+          "Dorman"
+        ],
+        "image": "/static/category/espejos-retrovisores.webp",
+        "thumbnail": "/static/category/espejos-retrovisores-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/side-mirrors_ic_5.jpg",
+        "universal": false
+      },
+      {
+        "name": "Capós",
+        "slug": "capos",
+        "base_price_cents": 62000,
+        "brands": [
+          "TYC",
+          "Depo",
+          "Dorman"
+        ],
+        "image": "/static/category/capos.webp",
+        "thumbnail": "/static/category/capos-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/hoods_ic_5.jpg",
+        "universal": false
+      },
+      {
+        "name": "Parrillas delanteras",
+        "slug": "parrillas-delanteras",
+        "base_price_cents": 14500,
+        "brands": [
+          "TYC",
+          "Depo",
+          "Dorman"
+        ],
+        "image": "/static/category/parrillas-delanteras.webp",
+        "thumbnail": "/static/category/parrillas-delanteras-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/replacement-grilles_ic_5.jpg",
+        "universal": false
+      },
+      {
+        "name": "Elevalunas",
+        "slug": "elevalunas",
+        "base_price_cents": 19000,
+        "brands": [
+          "TYC",
+          "Depo",
+          "Dorman"
+        ],
+        "image": "/static/category/elevalunas.webp",
+        "thumbnail": "/static/category/elevalunas-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/window-components_ic_5.jpg",
+        "universal": false
+      }
+    ]
+  },
+  {
+    "name": "Interior",
+    "slug": "interior",
+    "subcategories": [
+      {
+        "name": "Pisos y alfombras",
+        "slug": "pisos-y-alfombras",
+        "base_price_cents": 9500,
+        "brands": [
+          "Sparco",
+          "Momo",
+          "Dorman"
+        ],
+        "image": "/static/category/pisos-y-alfombras.webp",
+        "thumbnail": "/static/category/pisos-y-alfombras-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/custom-floor-mats_ic_5.jpg",
+        "universal": true
+      },
+      {
+        "name": "Fundas de asientos",
+        "slug": "fundas-de-asientos",
+        "base_price_cents": 14500,
+        "brands": [
+          "Sparco",
+          "Momo",
+          "Dorman"
+        ],
+        "image": "/static/category/fundas-de-asientos.webp",
+        "thumbnail": "/static/category/fundas-de-asientos-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/seat-covers_ic_5.jpg",
+        "universal": true
+      },
+      {
+        "name": "Volantes",
+        "slug": "volantes",
+        "base_price_cents": 28000,
+        "brands": [
+          "Sparco",
+          "Momo",
+          "Dorman"
+        ],
+        "image": "/static/category/volantes.webp",
+        "thumbnail": "/static/category/volantes-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/steering-wheels_ic_5.jpg",
+        "universal": true
+      },
+      {
+        "name": "Protectores de tablero",
+        "slug": "protectores-de-tablero",
+        "base_price_cents": 6500,
+        "brands": [
+          "Sparco",
+          "Momo",
+          "Dorman"
+        ],
+        "image": "/static/category/protectores-de-tablero.webp",
+        "thumbnail": "/static/category/protectores-de-tablero-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/dash-covers_ic_5.jpg",
+        "universal": true
+      },
+      {
+        "name": "Bandejas de maletera",
+        "slug": "bandejas-de-maletera",
+        "base_price_cents": 11500,
+        "brands": [
+          "Sparco",
+          "Momo",
+          "Dorman"
+        ],
+        "image": "/static/category/bandejas-de-maletera.webp",
+        "thumbnail": "/static/category/bandejas-de-maletera-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/cargo-liners_ic_5.jpg",
+        "universal": true
+      },
+      {
+        "name": "Pomos de cambios",
+        "slug": "pomos-de-cambios",
+        "base_price_cents": 4500,
+        "brands": [
+          "Sparco",
+          "Momo",
+          "Dorman"
+        ],
+        "image": "/static/category/pomos-de-cambios.webp",
+        "thumbnail": "/static/category/pomos-de-cambios-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/shift-knobs_ic_5.jpg",
+        "universal": true
+      }
+    ]
+  },
+  {
+    "name": "Accesorios",
+    "slug": "accesorios",
+    "subcategories": [
+      {
+        "name": "Parasoles",
+        "slug": "parasoles",
+        "base_price_cents": 3500,
+        "brands": [
+          "Sparco",
+          "Bosch",
+          "Thule"
+        ],
+        "image": "/static/category/parasoles.webp",
+        "thumbnail": "/static/category/parasoles-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/sun-shades_ic_5.jpg",
+        "universal": true
+      },
+      {
+        "name": "Organizadores",
+        "slug": "organizadores",
+        "base_price_cents": 4500,
+        "brands": [
+          "Sparco",
+          "Bosch",
+          "Thule"
+        ],
+        "image": "/static/category/organizadores.webp",
+        "thumbnail": "/static/category/organizadores-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/car-organizers_ic_5.jpg",
+        "universal": true
+      },
+      {
+        "name": "Accesorios para mascotas",
+        "slug": "accesorios-para-mascotas",
+        "base_price_cents": 8900,
+        "brands": [
+          "Sparco",
+          "Bosch",
+          "Thule"
+        ],
+        "image": "/static/category/accesorios-para-mascotas.webp",
+        "thumbnail": "/static/category/accesorios-para-mascotas-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/pet-travel_ic_5.jpg",
+        "universal": true
+      },
+      {
+        "name": "Pedaleras",
+        "slug": "pedaleras",
+        "base_price_cents": 6500,
+        "brands": [
+          "Sparco",
+          "Bosch",
+          "Thule"
+        ],
+        "image": "/static/category/pedaleras.webp",
+        "thumbnail": "/static/category/pedaleras-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/automotive-pedals_ic_5.jpg",
+        "universal": true
+      },
+      {
+        "name": "Cables de arranque",
+        "slug": "cables-de-arranque",
+        "base_price_cents": 6500,
+        "brands": [
+          "Bosch",
+          "Truper",
+          "Stanley"
+        ],
+        "image": "/static/category/cables-de-arranque.webp",
+        "thumbnail": "/static/category/cables-de-arranque-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/battery-cables_ic_5.jpg",
+        "universal": true
+      }
+    ]
+  },
+  {
+    "name": "Herramientas",
+    "slug": "herramientas",
+    "subcategories": [
+      {
+        "name": "Escáneres de diagnóstico",
+        "slug": "escaneres-de-diagnostico",
+        "base_price_cents": 28500,
+        "brands": [
+          "Stanley",
+          "Truper",
+          "Bosch"
+        ],
+        "image": "/static/category/escaneres-de-diagnostico.webp",
+        "thumbnail": "/static/category/escaneres-de-diagnostico-thumb.webp",
+        "source_url": "https://ic.carid.com/tools-garage/pages/diagnostic-testing-tools/diagnostic-testing-tools-refine_5.jpg",
+        "universal": true
+      },
+      {
+        "name": "Herramientas para motor",
+        "slug": "herramientas-para-motor",
+        "base_price_cents": 12500,
+        "brands": [
+          "Stanley",
+          "Truper",
+          "Bosch"
+        ],
+        "image": "/static/category/herramientas-para-motor.webp",
+        "thumbnail": "/static/category/herramientas-para-motor-thumb.webp",
+        "source_url": "https://ic.carid.com/tools-garage/pages/engine-service-tools/engine-service-tools-refine_5.jpg",
+        "universal": true
+      },
+      {
+        "name": "Extractores",
+        "slug": "extractores",
+        "base_price_cents": 8900,
+        "brands": [
+          "Stanley",
+          "Truper",
+          "Bosch"
+        ],
+        "image": "/static/category/extractores.webp",
+        "thumbnail": "/static/category/extractores-thumb.webp",
+        "source_url": "https://ic.carid.com/tools-garage/icons/pullers-installers_ic_5.jpg",
+        "universal": true
+      },
+      {
+        "name": "Herramientas de cambio de aceite",
+        "slug": "herramientas-de-cambio-de-aceite",
+        "base_price_cents": 4500,
+        "brands": [
+          "Stanley",
+          "Truper",
+          "Bosch"
+        ],
+        "image": "/static/category/herramientas-de-cambio-de-aceite.webp",
+        "thumbnail": "/static/category/herramientas-de-cambio-de-aceite-thumb.webp",
+        "source_url": "https://ic.carid.com/tools-garage/icons/oil-change-tools_ic_5.jpg",
+        "universal": true
+      },
+      {
+        "name": "Gatas hidráulicas",
+        "slug": "gatas-hidraulicas",
+        "base_price_cents": 16500,
+        "brands": [
+          "Stanley",
+          "Truper",
+          "Bosch"
+        ],
+        "image": "/static/category/gatas-hidraulicas.webp",
+        "thumbnail": "/static/category/gatas-hidraulicas-thumb.webp",
+        "source_url": "https://ic.carid.com/tools-garage/pages/jacks/jacks-refine_5.jpg",
+        "universal": true
+      },
+      {
+        "name": "Cargadores de batería",
+        "slug": "cargadores-de-bateria",
+        "base_price_cents": 19500,
+        "brands": [
+          "Stanley",
+          "Truper",
+          "Bosch"
+        ],
+        "image": "/static/category/cargadores-de-bateria.webp",
+        "thumbnail": "/static/category/cargadores-de-bateria-thumb.webp",
+        "source_url": "https://ic.carid.com/tools-garage/pages/battery-chargers-jump-starters/battery-chargers-jump-starters-refine_5.jpg",
+        "universal": true
+      }
+    ]
+  },
+  {
+    "name": "Neumáticos y aros",
+    "slug": "neumaticos",
+    "subcategories": [
+      {
+        "name": "Neumáticos de carretera",
+        "slug": "neumaticos-de-carretera",
+        "base_price_cents": 28500,
+        "brands": [
+          "Michelin",
+          "Goodyear",
+          "Bridgestone"
+        ],
+        "image": "/static/category/neumaticos-de-carretera.webp",
+        "thumbnail": "/static/category/neumaticos-de-carretera-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/all-season-tires_ic_0.jpg",
+        "universal": false
+      },
+      {
+        "name": "Neumáticos para SUV",
+        "slug": "neumaticos-para-suv",
+        "base_price_cents": 42000,
+        "brands": [
+          "Michelin",
+          "Goodyear",
+          "Bridgestone"
+        ],
+        "image": "/static/category/neumaticos-para-suv.webp",
+        "thumbnail": "/static/category/neumaticos-para-suv-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/truck-suv-tires_ic_0.jpg",
+        "universal": false
+      },
+      {
+        "name": "Neumáticos todo terreno",
+        "slug": "neumaticos-todo-terreno",
+        "base_price_cents": 48500,
+        "brands": [
+          "Michelin",
+          "Goodyear",
+          "Bridgestone"
+        ],
+        "image": "/static/category/neumaticos-todo-terreno.webp",
+        "thumbnail": "/static/category/neumaticos-todo-terreno-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/all-terrain-off-road-mud-tires_ic_0.jpg",
+        "universal": false
+      },
+      {
+        "name": "Aros de aleación",
+        "slug": "aros-de-aleacion",
+        "base_price_cents": 38000,
+        "brands": [
+          "Michelin",
+          "Goodyear",
+          "Bridgestone"
+        ],
+        "image": "/static/category/aros-de-aleacion.webp",
+        "thumbnail": "/static/category/aros-de-aleacion-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/wheels-and-rims_ic_5.jpg",
+        "universal": false
+      },
+      {
+        "name": "Taparos",
+        "slug": "taparos",
+        "base_price_cents": 7500,
+        "brands": [
+          "Michelin",
+          "Goodyear",
+          "Bridgestone"
+        ],
+        "image": "/static/category/taparos.webp",
+        "thumbnail": "/static/category/taparos-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/wheel-covers_ic_5.jpg",
+        "universal": false
+      },
+      {
+        "name": "Sensores de presión TPMS",
+        "slug": "sensores-de-presion-tpms",
+        "base_price_cents": 11000,
+        "brands": [
+          "Michelin",
+          "Goodyear",
+          "Bridgestone"
+        ],
+        "image": "/static/category/sensores-de-presion-tpms.webp",
+        "thumbnail": "/static/category/sensores-de-presion-tpms-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/tpms-sensors_ic_5.jpg",
+        "universal": false
+      }
+    ]
+  },
+  {
+    "name": "Cuidado del auto",
+    "slug": "cuidado",
+    "subcategories": [
+      {
+        "name": "Shampoo para autos",
+        "slug": "shampoo-para-autos",
+        "base_price_cents": 3500,
+        "brands": [
+          "3M",
+          "Meguiars",
+          "Sonax"
+        ],
+        "image": "/static/category/shampoo-para-autos.webp",
+        "thumbnail": "/static/category/shampoo-para-autos-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/car-wash_ic_5.jpg",
+        "universal": true
+      },
+      {
+        "name": "Limpiavidrios",
+        "slug": "limpiavidrios",
+        "base_price_cents": 2500,
+        "brands": [
+          "3M",
+          "Meguiars",
+          "Sonax"
+        ],
+        "image": "/static/category/limpiavidrios.webp",
+        "thumbnail": "/static/category/limpiavidrios-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/glass-cleaners_ic_5.jpg",
+        "universal": true
+      },
+      {
+        "name": "Limpieza de interiores",
+        "slug": "limpieza-de-interiores",
+        "base_price_cents": 3900,
+        "brands": [
+          "3M",
+          "Meguiars",
+          "Sonax"
+        ],
+        "image": "/static/category/limpieza-de-interiores.webp",
+        "thumbnail": "/static/category/limpieza-de-interiores-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/interior-care_ic_5.jpg",
+        "universal": true
+      },
+      {
+        "name": "Ceras y pulidores",
+        "slug": "ceras-y-pulidores",
+        "base_price_cents": 5500,
+        "brands": [
+          "3M",
+          "Meguiars",
+          "Sonax"
+        ],
+        "image": "/static/category/ceras-y-pulidores.webp",
+        "thumbnail": "/static/category/ceras-y-pulidores-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/waxes-polishes_ic_5.jpg",
+        "universal": true
+      },
+      {
+        "name": "Limpieza de neumáticos",
+        "slug": "limpieza-de-neumaticos",
+        "base_price_cents": 3200,
+        "brands": [
+          "3M",
+          "Meguiars",
+          "Sonax"
+        ],
+        "image": "/static/category/limpieza-de-neumaticos.webp",
+        "thumbnail": "/static/category/limpieza-de-neumaticos-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/wheel-tire-care_ic_5.jpg",
+        "universal": true
+      },
+      {
+        "name": "Paños y microfibras",
+        "slug": "panos-y-microfibras",
+        "base_price_cents": 1800,
+        "brands": [
+          "3M",
+          "Meguiars",
+          "Sonax"
+        ],
+        "image": "/static/category/panos-y-microfibras.webp",
+        "thumbnail": "/static/category/panos-y-microfibras-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/pads-towels_ic_5.jpg",
+        "universal": true
+      }
+    ]
+  },
+  {
+    "name": "Climatización",
+    "slug": "climatizacion",
+    "subcategories": [
+      {
+        "name": "Motores de ventilación",
+        "slug": "motores-de-ventilacion",
+        "base_price_cents": 17500,
+        "brands": [
+          "Denso",
+          "Valeo",
+          "Hella"
+        ],
+        "image": "/static/category/motores-de-ventilacion.webp",
+        "thumbnail": "/static/category/motores-de-ventilacion-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/blower-motors-components_ic_5.jpg",
+        "universal": false
+      },
+      {
+        "name": "Radiadores de calefacción",
+        "slug": "radiadores-de-calefaccion",
+        "base_price_cents": 18500,
+        "brands": [
+          "Denso",
+          "Valeo",
+          "Hella"
+        ],
+        "image": "/static/category/radiadores-de-calefaccion.webp",
+        "thumbnail": "/static/category/radiadores-de-calefaccion-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/heater-cores_ic_5.jpg",
+        "universal": false
+      },
+      {
+        "name": "Compresores de aire acondicionado",
+        "slug": "compresores-de-aire-acondicionado",
+        "base_price_cents": 89000,
+        "brands": [
+          "Denso",
+          "Valeo",
+          "Hella"
+        ],
+        "image": "/static/category/compresores-de-aire-acondicionado.webp",
+        "thumbnail": "/static/category/compresores-de-aire-acondicionado-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/ac-compressors-components_ic_5.jpg",
+        "universal": false
+      },
+      {
+        "name": "Condensadores",
+        "slug": "condensadores",
+        "base_price_cents": 32500,
+        "brands": [
+          "Denso",
+          "Valeo",
+          "Hella"
+        ],
+        "image": "/static/category/condensadores.webp",
+        "thumbnail": "/static/category/condensadores-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/ac-condensers-components_ic_5.jpg",
+        "universal": false
+      },
+      {
+        "name": "Evaporadores",
+        "slug": "evaporadores",
+        "base_price_cents": 26500,
+        "brands": [
+          "Denso",
+          "Valeo",
+          "Hella"
+        ],
+        "image": "/static/category/evaporadores.webp",
+        "thumbnail": "/static/category/evaporadores-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/ac-evaporators-components_ic_5.jpg",
+        "universal": false
+      },
+      {
+        "name": "Válvulas de expansión",
+        "slug": "valvulas-de-expansion",
+        "base_price_cents": 7500,
+        "brands": [
+          "Denso",
+          "Valeo",
+          "Hella"
+        ],
+        "image": "/static/category/valvulas-de-expansion.webp",
+        "thumbnail": "/static/category/valvulas-de-expansion-thumb.webp",
+        "source_url": "https://ic.carid.com/icons/ac-expansion-valves-orifice-tubes_ic_5.jpg",
+        "universal": false
+      }
+    ]
+  }
+]

@@ -1,0 +1,163 @@
+{
+  "version": "2026-10-19-v1",
+  "note": "Reglas académicas. Los rangos son orientativos por familia, no validación de una referencia técnica exacta.",
+  "presentations": {
+    "pastillas-de-freno": "Juego para un eje",
+    "zapatas-de-freno": "Juego para un eje",
+    "pistones-y-anillos": "Kit de pistones y anillos",
+    "kits-de-cadena-de-distribucion": "Kit de distribución",
+    "kits-de-embrague": "Kit de embrague",
+    "cables-de-bujias": "Juego de cables",
+    "pisos-y-alfombras": "Juego de alfombras",
+    "fundas-de-asientos": "Juego de fundas",
+    "pedaleras": "Juego de pedales",
+    "cables-de-arranque": "Juego de cables",
+    "herramientas-para-motor": "Juego de herramientas",
+    "extractores": "Juego de extractores",
+    "herramientas-de-cambio-de-aceite": "Kit de herramientas",
+    "aceites-de-motor": "Envase de 4 L",
+    "aceites-de-transmision": "Envase de 1 L",
+    "aditivos-de-aceite": "Envase de 300 ml",
+    "liquidos-de-freno": "Envase de 500 ml",
+    "fluidos-de-direccion": "Envase de 1 L",
+    "refrigerantes": "Envase de 4 L",
+    "shampoo-para-autos": "Envase de 1 L",
+    "limpiavidrios": "Envase de 500 ml",
+    "limpieza-de-interiores": "Envase de 500 ml",
+    "ceras-y-pulidores": "Envase de 500 ml",
+    "limpieza-de-neumaticos": "Envase de 500 ml",
+    "panos-y-microfibras": "Paño individual",
+    "mangueras-de-combustible": "Tramo de 1 m"
+  },
+  "suppliers": {
+    "motor": [
+      "Importaciones Motor Sur",
+      10
+    ],
+    "frenos": [
+      "Frenos del Pacífico",
+      5
+    ],
+    "suspension": [
+      "Autopartes Andinas",
+      7
+    ],
+    "direccion": [
+      "Autopartes Andinas",
+      7
+    ],
+    "transmision": [
+      "Distribuidora Nippon Perú",
+      10
+    ],
+    "refrigeracion": [
+      "Importaciones Motor Sur",
+      7
+    ],
+    "escape": [
+      "Importaciones Motor Sur",
+      12
+    ],
+    "electrico": [
+      "Distribuidora Nippon Perú",
+      7
+    ],
+    "encendido": [
+      "Distribuidora Nippon Perú",
+      5
+    ],
+    "combustible": [
+      "Distribuidora Nippon Perú",
+      10
+    ],
+    "iluminacion": [
+      "Accesorios Central",
+      7
+    ],
+    "filtros": [
+      "Lubricantes Lima",
+      4
+    ],
+    "aceites": [
+      "Lubricantes Lima",
+      4
+    ],
+    "carroceria": [
+      "Importaciones Motor Sur",
+      14
+    ],
+    "interior": [
+      "Accesorios Central",
+      7
+    ],
+    "accesorios": [
+      "Accesorios Central",
+      7
+    ],
+    "herramientas": [
+      "Accesorios Central",
+      10
+    ],
+    "neumaticos": [
+      "Autopartes Andinas",
+      7
+    ],
+    "cuidado": [
+      "Accesorios Central",
+      4
+    ],
+    "climatizacion": [
+      "Importaciones Motor Sur",
+      12
+    ]
+  },
+  "benchmarks": {
+    "pastillas-de-freno": {
+      "min_cents": 11000,
+      "max_cents": 28000,
+      "premium_floor_cents": 16000,
+      "premium_brands": [
+        "Bosch",
+        "Brembo"
+      ],
+      "unit": "Juego para un eje",
+      "examples": [
+        {
+          "price_cents": 18300,
+          "label": "Bosch F03B050494, Toyota Yaris, impuestos incluidos",
+          "url": "https://www.aibitech.com/automotriz-repuestos/pastillas-de-frenos/pastillas-de-freno-ceramica-toyota-yaris-r-9175-d1950-del-bosch-f03b050494-41519.html"
+        },
+        {
+          "price_cents": 19451,
+          "label": "Bosch F03B.050.494-GRB, Yaris, publicado sin stock",
+          "url": "https://renusa.pe/product/pastilla-de-freno-delantera-toyota-yaris-5ta-generacion-d1950-ceramica/"
+        }
+      ]
+    },
+    "amortiguadores": {
+      "min_cents": 15000,
+      "max_cents": 45000,
+      "unit": "Unidad",
+      "examples": [
+        {
+          "price_cents": 20290,
+          "label": "Amortiguador delantero derecho Yaris 2018+, IGV incluido",
+          "url": "https://predicarrepuestos.com/repuestos-para/toyota-yaris/"
+        }
+      ]
+    },
+    "aceites-de-motor": {
+      "min_cents": 14000,
+      "max_cents": 33000,
+      "unit": "Envase de 4 L",
+      "examples": [
+        {
+          "price_cents": 24500,
+          "label": "Liqui Moly High Performance sintético 5W-30, 4 L, vendedor Halley Perú",
+          "url": "https://www.sodimac.com.pe/sodimac-pe/b/aceite-full-sintetico-5w30"
+        }
+      ]
+    }
+  },
+  "consulted_at": "2026-10-19"
+}

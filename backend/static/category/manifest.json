@@ -1,0 +1,1080 @@
+{
+  "images": [
+    {
+      "slug": "abrazaderas-de-escape",
+      "name": "Abrazaderas de escape",
+      "source_url": "https://ic.carid.com/icons/exhaust-clamps-hangers-gaskets-seals_ic_5.jpg",
+      "image": "/static/category/abrazaderas-de-escape.webp",
+      "thumbnail": "/static/category/abrazaderas-de-escape-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "accesorios-para-mascotas",
+      "name": "Accesorios para mascotas",
+      "source_url": "https://ic.carid.com/icons/pet-travel_ic_5.jpg",
+      "image": "/static/category/accesorios-para-mascotas.webp",
+      "thumbnail": "/static/category/accesorios-para-mascotas-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "aceites-de-motor",
+      "name": "Aceites de motor",
+      "source_url": "https://ic.carid.com/icons/motor-oils_ic_5.jpg",
+      "image": "/static/category/aceites-de-motor.webp",
+      "thumbnail": "/static/category/aceites-de-motor-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "aceites-de-transmision",
+      "name": "Aceites de transmisión",
+      "source_url": "https://ic.carid.com/icons/transmission-fluids-oils-additives_ic_5.jpg",
+      "image": "/static/category/aceites-de-transmision.webp",
+      "thumbnail": "/static/category/aceites-de-transmision-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "aditivos-de-aceite",
+      "name": "Aditivos de aceite",
+      "source_url": "https://ic.carid.com/icons/motor-oil-additives_ic_5.jpg",
+      "image": "/static/category/aditivos-de-aceite.webp",
+      "thumbnail": "/static/category/aditivos-de-aceite-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "alternadores",
+      "name": "Alternadores",
+      "source_url": "https://ic.carid.com/icons/alternators-generators-components_5.jpg",
+      "image": "/static/category/alternadores.webp",
+      "thumbnail": "/static/category/alternadores-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "amortiguadores",
+      "name": "Amortiguadores",
+      "source_url": "https://ic.carid.com/icons/shocks-struts_ic_5.jpg",
+      "image": "/static/category/amortiguadores.webp",
+      "thumbnail": "/static/category/amortiguadores-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "aros-de-aleacion",
+      "name": "Aros de aleación",
+      "source_url": "https://ic.carid.com/icons/wheels-and-rims_ic_5.jpg",
+      "image": "/static/category/aros-de-aleacion.webp",
+      "thumbnail": "/static/category/aros-de-aleacion-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "bandejas-de-maletera",
+      "name": "Bandejas de maletera",
+      "source_url": "https://ic.carid.com/icons/cargo-liners_ic_5.jpg",
+      "image": "/static/category/bandejas-de-maletera.webp",
+      "thumbnail": "/static/category/bandejas-de-maletera-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "baterias",
+      "name": "Baterías",
+      "source_url": "https://ic.carid.com/icons/batteries-components_ic_5.jpg",
+      "image": "/static/category/baterias.webp",
+      "thumbnail": "/static/category/baterias-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "bieletas-de-suspension",
+      "name": "Bieletas de suspensión",
+      "source_url": "https://ic.carid.com/icons/suspension-stabilizer-bar-links_ic_5.jpg",
+      "image": "/static/category/bieletas-de-suspension.webp",
+      "thumbnail": "/static/category/bieletas-de-suspension-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "bobinas-de-encendido",
+      "name": "Bobinas de encendido",
+      "source_url": "https://ic.carid.com/pages/icons/ignition-coils-components_ic_5.jpg",
+      "image": "/static/category/bobinas-de-encendido.webp",
+      "thumbnail": "/static/category/bobinas-de-encendido-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "bombas-de-aceite",
+      "name": "Bombas de aceite",
+      "source_url": "https://ic.carid.com/icons/oil-pumps-components_ic_5.jpg",
+      "image": "/static/category/bombas-de-aceite.webp",
+      "thumbnail": "/static/category/bombas-de-aceite-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "bombas-de-agua",
+      "name": "Bombas de agua",
+      "source_url": "https://ic.carid.com/icons/water-pumps-components_ic_5.jpg",
+      "image": "/static/category/bombas-de-agua.webp",
+      "thumbnail": "/static/category/bombas-de-agua-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "bombas-de-combustible",
+      "name": "Bombas de combustible",
+      "source_url": "https://ic.carid.com/icons/fuel-pumps-components_ic_5.jpg",
+      "image": "/static/category/bombas-de-combustible.webp",
+      "thumbnail": "/static/category/bombas-de-combustible-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "bombas-de-direccion",
+      "name": "Bombas de dirección",
+      "source_url": "https://ic.carid.com/icons/power-steering-pumps-reservoirs-components_ic_5.jpg",
+      "image": "/static/category/bombas-de-direccion.webp",
+      "thumbnail": "/static/category/bombas-de-direccion-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "bombas-de-freno",
+      "name": "Bombas de freno",
+      "source_url": "https://ic.carid.com/icons/brake-master-cylinders-reservoirs_ic_5.jpg",
+      "image": "/static/category/bombas-de-freno.webp",
+      "thumbnail": "/static/category/bombas-de-freno-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "bombines-de-embrague",
+      "name": "Bombines de embrague",
+      "source_url": "https://ic.carid.com/icons/clutch-hydraulics_ic_5.jpg",
+      "image": "/static/category/bombines-de-embrague.webp",
+      "thumbnail": "/static/category/bombines-de-embrague-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "brazos-de-direccion",
+      "name": "Brazos de dirección",
+      "source_url": "https://ic.carid.com/icons/steering-arms-links-components_ic_5.jpg",
+      "image": "/static/category/brazos-de-direccion.webp",
+      "thumbnail": "/static/category/brazos-de-direccion-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "bujias",
+      "name": "Bujías",
+      "source_url": "https://ic.carid.com/pages/icons/spark-plugs_ic_5.jpg",
+      "image": "/static/category/bujias.webp",
+      "thumbnail": "/static/category/bujias-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "bujias-de-precalentamiento",
+      "name": "Bujías de precalentamiento",
+      "source_url": "https://ic.carid.com/pages/icons/diesel-glow-plugs-components_ic_5.jpg",
+      "image": "/static/category/bujias-de-precalentamiento.webp",
+      "thumbnail": "/static/category/bujias-de-precalentamiento-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "cables-de-arranque",
+      "name": "Cables de arranque",
+      "source_url": "https://ic.carid.com/icons/battery-cables_ic_5.jpg",
+      "image": "/static/category/cables-de-arranque.webp",
+      "thumbnail": "/static/category/cables-de-arranque-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "cables-de-bateria",
+      "name": "Cables de batería",
+      "source_url": "https://ic.carid.com/icons/battery-cables_ic_5.jpg",
+      "image": "/static/category/cables-de-bateria.webp",
+      "thumbnail": "/static/category/cables-de-bateria-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "cables-de-bujias",
+      "name": "Cables de bujías",
+      "source_url": "https://ic.carid.com/pages/icons/spark-plug-wires-ignition-wires-components_ic_5.jpg",
+      "image": "/static/category/cables-de-bujias.webp",
+      "thumbnail": "/static/category/cables-de-bujias-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "calipers-de-freno",
+      "name": "Calipers de freno",
+      "source_url": "https://ic.carid.com/icons/brake-calipers-components_ic_5.jpg",
+      "image": "/static/category/calipers-de-freno.webp",
+      "thumbnail": "/static/category/calipers-de-freno-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "capos",
+      "name": "Capós",
+      "source_url": "https://ic.carid.com/icons/hoods_ic_5.jpg",
+      "image": "/static/category/capos.webp",
+      "thumbnail": "/static/category/capos-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "cargadores-de-bateria",
+      "name": "Cargadores de batería",
+      "source_url": "https://ic.carid.com/tools-garage/pages/battery-chargers-jump-starters/battery-chargers-jump-starters-refine_5.jpg",
+      "image": "/static/category/cargadores-de-bateria.webp",
+      "thumbnail": "/static/category/cargadores-de-bateria-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "catalizadores",
+      "name": "Catalizadores",
+      "source_url": "https://ic.carid.com/icons/catalytic-converters-components_ic_5.jpg",
+      "image": "/static/category/catalizadores.webp",
+      "thumbnail": "/static/category/catalizadores-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "ceras-y-pulidores",
+      "name": "Ceras y pulidores",
+      "source_url": "https://ic.carid.com/icons/waxes-polishes_ic_5.jpg",
+      "image": "/static/category/ceras-y-pulidores.webp",
+      "thumbnail": "/static/category/ceras-y-pulidores-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "cilindros-de-encendido",
+      "name": "Cilindros de encendido",
+      "source_url": "https://ic.carid.com/pages/icons/ignition-lock-cylinder_ic_5.jpg",
+      "image": "/static/category/cilindros-de-encendido.webp",
+      "thumbnail": "/static/category/cilindros-de-encendido-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "collarines-de-embrague",
+      "name": "Collarines de embrague",
+      "source_url": "https://ic.carid.com/icons/clutch-release-bearings_ic_5.jpg",
+      "image": "/static/category/collarines-de-embrague.webp",
+      "thumbnail": "/static/category/collarines-de-embrague-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "compresores-de-aire-acondicionado",
+      "name": "Compresores de aire acondicionado",
+      "source_url": "https://ic.carid.com/icons/ac-compressors-components_ic_5.jpg",
+      "image": "/static/category/compresores-de-aire-acondicionado.webp",
+      "thumbnail": "/static/category/compresores-de-aire-acondicionado-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "condensadores",
+      "name": "Condensadores",
+      "source_url": "https://ic.carid.com/icons/ac-condensers-components_ic_5.jpg",
+      "image": "/static/category/condensadores.webp",
+      "thumbnail": "/static/category/condensadores-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "copelas-de-amortiguador",
+      "name": "Copelas de amortiguador",
+      "source_url": "https://ic.carid.com/icons/shock-strut-mounts-hardware_ic_5.jpg",
+      "image": "/static/category/copelas-de-amortiguador.webp",
+      "thumbnail": "/static/category/copelas-de-amortiguador-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "correas-de-distribucion",
+      "name": "Correas de distribución",
+      "source_url": "https://ic.carid.com/icons/timing-belts-components_ic_5.jpg",
+      "image": "/static/category/correas-de-distribucion.webp",
+      "thumbnail": "/static/category/correas-de-distribucion-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "cremalleras-de-direccion",
+      "name": "Cremalleras de dirección",
+      "source_url": "https://ic.carid.com/icons/steering-rack-pinion_ic_5.jpg",
+      "image": "/static/category/cremalleras-de-direccion.webp",
+      "thumbnail": "/static/category/cremalleras-de-direccion-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "cuerpos-de-aceleracion",
+      "name": "Cuerpos de aceleración",
+      "source_url": "https://ic.carid.com/icons/throttle-bodies_ic_5.jpg",
+      "image": "/static/category/cuerpos-de-aceleracion.webp",
+      "thumbnail": "/static/category/cuerpos-de-aceleracion-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "depositos-de-refrigerante",
+      "name": "Depósitos de refrigerante",
+      "source_url": "https://ic.carid.com/icons/coolant-overflow-tanks-components_ic_5.jpg",
+      "image": "/static/category/depositos-de-refrigerante.webp",
+      "thumbnail": "/static/category/depositos-de-refrigerante-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "direccionales",
+      "name": "Direccionales",
+      "source_url": "https://ic.carid.com/icons/signal-lights_ic_5.jpg",
+      "image": "/static/category/direccionales.webp",
+      "thumbnail": "/static/category/direccionales-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "discos-de-embrague",
+      "name": "Discos de embrague",
+      "source_url": "https://ic.carid.com/icons/clutch-disc_ic_5.jpg",
+      "image": "/static/category/discos-de-embrague.webp",
+      "thumbnail": "/static/category/discos-de-embrague-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "discos-de-freno",
+      "name": "Discos de freno",
+      "source_url": "https://ic.carid.com/icons/brake-rotors_ic_5.jpg",
+      "image": "/static/category/discos-de-freno.webp",
+      "thumbnail": "/static/category/discos-de-freno-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "distribuidores",
+      "name": "Distribuidores",
+      "source_url": "https://ic.carid.com/pages/icons/distributors-components_ic_5.jpg",
+      "image": "/static/category/distribuidores.webp",
+      "thumbnail": "/static/category/distribuidores-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "electroventiladores",
+      "name": "Electroventiladores",
+      "source_url": "https://ic.carid.com/icons/radiator-fans-components_ic_5.jpg",
+      "image": "/static/category/electroventiladores.webp",
+      "thumbnail": "/static/category/electroventiladores-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "elevalunas",
+      "name": "Elevalunas",
+      "source_url": "https://ic.carid.com/icons/window-components_ic_5.jpg",
+      "image": "/static/category/elevalunas.webp",
+      "thumbnail": "/static/category/elevalunas-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "escaneres-de-diagnostico",
+      "name": "Escáneres de diagnóstico",
+      "source_url": "https://ic.carid.com/tools-garage/pages/diagnostic-testing-tools/diagnostic-testing-tools-refine_5.jpg",
+      "image": "/static/category/escaneres-de-diagnostico.webp",
+      "thumbnail": "/static/category/escaneres-de-diagnostico-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "espejos-retrovisores",
+      "name": "Espejos retrovisores",
+      "source_url": "https://ic.carid.com/icons/side-mirrors_ic_5.jpg",
+      "image": "/static/category/espejos-retrovisores.webp",
+      "thumbnail": "/static/category/espejos-retrovisores-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "evaporadores",
+      "name": "Evaporadores",
+      "source_url": "https://ic.carid.com/icons/ac-evaporators-components_ic_5.jpg",
+      "image": "/static/category/evaporadores.webp",
+      "thumbnail": "/static/category/evaporadores-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "extractores",
+      "name": "Extractores",
+      "source_url": "https://ic.carid.com/tools-garage/icons/pullers-installers_ic_5.jpg",
+      "image": "/static/category/extractores.webp",
+      "thumbnail": "/static/category/extractores-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "faros-delanteros",
+      "name": "Faros delanteros",
+      "source_url": "https://ic.carid.com/icons/headlights_ic_5.jpg",
+      "image": "/static/category/faros-delanteros.webp",
+      "thumbnail": "/static/category/faros-delanteros-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "faros-neblineros",
+      "name": "Faros neblineros",
+      "source_url": "https://ic.carid.com/icons/fog-lights_ic_5.jpg",
+      "image": "/static/category/faros-neblineros.webp",
+      "thumbnail": "/static/category/faros-neblineros-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "faros-posteriores",
+      "name": "Faros posteriores",
+      "source_url": "https://ic.carid.com/icons/tail-lights_ic_5.jpg",
+      "image": "/static/category/faros-posteriores.webp",
+      "thumbnail": "/static/category/faros-posteriores-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "filtros-de-aceite",
+      "name": "Filtros de aceite",
+      "source_url": "https://ic.carid.com/icons/oil-filters-components_ic_5.jpg",
+      "image": "/static/category/filtros-de-aceite.webp",
+      "thumbnail": "/static/category/filtros-de-aceite-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "filtros-de-aire",
+      "name": "Filtros de aire",
+      "source_url": "https://ic.carid.com/icons/replacement-air-filters_ic_5.jpg",
+      "image": "/static/category/filtros-de-aire.webp",
+      "thumbnail": "/static/category/filtros-de-aire-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "filtros-de-cabina",
+      "name": "Filtros de cabina",
+      "source_url": "https://ic.carid.com/icons/cabin-air-filters_ic_5.jpg",
+      "image": "/static/category/filtros-de-cabina.webp",
+      "thumbnail": "/static/category/filtros-de-cabina-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "filtros-de-combustible",
+      "name": "Filtros de combustible",
+      "source_url": "https://ic.carid.com/icons/fuel-filters-components_ic_5.jpg",
+      "image": "/static/category/filtros-de-combustible.webp",
+      "thumbnail": "/static/category/filtros-de-combustible-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "filtros-de-transmision",
+      "name": "Filtros de transmisión",
+      "source_url": "https://ic.carid.com/icons/transmission-filters-components_ic_5.jpg",
+      "image": "/static/category/filtros-de-transmision.webp",
+      "thumbnail": "/static/category/filtros-de-transmision-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "fluidos-de-direccion",
+      "name": "Fluidos de dirección",
+      "source_url": "https://ic.carid.com/icons/power-steering-fluids_ic_5.jpg",
+      "image": "/static/category/fluidos-de-direccion.webp",
+      "thumbnail": "/static/category/fluidos-de-direccion-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "focos-halogenos",
+      "name": "Focos halógenos",
+      "source_url": "https://ic.carid.com/icons/car-bulbs_ic_5.jpg",
+      "image": "/static/category/focos-halogenos.webp",
+      "thumbnail": "/static/category/focos-halogenos-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "fundas-de-asientos",
+      "name": "Fundas de asientos",
+      "source_url": "https://ic.carid.com/icons/seat-covers_ic_5.jpg",
+      "image": "/static/category/fundas-de-asientos.webp",
+      "thumbnail": "/static/category/fundas-de-asientos-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "gatas-hidraulicas",
+      "name": "Gatas hidráulicas",
+      "source_url": "https://ic.carid.com/tools-garage/pages/jacks/jacks-refine_5.jpg",
+      "image": "/static/category/gatas-hidraulicas.webp",
+      "thumbnail": "/static/category/gatas-hidraulicas-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "guardafangos",
+      "name": "Guardafangos",
+      "source_url": "https://ic.carid.com/icons/fenders_ic_5.jpg",
+      "image": "/static/category/guardafangos.webp",
+      "thumbnail": "/static/category/guardafangos-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "guardapolvos-de-direccion",
+      "name": "Guardapolvos de dirección",
+      "source_url": "https://ic.carid.com/icons/steering-rack-boots-bellows_ic_5.jpg",
+      "image": "/static/category/guardapolvos-de-direccion.webp",
+      "thumbnail": "/static/category/guardapolvos-de-direccion-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "herramientas-de-cambio-de-aceite",
+      "name": "Herramientas de cambio de aceite",
+      "source_url": "https://ic.carid.com/tools-garage/icons/oil-change-tools_ic_5.jpg",
+      "image": "/static/category/herramientas-de-cambio-de-aceite.webp",
+      "thumbnail": "/static/category/herramientas-de-cambio-de-aceite-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "herramientas-para-motor",
+      "name": "Herramientas para motor",
+      "source_url": "https://ic.carid.com/tools-garage/pages/engine-service-tools/engine-service-tools-refine_5.jpg",
+      "image": "/static/category/herramientas-para-motor.webp",
+      "thumbnail": "/static/category/herramientas-para-motor-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "inyectores",
+      "name": "Inyectores",
+      "source_url": "https://ic.carid.com/icons/fuel-injectors-fuel-rails-components_ic_5.jpg",
+      "image": "/static/category/inyectores.webp",
+      "thumbnail": "/static/category/inyectores-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "kits-de-cadena-de-distribucion",
+      "name": "Kits de cadena de distribución",
+      "source_url": "https://ic.carid.com/icons/replacement-timing-gears-chains-and-covers_ic_5.jpg",
+      "image": "/static/category/kits-de-cadena-de-distribucion.webp",
+      "thumbnail": "/static/category/kits-de-cadena-de-distribucion-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "kits-de-embrague",
+      "name": "Kits de embrague",
+      "source_url": "https://ic.carid.com/icons/clutch-kits_ic_5.jpg",
+      "image": "/static/category/kits-de-embrague.webp",
+      "thumbnail": "/static/category/kits-de-embrague-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "limpiavidrios",
+      "name": "Limpiavidrios",
+      "source_url": "https://ic.carid.com/icons/glass-cleaners_ic_5.jpg",
+      "image": "/static/category/limpiavidrios.webp",
+      "thumbnail": "/static/category/limpiavidrios-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "limpieza-de-interiores",
+      "name": "Limpieza de interiores",
+      "source_url": "https://ic.carid.com/icons/interior-care_ic_5.jpg",
+      "image": "/static/category/limpieza-de-interiores.webp",
+      "thumbnail": "/static/category/limpieza-de-interiores-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "limpieza-de-neumaticos",
+      "name": "Limpieza de neumáticos",
+      "source_url": "https://ic.carid.com/icons/wheel-tire-care_ic_5.jpg",
+      "image": "/static/category/limpieza-de-neumaticos.webp",
+      "thumbnail": "/static/category/limpieza-de-neumaticos-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "liquidos-de-freno",
+      "name": "Líquidos de freno",
+      "source_url": "https://ic.carid.com/icons/brake-fluids-lubricants_ic_5.jpg",
+      "image": "/static/category/liquidos-de-freno.webp",
+      "thumbnail": "/static/category/liquidos-de-freno-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "luces-led",
+      "name": "Luces LED",
+      "source_url": "https://ic.carid.com/icons/led-lights_ic_5.jpg",
+      "image": "/static/category/luces-led.webp",
+      "thumbnail": "/static/category/luces-led-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "mangueras-de-combustible",
+      "name": "Mangueras de combustible",
+      "source_url": "https://ic.carid.com/icons/fuel-hoses-clamps-gaskets-seals_ic_5.jpg",
+      "image": "/static/category/mangueras-de-combustible.webp",
+      "thumbnail": "/static/category/mangueras-de-combustible-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "mangueras-de-direccion",
+      "name": "Mangueras de dirección",
+      "source_url": "https://ic.carid.com/icons/power-steering-lines-hoses_ic_5.jpg",
+      "image": "/static/category/mangueras-de-direccion.webp",
+      "thumbnail": "/static/category/mangueras-de-direccion-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "mangueras-de-freno",
+      "name": "Mangueras de freno",
+      "source_url": "https://ic.carid.com/icons/brake-lines-hoses_ic_5.jpg",
+      "image": "/static/category/mangueras-de-freno.webp",
+      "thumbnail": "/static/category/mangueras-de-freno-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "mangueras-de-radiador",
+      "name": "Mangueras de radiador",
+      "source_url": "https://ic.carid.com/icons/radiator-hoses-clamps_ic_5.jpg",
+      "image": "/static/category/mangueras-de-radiador.webp",
+      "thumbnail": "/static/category/mangueras-de-radiador-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "motores-de-arranque",
+      "name": "Motores de arranque",
+      "source_url": "https://ic.carid.com/icons/starters-components_5.jpg",
+      "image": "/static/category/motores-de-arranque.webp",
+      "thumbnail": "/static/category/motores-de-arranque-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "motores-de-ventilacion",
+      "name": "Motores de ventilación",
+      "source_url": "https://ic.carid.com/icons/blower-motors-components_ic_5.jpg",
+      "image": "/static/category/motores-de-ventilacion.webp",
+      "thumbnail": "/static/category/motores-de-ventilacion-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "multiples-de-escape",
+      "name": "Múltiples de escape",
+      "source_url": "https://ic.carid.com/icons/exhaust-manifolds-components_ic_5.jpg",
+      "image": "/static/category/multiples-de-escape.webp",
+      "thumbnail": "/static/category/multiples-de-escape-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "neumaticos-de-carretera",
+      "name": "Neumáticos de carretera",
+      "source_url": "https://ic.carid.com/icons/all-season-tires_ic_0.jpg",
+      "image": "/static/category/neumaticos-de-carretera.webp",
+      "thumbnail": "/static/category/neumaticos-de-carretera-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "neumaticos-para-suv",
+      "name": "Neumáticos para SUV",
+      "source_url": "https://ic.carid.com/icons/truck-suv-tires_ic_0.jpg",
+      "image": "/static/category/neumaticos-para-suv.webp",
+      "thumbnail": "/static/category/neumaticos-para-suv-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "neumaticos-todo-terreno",
+      "name": "Neumáticos todo terreno",
+      "source_url": "https://ic.carid.com/icons/all-terrain-off-road-mud-tires_ic_0.jpg",
+      "image": "/static/category/neumaticos-todo-terreno.webp",
+      "thumbnail": "/static/category/neumaticos-todo-terreno-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "organizadores",
+      "name": "Organizadores",
+      "source_url": "https://ic.carid.com/icons/car-organizers_ic_5.jpg",
+      "image": "/static/category/organizadores.webp",
+      "thumbnail": "/static/category/organizadores-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "panos-y-microfibras",
+      "name": "Paños y microfibras",
+      "source_url": "https://ic.carid.com/icons/pads-towels_ic_5.jpg",
+      "image": "/static/category/panos-y-microfibras.webp",
+      "thumbnail": "/static/category/panos-y-microfibras-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "parachoques",
+      "name": "Parachoques",
+      "source_url": "https://ic.carid.com/icons/bumpers_ic_5.jpg",
+      "image": "/static/category/parachoques.webp",
+      "thumbnail": "/static/category/parachoques-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "parasoles",
+      "name": "Parasoles",
+      "source_url": "https://ic.carid.com/icons/sun-shades_ic_5.jpg",
+      "image": "/static/category/parasoles.webp",
+      "thumbnail": "/static/category/parasoles-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "parrillas-delanteras",
+      "name": "Parrillas delanteras",
+      "source_url": "https://ic.carid.com/icons/replacement-grilles_ic_5.jpg",
+      "image": "/static/category/parrillas-delanteras.webp",
+      "thumbnail": "/static/category/parrillas-delanteras-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "pastillas-de-freno",
+      "name": "Pastillas de freno",
+      "source_url": "https://ic.carid.com/icons/disc-brake-pads_ic_5.jpg",
+      "image": "/static/category/pastillas-de-freno.webp",
+      "thumbnail": "/static/category/pastillas-de-freno-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "pedaleras",
+      "name": "Pedaleras",
+      "source_url": "https://ic.carid.com/icons/automotive-pedals_ic_5.jpg",
+      "image": "/static/category/pedaleras.webp",
+      "thumbnail": "/static/category/pedaleras-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "pisos-y-alfombras",
+      "name": "Pisos y alfombras",
+      "source_url": "https://ic.carid.com/icons/custom-floor-mats_ic_5.jpg",
+      "image": "/static/category/pisos-y-alfombras.webp",
+      "thumbnail": "/static/category/pisos-y-alfombras-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "pistones-y-anillos",
+      "name": "Pistones y anillos",
+      "source_url": "https://ic.carid.com/icons/replacement-pistons-rings-and-connecting-rods_ic_5.jpg",
+      "image": "/static/category/pistones-y-anillos.webp",
+      "thumbnail": "/static/category/pistones-y-anillos-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "pomos-de-cambios",
+      "name": "Pomos de cambios",
+      "source_url": "https://ic.carid.com/icons/shift-knobs_ic_5.jpg",
+      "image": "/static/category/pomos-de-cambios.webp",
+      "thumbnail": "/static/category/pomos-de-cambios-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "protectores-de-tablero",
+      "name": "Protectores de tablero",
+      "source_url": "https://ic.carid.com/icons/dash-covers_ic_5.jpg",
+      "image": "/static/category/protectores-de-tablero.webp",
+      "thumbnail": "/static/category/protectores-de-tablero-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "radiadores",
+      "name": "Radiadores",
+      "source_url": "https://ic.carid.com/icons/radiators-components_ic_5.jpg",
+      "image": "/static/category/radiadores.webp",
+      "thumbnail": "/static/category/radiadores-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "radiadores-de-calefaccion",
+      "name": "Radiadores de calefacción",
+      "source_url": "https://ic.carid.com/icons/heater-cores_ic_5.jpg",
+      "image": "/static/category/radiadores-de-calefaccion.webp",
+      "thumbnail": "/static/category/radiadores-de-calefaccion-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "refrigerantes",
+      "name": "Refrigerantes",
+      "source_url": "https://ic.carid.com/icons/cooling-system-lubricants_ic_5.jpg",
+      "image": "/static/category/refrigerantes.webp",
+      "thumbnail": "/static/category/refrigerantes-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "reguladores-de-combustible",
+      "name": "Reguladores de combustible",
+      "source_url": "https://ic.carid.com/icons/fuel-pressure-regulators-components_ic_5.jpg",
+      "image": "/static/category/reguladores-de-combustible.webp",
+      "thumbnail": "/static/category/reguladores-de-combustible-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "reguladores-de-voltaje",
+      "name": "Reguladores de voltaje",
+      "source_url": "https://ic.carid.com/icons/voltage-regulators_5.jpg",
+      "image": "/static/category/reguladores-de-voltaje.webp",
+      "thumbnail": "/static/category/reguladores-de-voltaje-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "reles-y-conectores",
+      "name": "Relés y conectores",
+      "source_url": "https://ic.carid.com/icons/relays-sensors-connerctors-cables_ic_5.jpg",
+      "image": "/static/category/reles-y-conectores.webp",
+      "thumbnail": "/static/category/reles-y-conectores-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "resortes-de-suspension",
+      "name": "Resortes de suspensión",
+      "source_url": "https://ic.carid.com/icons/coil-springs-components_ic_5.jpg",
+      "image": "/static/category/resortes-de-suspension.webp",
+      "thumbnail": "/static/category/resortes-de-suspension-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "rotulas-de-suspension",
+      "name": "Rótulas de suspensión",
+      "source_url": "https://ic.carid.com/icons/ball-joints-components_ic_5.jpg",
+      "image": "/static/category/rotulas-de-suspension.webp",
+      "thumbnail": "/static/category/rotulas-de-suspension-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "sensores-de-oxigeno",
+      "name": "Sensores de oxígeno",
+      "source_url": "https://ic.carid.com/semi-truck/icons/semi-truck-oxygen-sensors-components_ic_5.jpg",
+      "image": "/static/category/sensores-de-oxigeno.webp",
+      "thumbnail": "/static/category/sensores-de-oxigeno-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "sensores-de-presion-tpms",
+      "name": "Sensores de presión TPMS",
+      "source_url": "https://ic.carid.com/icons/tpms-sensors_ic_5.jpg",
+      "image": "/static/category/sensores-de-presion-tpms.webp",
+      "thumbnail": "/static/category/sensores-de-presion-tpms-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "shampoo-para-autos",
+      "name": "Shampoo para autos",
+      "source_url": "https://ic.carid.com/icons/car-wash_ic_5.jpg",
+      "image": "/static/category/shampoo-para-autos.webp",
+      "thumbnail": "/static/category/shampoo-para-autos-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "silenciadores",
+      "name": "Silenciadores",
+      "source_url": "https://ic.carid.com/icons/mufflers-resonators_ic_5.jpg",
+      "image": "/static/category/silenciadores.webp",
+      "thumbnail": "/static/category/silenciadores-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "soportes-de-motor",
+      "name": "Soportes de motor",
+      "source_url": "https://ic.carid.com/icons/motor-mounts-mounting-hardware_ic_5.jpg",
+      "image": "/static/category/soportes-de-motor.webp",
+      "thumbnail": "/static/category/soportes-de-motor-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "soportes-de-transmision",
+      "name": "Soportes de transmisión",
+      "source_url": "https://ic.carid.com/pages/icons/transmission-mounts-ptype_ic_5.jpg",
+      "image": "/static/category/soportes-de-transmision.webp",
+      "thumbnail": "/static/category/soportes-de-transmision-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "tanques-de-combustible",
+      "name": "Tanques de combustible",
+      "source_url": "https://ic.carid.com/icons/fuel-tanks-components_ic_5.jpg",
+      "image": "/static/category/tanques-de-combustible.webp",
+      "thumbnail": "/static/category/tanques-de-combustible-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "taparos",
+      "name": "Taparos",
+      "source_url": "https://ic.carid.com/icons/wheel-covers_ic_5.jpg",
+      "image": "/static/category/taparos.webp",
+      "thumbnail": "/static/category/taparos-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "tapas-de-valvulas",
+      "name": "Tapas de válvulas",
+      "source_url": "https://ic.carid.com/icons/valve-covers-components_ic_5.jpg",
+      "image": "/static/category/tapas-de-valvulas.webp",
+      "thumbnail": "/static/category/tapas-de-valvulas-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "terminales-de-direccion",
+      "name": "Terminales de dirección",
+      "source_url": "https://ic.carid.com/icons/steering-tie-rod-ends_ic_5.jpg",
+      "image": "/static/category/terminales-de-direccion.webp",
+      "thumbnail": "/static/category/terminales-de-direccion-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "termostatos",
+      "name": "Termostatos",
+      "source_url": "https://ic.carid.com/icons/thermostats-components_ic_5.jpg",
+      "image": "/static/category/termostatos.webp",
+      "thumbnail": "/static/category/termostatos-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "trapecios-de-suspension",
+      "name": "Trapecios de suspensión",
+      "source_url": "https://ic.carid.com/icons/control-arms-suspension-rods-components_ic_5.jpg",
+      "image": "/static/category/trapecios-de-suspension.webp",
+      "thumbnail": "/static/category/trapecios-de-suspension-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "tubos-de-escape",
+      "name": "Tubos de escape",
+      "source_url": "https://ic.carid.com/icons/exhaust-pipes_ic_5.jpg",
+      "image": "/static/category/tubos-de-escape.webp",
+      "thumbnail": "/static/category/tubos-de-escape-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "valvulas-de-expansion",
+      "name": "Válvulas de expansión",
+      "source_url": "https://ic.carid.com/icons/ac-expansion-valves-orifice-tubes_ic_5.jpg",
+      "image": "/static/category/valvulas-de-expansion.webp",
+      "thumbnail": "/static/category/valvulas-de-expansion-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "valvulas-de-motor",
+      "name": "Válvulas de motor",
+      "source_url": "https://ic.carid.com/icons/replacement-valves-and-valvetrain-parts_ic_5.jpg",
+      "image": "/static/category/valvulas-de-motor.webp",
+      "thumbnail": "/static/category/valvulas-de-motor-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "volantes",
+      "name": "Volantes",
+      "source_url": "https://ic.carid.com/icons/steering-wheels_ic_5.jpg",
+      "image": "/static/category/volantes.webp",
+      "thumbnail": "/static/category/volantes-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "volantes-de-embrague",
+      "name": "Volantes de embrague",
+      "source_url": "https://ic.carid.com/icons/clutch-flywheels-components_ic_5.jpg",
+      "image": "/static/category/volantes-de-embrague.webp",
+      "thumbnail": "/static/category/volantes-de-embrague-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    },
+    {
+      "slug": "zapatas-de-freno",
+      "name": "Zapatas de freno",
+      "source_url": "https://ic.carid.com/icons/drum-brake-shoes_ic_5.jpg",
+      "image": "/static/category/zapatas-de-freno.webp",
+      "thumbnail": "/static/category/zapatas-de-freno-thumb.webp",
+      "usage": "academic-local-demo",
+      "image_note": "Fotografía referencial del tipo de repuesto; revisar la ficha y compatibilidad."
+    }
+  ],
+  "hero": {
+    "source_url": "https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?auto=format&fit=crop&w=1920&q=85",
+    "image": "/static/hero.webp"
+  },
+  "failures": []
+}

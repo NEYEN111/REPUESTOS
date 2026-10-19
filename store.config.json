@@ -1,0 +1,18 @@
+{
+  "name": "RODA",
+  "tagline": "Repuestos para seguir",
+  "legal_name": "Roda Repuestos Perú S.A.C. — demostración académica",
+  "ruc": "20100000001",
+  "address": "Av. República de Panamá 4150, Surquillo, Lima",
+  "phone": "+51 900 000 000",
+  "whatsapp": "51900000000",
+  "email": "contacto@roda.example",
+  "hours": "Lun–Sáb, 9:00 a. m. – 6:00 p. m.",
+  "igv_percent": 18,
+  "currency": "PEN",
+  "timezone": "America/Lima",
+  "ASSISTANT_ENABLED": false,
+  "payments": ["Yape", "Plin", "Transferencia", "Tarjeta simulada", "Pago en tienda"],
+  "bank_account": "BCP · Cuenta de ejemplo 191-0000000-0-00",
+  "shipping": [{"name": "Lima Metropolitana", "cents": 1500, "days": "1–2 días hábiles"}, {"name": "Callao", "cents": 1800, "days": "2–3 días hábiles"}, {"name": "Provincias por agencia", "cents": 2500, "days": "3–5 días hábiles"}]
+}
