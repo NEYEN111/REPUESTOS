@@ -1,0 +1,23 @@
+{
+  "seed": 20261019,
+  "folds": 3,
+  "fold_days": 28,
+  "calibration_days": 28,
+  "interval_coverage": 0.90,
+  "promotion_min_mae_improvement": 0.02,
+  "max_abs_bias_pct": 20,
+  "threads": 2,
+  "search_max_rows": 80000,
+  "forest_trees": 80,
+  "permutation_rows": 3000,
+  "permutation_repeats": 3,
+  "bootstrap_repeats": 500,
+  "bootstrap_block_days": 7,
+  "models": {
+    "Ridge": [{"alpha": 10.0}, {"alpha": 100.0}],
+    "PoissonRegressor": [{"alpha": 0.01}, {"alpha": 0.1}],
+    "RandomForestRegressor": [{"max_depth": 12, "min_samples_leaf": 20}, {"max_depth": 16, "min_samples_leaf": 40}],
+    "ExtraTreesRegressor": [{"max_depth": 12, "min_samples_leaf": 20}, {"max_depth": 16, "min_samples_leaf": 40}],
+    "HistGradientBoostingRegressor": [{"max_leaf_nodes": 15, "l2_regularization": 5.0}, {"max_leaf_nodes": 31, "l2_regularization": 15.0}]
+  }
+}

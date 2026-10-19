@@ -4,3 +4,8 @@
 /data/ml_simulation_config.json text eol=lf
 /data/ml/roda-v1/*.json text eol=lf
 /data/ml/roda-v1/*.csv.gz -text
+/ml/*.py text eol=lf
+/ml/*.json text eol=lf
+/ml/requirements.txt text eol=lf
+/notebooks/*.ipynb text eol=lf
+/scripts/verify_ml_bundle.py text eol=lf
