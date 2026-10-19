@@ -1,0 +1,290 @@
+[
+  {
+    "fecha_corte": "2026-07-21",
+    "sku": "RP-054-05",
+    "objetivo_ventas_7d": 2,
+    "prediction": 0.2447662353515625,
+    "lower": 0.0,
+    "upper": 1.2204782366752625
+  },
+  {
+    "fecha_corte": "2026-07-28",
+    "sku": "RP-054-05",
+    "objetivo_ventas_7d": 0,
+    "prediction": 0.19067835807800293,
+    "lower": 0.0,
+    "upper": 1.1663903594017029
+  },
+  {
+    "fecha_corte": "2026-08-04",
+    "sku": "RP-054-05",
+    "objetivo_ventas_7d": 0,
+    "prediction": 0.13678359985351562,
+    "lower": 0.0,
+    "upper": 1.1124956011772156
+  },
+  {
+    "fecha_corte": "2026-08-11",
+    "sku": "RP-054-05",
+    "objetivo_ventas_7d": 0,
+    "prediction": 0.23795795440673828,
+    "lower": 0.0,
+    "upper": 1.2136699557304382
+  },
+  {
+    "fecha_corte": "2026-08-18",
+    "sku": "RP-054-05",
+    "objetivo_ventas_7d": 0,
+    "prediction": 0.19375348091125488,
+    "lower": 0.0,
+    "upper": 1.1694654822349548
+  },
+  {
+    "fecha_corte": "2026-08-25",
+    "sku": "RP-054-05",
+    "objetivo_ventas_7d": 0,
+    "prediction": 0.19048738479614258,
+    "lower": 0.0,
+    "upper": 1.1661993861198425
+  },
+  {
+    "fecha_corte": "2026-09-01",
+    "sku": "RP-054-05",
+    "objetivo_ventas_7d": 0,
+    "prediction": 0.21727538108825684,
+    "lower": 0.0,
+    "upper": 1.1929873824119568
+  },
+  {
+    "fecha_corte": "2026-09-08",
+    "sku": "RP-054-05",
+    "objetivo_ventas_7d": 0,
+    "prediction": 0.14876389503479004,
+    "lower": 0.0,
+    "upper": 1.12447589635849
+  },
+  {
+    "fecha_corte": "2026-09-15",
+    "sku": "RP-054-05",
+    "objetivo_ventas_7d": 0,
+    "prediction": 0.26190972328186035,
+    "lower": 0.0,
+    "upper": 1.2376217246055603
+  },
+  {
+    "fecha_corte": "2026-09-22",
+    "sku": "RP-054-05",
+    "objetivo_ventas_7d": 0,
+    "prediction": 0.1947174072265625,
+    "lower": 0.0,
+    "upper": 1.1704294085502625
+  },
+  {
+    "fecha_corte": "2026-09-29",
+    "sku": "RP-054-05",
+    "objetivo_ventas_7d": 0,
+    "prediction": 0.20939111709594727,
+    "lower": 0.0,
+    "upper": 1.1851031184196472
+  },
+  {
+    "fecha_corte": "2026-10-06",
+    "sku": "RP-054-05",
+    "objetivo_ventas_7d": 0,
+    "prediction": 0.23206651210784912,
+    "lower": 0.0,
+    "upper": 1.207778513431549
+  },
+  {
+    "fecha_corte": "2026-07-21",
+    "sku": "RP-083-05",
+    "objetivo_ventas_7d": 1,
+    "prediction": 0.5084623098373413,
+    "lower": 0.0,
+    "upper": 1.4841743111610413
+  },
+  {
+    "fecha_corte": "2026-07-28",
+    "sku": "RP-083-05",
+    "objetivo_ventas_7d": 2,
+    "prediction": 0.5441126823425293,
+    "lower": 0.0,
+    "upper": 1.5198246836662292
+  },
+  {
+    "fecha_corte": "2026-08-04",
+    "sku": "RP-083-05",
+    "objetivo_ventas_7d": 0,
+    "prediction": 0.6411124467849731,
+    "lower": 0.0,
+    "upper": 1.616824448108673
+  },
+  {
+    "fecha_corte": "2026-08-11",
+    "sku": "RP-083-05",
+    "objetivo_ventas_7d": 3,
+    "prediction": 0.5197223424911499,
+    "lower": 0.0,
+    "upper": 1.4954343438148499
+  },
+  {
+    "fecha_corte": "2026-08-18",
+    "sku": "RP-083-05",
+    "objetivo_ventas_7d": 0,
+    "prediction": 0.8952797055244446,
+    "lower": 0.0,
+    "upper": 3.4215245842933655
+  },
+  {
+    "fecha_corte": "2026-08-25",
+    "sku": "RP-083-05",
+    "objetivo_ventas_7d": 0,
+    "prediction": 0.9029830098152161,
+    "lower": 0.0,
+    "upper": 3.429227888584137
+  },
+  {
+    "fecha_corte": "2026-09-01",
+    "sku": "RP-083-05",
+    "objetivo_ventas_7d": 1,
+    "prediction": 0.9596773982048035,
+    "lower": 0.0,
+    "upper": 1.9353893995285034
+  },
+  {
+    "fecha_corte": "2026-09-08",
+    "sku": "RP-083-05",
+    "objetivo_ventas_7d": 1,
+    "prediction": 1.0650906562805176,
+    "lower": 0.0,
+    "upper": 3.5913355350494385
+  },
+  {
+    "fecha_corte": "2026-09-15",
+    "sku": "RP-083-05",
+    "objetivo_ventas_7d": 0,
+    "prediction": 0.708821713924408,
+    "lower": 0.0,
+    "upper": 1.684533715248108
+  },
+  {
+    "fecha_corte": "2026-09-22",
+    "sku": "RP-083-05",
+    "objetivo_ventas_7d": 0,
+    "prediction": 0.7698594927787781,
+    "lower": 0.0,
+    "upper": 1.745571494102478
+  },
+  {
+    "fecha_corte": "2026-09-29",
+    "sku": "RP-083-05",
+    "objetivo_ventas_7d": 2,
+    "prediction": 0.7643033862113953,
+    "lower": 0.0,
+    "upper": 1.7400153875350952
+  },
+  {
+    "fecha_corte": "2026-10-06",
+    "sku": "RP-083-05",
+    "objetivo_ventas_7d": 0,
+    "prediction": 0.6278641819953918,
+    "lower": 0.0,
+    "upper": 1.6035761833190918
+  },
+  {
+    "fecha_corte": "2026-07-21",
+    "sku": "RP-060-04",
+    "objetivo_ventas_7d": 3,
+    "prediction": 4.061379432678223,
+    "lower": 0.0,
+    "upper": 9.64099931716919
+  },
+  {
+    "fecha_corte": "2026-07-28",
+    "sku": "RP-060-04",
+    "objetivo_ventas_7d": 6,
+    "prediction": 3.892007350921631,
+    "lower": 1.36576247215271,
+    "upper": 6.418252229690552
+  },
+  {
+    "fecha_corte": "2026-08-04",
+    "sku": "RP-060-04",
+    "objetivo_ventas_7d": 4,
+    "prediction": 4.766008377075195,
+    "lower": 2.2397634983062744,
+    "upper": 7.292253255844116
+  },
+  {
+    "fecha_corte": "2026-08-11",
+    "sku": "RP-060-04",
+    "objetivo_ventas_7d": 2,
+    "prediction": 4.54011869430542,
+    "lower": 2.013873815536499,
+    "upper": 7.066363573074341
+  },
+  {
+    "fecha_corte": "2026-08-18",
+    "sku": "RP-060-04",
+    "objetivo_ventas_7d": 7,
+    "prediction": 4.412461757659912,
+    "lower": 1.8862168788909912,
+    "upper": 6.938706636428833
+  },
+  {
+    "fecha_corte": "2026-08-25",
+    "sku": "RP-060-04",
+    "objetivo_ventas_7d": 3,
+    "prediction": 4.365992069244385,
+    "lower": 1.8397471904754639,
+    "upper": 6.892236948013306
+  },
+  {
+    "fecha_corte": "2026-09-01",
+    "sku": "RP-060-04",
+    "objetivo_ventas_7d": 8,
+    "prediction": 4.192351341247559,
+    "lower": 1.6661064624786377,
+    "upper": 6.7185962200164795
+  },
+  {
+    "fecha_corte": "2026-09-08",
+    "sku": "RP-060-04",
+    "objetivo_ventas_7d": 6,
+    "prediction": 4.5757527351379395,
+    "lower": 0.0,
+    "upper": 10.155372619628906
+  },
+  {
+    "fecha_corte": "2026-09-15",
+    "sku": "RP-060-04",
+    "objetivo_ventas_7d": 4,
+    "prediction": 5.443251132965088,
+    "lower": 0.0,
+    "upper": 11.022871017456055
+  },
+  {
+    "fecha_corte": "2026-09-22",
+    "sku": "RP-060-04",
+    "objetivo_ventas_7d": 4,
+    "prediction": 4.922500133514404,
+    "lower": 0.0,
+    "upper": 10.502120018005371
+  },
+  {
+    "fecha_corte": "2026-09-29",
+    "sku": "RP-060-04",
+    "objetivo_ventas_7d": 8,
+    "prediction": 5.758806228637695,
+    "lower": 0.17918634414672852,
+    "upper": 11.338426113128662
+  },
+  {
+    "fecha_corte": "2026-10-06",
+    "sku": "RP-060-04",
+    "objetivo_ventas_7d": 6,
+    "prediction": 5.499458312988281,
+    "lower": 0.0,
+    "upper": 11.079078197479248
+  }
+]

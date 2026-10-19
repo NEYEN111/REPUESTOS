@@ -1,0 +1,252 @@
+{
+  "schema_version": 1,
+  "selection_only": true,
+  "baseline": "TSB",
+  "thresholds": {
+    "min_improvement": 0.02,
+    "max_abs_bias_pct": 20,
+    "min_weekly_rows": 100,
+    "min_window_wins": 2,
+    "max_interval_width_to_prediction": 2.0
+  },
+  "groups": {
+    "global": {
+      "review_required": false,
+      "reasons": [],
+      "mae": 0.8637774003244394,
+      "baseline_mae": 0.9042190905488273,
+      "relative_mae_improvement": 0.04472554345190979,
+      "bias_pct": 1.3040629145199334,
+      "weekly_rows": 6664,
+      "window_wins": 3,
+      "windows": [
+        {
+          "window": 1,
+          "start": "2026-04-22",
+          "end": "2026-05-07",
+          "model_mae": 0.8554918912685469,
+          "baseline_mae": 0.904048792213179
+        },
+        {
+          "window": 2,
+          "start": "2026-05-08",
+          "end": "2026-05-23",
+          "model_mae": 0.8517196664602316,
+          "baseline_mae": 0.8953461752687016
+        },
+        {
+          "window": 3,
+          "start": "2026-05-24",
+          "end": "2026-06-08",
+          "model_mae": 0.8841206432445398,
+          "baseline_mae": 0.9132623041646016
+        }
+      ],
+      "paired_mae_difference": {
+        "metric": "MAE modelo menos MAE baseline; negativo favorece al modelo",
+        "estimate": -0.040441690224388045,
+        "lower_95": -0.04922429595177361,
+        "upper_95": -0.025820318761216186,
+        "block_days": 7,
+        "replicates": 500,
+        "limitation": "Intervalo exploratorio por bloques temporales; no prueba generalización fuera del simulador."
+      }
+    },
+    "alta": {
+      "review_required": false,
+      "reasons": [],
+      "mae": 2.491331090208602,
+      "baseline_mae": 2.713057848413519,
+      "relative_mae_improvement": 0.08172577607756257,
+      "bias_pct": 1.6291434631802768,
+      "weekly_rows": 529,
+      "window_wins": 3,
+      "windows": [
+        {
+          "window": 1,
+          "start": "2026-04-22",
+          "end": "2026-05-07",
+          "model_mae": 2.5694593132610724,
+          "baseline_mae": 2.8601783237014353
+        },
+        {
+          "window": 2,
+          "start": "2026-05-08",
+          "end": "2026-05-23",
+          "model_mae": 2.38101704581445,
+          "baseline_mae": 2.5598741608974933
+        },
+        {
+          "window": 3,
+          "start": "2026-05-24",
+          "end": "2026-06-08",
+          "model_mae": 2.517699146837933,
+          "baseline_mae": 2.7075633865185953
+        }
+      ],
+      "paired_mae_difference": {
+        "metric": "MAE modelo menos MAE baseline; negativo favorece al modelo",
+        "estimate": -0.2217267582049169,
+        "lower_95": -0.2889508857240855,
+        "upper_95": -0.10722621491850634,
+        "block_days": 7,
+        "replicates": 500,
+        "limitation": "Intervalo exploratorio por bloques temporales; no prueba generalización fuera del simulador."
+      }
+    },
+    "baja": {
+      "review_required": true,
+      "reasons": [
+        "mejora_insuficiente_frente_referencia",
+        "mejora_inestable_entre_periodos",
+        "mejora_no_clara_en_remuestreo"
+      ],
+      "mae": 0.4638302057475835,
+      "baseline_mae": 0.46292670223506005,
+      "relative_mae_improvement": -0.0019517204519878156,
+      "bias_pct": 5.979016868987914,
+      "weekly_rows": 3877,
+      "window_wins": 1,
+      "windows": [
+        {
+          "window": 1,
+          "start": "2026-04-22",
+          "end": "2026-05-07",
+          "model_mae": 0.4428063057157753,
+          "baseline_mae": 0.4425864776805954
+        },
+        {
+          "window": 2,
+          "start": "2026-05-08",
+          "end": "2026-05-23",
+          "model_mae": 0.463178304971728,
+          "baseline_mae": 0.4643132513657521
+        },
+        {
+          "window": 3,
+          "start": "2026-05-24",
+          "end": "2026-06-08",
+          "model_mae": 0.48500970872505905,
+          "baseline_mae": 0.48141778765216775
+        }
+      ],
+      "paired_mae_difference": {
+        "metric": "MAE modelo menos MAE baseline; negativo favorece al modelo",
+        "estimate": 0.0009035035125234624,
+        "lower_95": -0.001108924255846516,
+        "upper_95": 0.003593027453133053,
+        "block_days": 7,
+        "replicates": 500,
+        "limitation": "Intervalo exploratorio por bloques temporales; no prueba generalización fuera del simulador."
+      }
+    },
+    "media": {
+      "review_required": false,
+      "reasons": [],
+      "mae": 1.1670703463942882,
+      "baseline_mae": 1.235789184797914,
+      "relative_mae_improvement": 0.05560725020818446,
+      "bias_pct": -0.5020709308082498,
+      "weekly_rows": 2258,
+      "window_wins": 3,
+      "windows": [
+        {
+          "window": 1,
+          "start": "2026-04-22",
+          "end": "2026-05-07",
+          "model_mae": 1.126683858668332,
+          "baseline_mae": 1.1975314289523322
+        },
+        {
+          "window": 2,
+          "start": "2026-05-08",
+          "end": "2026-05-23",
+          "model_mae": 1.1672902175569424,
+          "baseline_mae": 1.25280589554603
+        },
+        {
+          "window": 3,
+          "start": "2026-05-24",
+          "end": "2026-06-08",
+          "model_mae": 1.2080499687646507,
+          "baseline_mae": 1.2575861158835087
+        }
+      ],
+      "paired_mae_difference": {
+        "metric": "MAE modelo menos MAE baseline; negativo favorece al modelo",
+        "estimate": -0.06871883840362597,
+        "lower_95": -0.07957913886800633,
+        "upper_95": -0.05183072892982677,
+        "block_days": 7,
+        "replicates": 500,
+        "limitation": "Intervalo exploratorio por bloques temporales; no prueba generalización fuera del simulador."
+      }
+    }
+  },
+  "baseline_selection": [
+    {
+      "model": "CrostonSBA",
+      "n": 45696,
+      "mae": 0.9116840988177428,
+      "rmse": 1.4044729835145853,
+      "r2": 0.6524256825679962,
+      "wape_pct": 63.900111325197216,
+      "bias_units": 0.08885759171646908,
+      "bias_pct": 6.2280454492235275,
+      "actual_units": 65196.0,
+      "predicted_units": 69256.43651107576
+    },
+    {
+      "model": "TSB",
+      "n": 45696,
+      "mae": 0.9042190905488273,
+      "rmse": 1.4231221163203165,
+      "r2": 0.6431339487156584,
+      "wape_pct": 63.37688748039637,
+      "bias_units": 0.061148960868975095,
+      "bias_pct": 4.285942260059951,
+      "actual_units": 65196.0,
+      "predicted_units": 67990.26291586868
+    },
+    {
+      "model": "UltimaSemana",
+      "n": 45696,
+      "mae": 1.130142682072829,
+      "rmse": 1.9364069158359973,
+      "r2": 0.3392850257775962,
+      "wape_pct": 79.21191484140131,
+      "bias_units": 0.015340511204481792,
+      "bias_pct": 1.0752193386097306,
+      "actual_units": 65196.0,
+      "predicted_units": 65897.0
+    },
+    {
+      "model": "Promedio28Dias",
+      "n": 45696,
+      "mae": 0.9280681022408963,
+      "rmse": 1.4939625228257378,
+      "r2": 0.6067214087312558,
+      "wape_pct": 65.04846923124119,
+      "bias_units": 0.02586659663865546,
+      "bias_pct": 1.8129946622492177,
+      "actual_units": 65196.0,
+      "predicted_units": 66378.0
+    },
+    {
+      "model": "Cero",
+      "n": 45696,
+      "mae": 1.4267331932773109,
+      "rmse": 2.776822022784047,
+      "r2": -0.35867939634809276,
+      "wape_pct": 100.0,
+      "bias_units": -1.4267331932773109,
+      "bias_pct": -100.0,
+      "actual_units": 65196.0,
+      "predicted_units": 0.0
+    }
+  ],
+  "automatic_purchasing_enabled": false,
+  "meaning": "Reglas de revisión para apoyo al administrador; no equivalen a garantía de exactitud.",
+  "selection_start": "2026-04-22",
+  "selection_end": "2026-06-08"
+}
