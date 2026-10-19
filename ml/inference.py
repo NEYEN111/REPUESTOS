@@ -36,6 +36,8 @@ def load_trusted_bundle(folder):
     bundle = joblib.load(folder/'model.joblib')
     if bundle['run_id'] != contract['run_id'] or bundle['features'] != contract['features']:
         raise ValueError('Modelo y contrato pertenecen a exportaciones diferentes.')
+    if bundle.get('quality_policy') != contract.get('quality_policy'):
+        raise ValueError('Las reglas de revisión del modelo no coinciden con su contrato.')
     return bundle, contract
 
 
@@ -65,10 +67,35 @@ def predict_bundle(bundle, records, *, allow_simulated=False):
     predictions = nonnegative_predict(bundle['pipeline'], frame[bundle['features']])
     groups = rotation(frame['ventas_28d']/4)
     radii = np.array([bundle['interval_radius'][group] for group in groups])
-    return pd.DataFrame({'sku': frame['sku'].to_numpy(), 'ventas_estimadas_7d': predictions,
-                         'limite_inferior_90': np.maximum(0, predictions-radii),
-                         'limite_superior_90': predictions+radii, 'rotacion_observada': groups,
-                         'origen_modelo': bundle['data_source']})
+    lower, upper = np.maximum(0, predictions-radii), predictions+radii
+    result = pd.DataFrame({'sku': frame['sku'].to_numpy(), 'ventas_estimadas_7d': predictions,
+                          'limite_inferior_90': lower, 'limite_superior_90': upper,
+                          'rotacion_observada': groups, 'origen_modelo': bundle['data_source']})
+    policy = bundle.get('quality_policy')
+    if policy:
+        reasons = []
+        for i, group in enumerate(groups):
+            flags = []
+            for level in ('global', group):
+                rule = policy['groups'].get(level)
+                if rule is None or rule['review_required']:
+                    flags.append('evidencia_insuficiente_'+level)
+            if frame.iloc[i]['quiebres_28d'] > 0:
+                flags.append('ventas_limitadas_por_stock_reciente')
+            if frame.iloc[i]['disponible_fin'] == 0:
+                flags.append('sin_stock_disponible')
+            limit = policy['thresholds']['max_interval_width_to_prediction']
+            if upper[i]-lower[i] > limit*max(predictions[i], 1):
+                flags.append('intervalo_amplio')
+            if frame.iloc[i]['plazo_proveedor_dias'] > bundle['horizon_days']:
+                flags.append('plazo_proveedor_mayor_al_horizonte')
+            reasons.append(flags)
+        available = frame.disponible_fin.to_numpy()
+        result['revision_recomendada'] = [bool(flags) for flags in reasons]
+        result['motivos_revision'] = reasons
+        result['cobertura_stock'] = np.where(available < lower, 'insuficiente_en_intervalo',
+                                    np.where(available < upper, 'posible_faltante', 'cubre_intervalo'))
+    return result
 
 
 def features_from_history(records):

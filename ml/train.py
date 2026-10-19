@@ -378,7 +378,8 @@ def run_training(data_dir=ROOT/'data/ml/roda-v1', output=None, smoke=False):
                     for p in sorted(output.rglob('*')) if p.is_file() and p.name != 'checksums.json'})
         archive = shutil.make_archive(str(output)+'-web', 'zip', output)
         print(f'\nExportación completa: {archive}', flush=True)
-    return summary
+    from ml.robustness import strengthen_run
+    return strengthen_run(output, data_dir)
 
 
 if __name__ == '__main__':

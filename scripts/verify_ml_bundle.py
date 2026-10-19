@@ -51,7 +51,40 @@ def verify(folder):
     assert summary['selection']['locked_before_test'] is True
     assert len([r for r in summary['selection']['comparisons'] if r['kind'] == 'ML']) == 5
     assert len(summary['evaluation']['models']) == 7
-    assert len(summary['assets']) == 12
+    assert len(summary['assets']) == (16 if 'robustness' in summary else 12)
+    if 'robustness' in summary:
+        from ml.robustness import intermittent_forecasts
+        report = json.loads((folder/'robustness.json').read_text(encoding='utf-8'))
+        policy = report['policy']
+        assert len(report['models']) == 10
+        assert policy['selection_only'] and not policy['automatic_purchasing_enabled']
+        assert policy['selection_end'] < summary['data']['dates']['calibracion']['start']
+        assert len(pd.read_csv(folder/'errores_por_sku.csv')) == summary['data']['skus']
+        assert report['test_status'] == 'retrospectivo_previamente_examinado'
+        for method in ['CrostonSBA', 'TSB']:
+            past = [0, 0, 4, 0, 0, 2, 0]
+            np.testing.assert_array_equal(intermittent_forecasts(past, method),
+                                           intermittent_forecasts(past+[100, 0, 1000], method)[:len(past)])
+            np.testing.assert_array_equal(intermittent_forecasts([0]*20, method), np.zeros(20))
+            must_reject(lambda: intermittent_forecasts([1, np.nan], method))
+            must_reject(lambda: intermittent_forecasts([-1, 2], method))
+        sba = intermittent_forecasts([4, 0, 0, 0], 'CrostonSBA', alpha=.1, beta=.1)
+        np.testing.assert_allclose(sba, [26.6]*4)
+        tsb = intermittent_forecasts([4, 0, 0, 0], 'TSB', alpha=.1, beta=.1)
+        np.testing.assert_allclose(tsb, 28*np.array([1, .9, .81, .729]))
+        for fold in report['baseline_trials']:
+            assert fold['train_label_end'] < fold['evaluation_start']
+        assert 'revision_recomendada' in predicted
+        assert all(flag == bool(reasons) for flag, reasons in zip(predicted.revision_recomendada, predicted.motivos_revision))
+        empty_stock = frame.copy()
+        empty_stock[['stock_fin', 'reservado_fin', 'disponible_fin']] = 0
+        guarded = predict_bundle(bundle, empty_stock, allow_simulated=True)
+        assert guarded.revision_recomendada.all()
+        assert all('sin_stock_disponible' in reasons for reasons in guarded.motivos_revision)
+        delayed = frame.copy()
+        delayed['plazo_proveedor_dias'] = 20
+        guarded = predict_bundle(bundle, delayed, allow_simulated=True)
+        assert all('plazo_proveedor_mayor_al_horizonte' in reasons for reasons in guarded.motivos_revision)
     for fold in json.loads((folder/'search.json').read_text(encoding='utf-8')):
         assert fold['train_label_end'] < fold['evaluation_start']
     # Replay the raw history that produced the first test features, independently of CSV feature storage.
@@ -67,9 +100,11 @@ def verify(folder):
     must_reject(lambda: features_from_history(history.drop(history.index[50])))
     must_reject(lambda: features_from_history(pd.concat([history, history.iloc[:1]])))
     print(json.dumps({'status': 'passed', 'mode': summary['mode'], 'models': 5,
-                      'images': 12, 'feature_parity_skus': len(skus),
+                      'images': len(summary['assets']), 'feature_parity_skus': len(skus),
                       'checks': ['checksums', 'joblib_roundtrip', 'temporal_purge', 'invalid_inputs',
-                                 'zero_metrics', 'history_feature_parity', 'history_gaps']}, ensure_ascii=False))
+                                 'zero_metrics', 'history_feature_parity', 'history_gaps'] +
+                                (['intermittent_causality', 'intermittent_known_values', 'selection_only_policy',
+                                  'stock_review', 'supplier_horizon_review'] if 'robustness' in summary else [])}, ensure_ascii=False))
 
 
 if __name__ == '__main__':
