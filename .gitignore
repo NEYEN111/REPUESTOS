@@ -22,6 +22,12 @@ frontend/*.tsbuildinfo
 .codex/
 .aws/
 sites/
-data/ml/
+data/ml/*
+!data/ml/roda-v1/
+data/ml/roda-v1/*
+!data/ml/roda-v1/inventario_ventas_diarias.csv.gz
+!data/ml/roda-v1/entrenamiento_ventas_7d.csv.gz
+!data/ml/roda-v1/manifest.json
+!data/ml/roda-v1/quality.json
 *.joblib
 .ipynb_checkpoints/

@@ -1,0 +1,437 @@
+{
+  "version": "roda-simulacion-v1",
+  "source": "simulado",
+  "timezone": "America/Lima",
+  "config": {
+    "version": "roda-simulacion-v1",
+    "seed": 20261019,
+    "start_date": "2024-10-19",
+    "end_date": "2026-10-18",
+    "horizon_days": 7,
+    "history_days": 56,
+    "validation_start": "2026-04-22",
+    "test_start": "2026-07-21",
+    "timezone": "America/Lima",
+    "source": "simulado",
+    "availability_checks_per_day": 12,
+    "rotation_probabilities": [
+      0.5,
+      0.35,
+      0.15
+    ],
+    "daily_base_rate_ranges": [
+      [
+        0.008,
+        0.07
+      ],
+      [
+        0.07,
+        0.35
+      ],
+      [
+        0.35,
+        1.3
+      ]
+    ],
+    "view_to_cart_probability": 0.18,
+    "cart_to_checkout_probability": 0.45,
+    "reservation_probability": 0.22,
+    "reservation_payment_probability": 0.76,
+    "return_probability": 0.018,
+    "return_restock_probability": 0.82,
+    "supplier_delay_probability": 0.18,
+    "supplier_partial_probability": 0.12,
+    "loss_probability_per_sku_day": 0.0015,
+    "note": "Escenario académico con parámetros supuestos; no constituye ventas reales ni estimaciones verificadas del mercado peruano. El catálogo actual es una condición inicial, no un catálogo histórico."
+  },
+  "catalog_sha256": "efba5bd33c977b30e452d0a32debd9d355047d128b5c1b6de446ef64b7b741b7",
+  "generator_sha256": "d337a9e19e2e565e80387f5dc19a5755b9bd9aa56ce2db7964b5943321f7006a",
+  "products": 952,
+  "counts": {
+    "daily_rows": 694960,
+    "paid_units": 157580,
+    "zero_sales_days": 586465,
+    "stockout_days": 30785,
+    "returned_units": 2782,
+    "reserved_units": 36790,
+    "training_rows": 622608
+  },
+  "partitions": {
+    "entrenamiento": 464576,
+    "validacion": 79016,
+    "prueba": 79016
+  },
+  "partition_dates": {
+    "entrenamiento": {
+      "cutoff_min": "2024-12-13",
+      "cutoff_max": "2026-04-14",
+      "label_end_max": "2026-04-21"
+    },
+    "validacion": {
+      "cutoff_min": "2026-04-22",
+      "cutoff_max": "2026-07-13",
+      "label_end_max": "2026-07-20"
+    },
+    "prueba": {
+      "cutoff_min": "2026-07-21",
+      "cutoff_max": "2026-10-11",
+      "label_end_max": "2026-10-18"
+    }
+  },
+  "files": {
+    "inventario_ventas_diarias.csv": {
+      "sha256": "1719e3215a398b03bae546b277a97252a28adf88c2f28ed0bb1f70403b82659d",
+      "bytes": 101095649,
+      "gzip_file": "inventario_ventas_diarias.csv.gz",
+      "gzip_sha256": "0550be33e5d9ca374d5ff0d67df46497a8294917a8015653ea15b9bda91d58d9",
+      "gzip_bytes": 4726914
+    },
+    "entrenamiento_ventas_7d.csv": {
+      "sha256": "893e4d18a250a6756522f9dcfce05a1f5f02c8824117e0c70a5b5bf42d1d09d5",
+      "bytes": 131217251,
+      "gzip_file": "entrenamiento_ventas_7d.csv.gz",
+      "gzip_sha256": "f61eacc1db670c0e937494d7c45247f22215e5d749b675a91ee810ca9263f37f",
+      "gzip_bytes": 15514650
+    }
+  },
+  "raw_columns": [
+    "fecha",
+    "sku",
+    "categoria",
+    "familia",
+    "marca",
+    "universal",
+    "fuente_datos",
+    "stock_inicio",
+    "reservado_inicio",
+    "ingresos_compra",
+    "devoluciones_reingresadas",
+    "mermas",
+    "ventas_pagadas",
+    "reservas_creadas",
+    "reservas_pagadas",
+    "reservas_canceladas",
+    "stock_fin",
+    "reservado_fin",
+    "disponible_fin",
+    "compras_solicitadas",
+    "compras_transito_fin",
+    "compras_vencidas_fin",
+    "minimo",
+    "maximo",
+    "plazo_proveedor_dias",
+    "lote_compra",
+    "precio_lista_centimos",
+    "descuento_pct",
+    "precio_centimos",
+    "costo_unitario_centimos",
+    "ingreso_bruto_centimos",
+    "importe_devuelto_centimos",
+    "unidades_devueltas",
+    "vistas_producto",
+    "adiciones_carrito",
+    "chequeos_disponibilidad",
+    "chequeos_con_stock",
+    "quiebre_observado"
+  ],
+  "training_columns": [
+    "fecha_corte",
+    "sku",
+    "categoria",
+    "familia",
+    "marca",
+    "fuente_datos",
+    "particion",
+    "universal",
+    "dia_semana_siguiente",
+    "mes_siguiente",
+    "dia_mes_siguiente",
+    "fin_mes_proximos_7d",
+    "ventas_hoy",
+    "ventas_lag_1",
+    "ventas_lag_7",
+    "ventas_lag_14",
+    "ventas_lag_28",
+    "ventas_7d",
+    "ventas_14d",
+    "ventas_28d",
+    "ventas_56d",
+    "desviacion_ventas_28d",
+    "dias_sin_ventas_28d",
+    "dias_desde_ultima_venta",
+    "diferencia_ventas_semanas",
+    "vistas_7d",
+    "vistas_28d",
+    "carritos_7d",
+    "carritos_28d",
+    "devoluciones_28d",
+    "quiebres_7d",
+    "quiebres_28d",
+    "proporcion_stock_28d",
+    "stock_fin",
+    "reservado_fin",
+    "disponible_fin",
+    "compras_transito_fin",
+    "compras_vencidas_fin",
+    "minimo",
+    "maximo",
+    "plazo_proveedor_dias",
+    "lote_compra",
+    "precio_centimos",
+    "costo_unitario_centimos",
+    "descuento_pct",
+    "fecha_objetivo_inicio",
+    "fecha_objetivo_fin",
+    "objetivo_ventas_7d",
+    "diagnostico_quiebre_futuro_7d",
+    "base_ultima_semana",
+    "base_promedio_28d"
+  ],
+  "feature_columns": [
+    "sku",
+    "categoria",
+    "familia",
+    "marca",
+    "universal",
+    "dia_semana_siguiente",
+    "mes_siguiente",
+    "dia_mes_siguiente",
+    "fin_mes_proximos_7d",
+    "ventas_hoy",
+    "ventas_lag_1",
+    "ventas_lag_7",
+    "ventas_lag_14",
+    "ventas_lag_28",
+    "ventas_7d",
+    "ventas_14d",
+    "ventas_28d",
+    "ventas_56d",
+    "desviacion_ventas_28d",
+    "dias_sin_ventas_28d",
+    "dias_desde_ultima_venta",
+    "diferencia_ventas_semanas",
+    "vistas_7d",
+    "vistas_28d",
+    "carritos_7d",
+    "carritos_28d",
+    "devoluciones_28d",
+    "quiebres_7d",
+    "quiebres_28d",
+    "proporcion_stock_28d",
+    "stock_fin",
+    "reservado_fin",
+    "disponible_fin",
+    "compras_transito_fin",
+    "compras_vencidas_fin",
+    "minimo",
+    "maximo",
+    "plazo_proveedor_dias",
+    "lote_compra",
+    "precio_centimos",
+    "costo_unitario_centimos",
+    "descuento_pct"
+  ],
+  "categorical_features": [
+    "sku",
+    "categoria",
+    "familia",
+    "marca"
+  ],
+  "target": "objetivo_ventas_7d",
+  "excluded_from_features": [
+    "fecha_corte",
+    "fuente_datos",
+    "particion",
+    "fecha_objetivo_inicio",
+    "fecha_objetivo_fin",
+    "objetivo_ventas_7d",
+    "diagnostico_quiebre_futuro_7d",
+    "base_ultima_semana",
+    "base_promedio_28d"
+  ],
+  "units": {
+    "money": "PEN en céntimos enteros; precio e ingreso bruto incluyen IGV.",
+    "quantities": "Unidades de venta del catálogo; un juego o kit cuenta como una unidad."
+  },
+  "definitions": {
+    "grain": "Una fila por SKU y día calendario. Orden físico: SKU, fecha.",
+    "forecast_cutoff": "Después del cierre del día t en America/Lima. Features incluyen t; objetivo t+1 hasta t+7.",
+    "target": "Unidades con pago confirmado. Incluye reservas pagadas; no descuenta devoluciones. No es demanda latente.",
+    "stockout": "Se observó disponibilidad cero en algún chequeo o al cierre. No cuantifica ventas perdidas.",
+    "future_stockout": "Sólo diagnóstico de evaluación. No usar como predictor ni excluir automáticamente estas filas.",
+    "availability": "12 chequeos simulados por día; no representan horas exactas de disponibilidad.",
+    "reserve": "La reserva mantiene stock físico y reduce disponible. Al día siguiente se paga o cancela.",
+    "cost": "Costo unitario estándar supuesto; no valoración FIFO ni costo promedio del kardex real.",
+    "revenue": "Precio al pagar, o precio al reservar para reservas; devoluciones conservan precio original.",
+    "split": "Fechas comunes a todos los SKU; se omiten 7 fechas de corte antes de validación y prueba para purgar etiquetas.",
+    "training": "Usar sólo feature_columns como X. Ajustar imputación/codificación/escalado sólo con entrenamiento.",
+    "backtesting": "Validación/prueba simulan predicción diaria al cierre; el pasado reciente observado puede alimentar los lags sin reentrenar.",
+    "walk_forward": "En cada fold adicional purgar etiquetas cuyo fecha_objetivo_fin alcance el inicio del siguiente bloque."
+  },
+  "limitations": [
+    "Historia enteramente simulada, independiente de las ventas y clientes de la web.",
+    "No valida precisión real del ML. El rendimiento mide aprendizaje de este escenario artificial.",
+    "No hay estacionalidad ni tasas calibradas con transacciones reales peruanas.",
+    "Se asume que todos los SKU existen desde el inicio y que la tienda recibe pedidos todos los días.",
+    "No modela sustitución entre SKU, campañas externas, clima ni ubicación geográfica.",
+    "El catálogo y sus compatibilidades siguen pendientes de validación comercial/técnica."
+  ],
+  "quality": {
+    "inventory_balance_errors": 0,
+    "reservation_balance_errors": 0,
+    "purchase_balance_errors": 0,
+    "zero_sales_products": []
+  },
+  "monthly_totals": {
+    "2024-10": {
+      "ventas_pagadas": 2602,
+      "ingreso_bruto_centimos": 52709058,
+      "ingresos_compra": 1367,
+      "quiebre_observado": 505
+    },
+    "2024-11": {
+      "ventas_pagadas": 6817,
+      "ingreso_bruto_centimos": 140627792,
+      "ingresos_compra": 6548,
+      "quiebre_observado": 1664
+    },
+    "2024-12": {
+      "ventas_pagadas": 7129,
+      "ingreso_bruto_centimos": 147911450,
+      "ingresos_compra": 7839,
+      "quiebre_observado": 1750
+    },
+    "2025-01": {
+      "ventas_pagadas": 6984,
+      "ingreso_bruto_centimos": 142369837,
+      "ingresos_compra": 7004,
+      "quiebre_observado": 1258
+    },
+    "2025-02": {
+      "ventas_pagadas": 5666,
+      "ingreso_bruto_centimos": 113352232,
+      "ingresos_compra": 6034,
+      "quiebre_observado": 957
+    },
+    "2025-03": {
+      "ventas_pagadas": 6425,
+      "ingreso_bruto_centimos": 129359073,
+      "ingresos_compra": 6143,
+      "quiebre_observado": 1096
+    },
+    "2025-04": {
+      "ventas_pagadas": 6479,
+      "ingreso_bruto_centimos": 128775855,
+      "ingresos_compra": 5889,
+      "quiebre_observado": 1423
+    },
+    "2025-05": {
+      "ventas_pagadas": 6437,
+      "ingreso_bruto_centimos": 129557215,
+      "ingresos_compra": 6905,
+      "quiebre_observado": 1174
+    },
+    "2025-06": {
+      "ventas_pagadas": 7028,
+      "ingreso_bruto_centimos": 143343665,
+      "ingresos_compra": 6474,
+      "quiebre_observado": 1223
+    },
+    "2025-07": {
+      "ventas_pagadas": 7419,
+      "ingreso_bruto_centimos": 152980935,
+      "ingresos_compra": 7491,
+      "quiebre_observado": 1738
+    },
+    "2025-08": {
+      "ventas_pagadas": 6609,
+      "ingreso_bruto_centimos": 136426100,
+      "ingresos_compra": 7445,
+      "quiebre_observado": 1194
+    },
+    "2025-09": {
+      "ventas_pagadas": 5910,
+      "ingreso_bruto_centimos": 119013858,
+      "ingresos_compra": 5769,
+      "quiebre_observado": 769
+    },
+    "2025-10": {
+      "ventas_pagadas": 6837,
+      "ingreso_bruto_centimos": 142372938,
+      "ingresos_compra": 5950,
+      "quiebre_observado": 1196
+    },
+    "2025-11": {
+      "ventas_pagadas": 6428,
+      "ingreso_bruto_centimos": 133630426,
+      "ingresos_compra": 6601,
+      "quiebre_observado": 1552
+    },
+    "2025-12": {
+      "ventas_pagadas": 7585,
+      "ingreso_bruto_centimos": 157491763,
+      "ingresos_compra": 7571,
+      "quiebre_observado": 1489
+    },
+    "2026-01": {
+      "ventas_pagadas": 6942,
+      "ingreso_bruto_centimos": 146763413,
+      "ingresos_compra": 7137,
+      "quiebre_observado": 1242
+    },
+    "2026-02": {
+      "ventas_pagadas": 5683,
+      "ingreso_bruto_centimos": 120733337,
+      "ingresos_compra": 5841,
+      "quiebre_observado": 983
+    },
+    "2026-03": {
+      "ventas_pagadas": 6375,
+      "ingreso_bruto_centimos": 135149174,
+      "ingresos_compra": 6003,
+      "quiebre_observado": 1023
+    },
+    "2026-04": {
+      "ventas_pagadas": 6136,
+      "ingreso_bruto_centimos": 125190194,
+      "ingresos_compra": 5874,
+      "quiebre_observado": 1200
+    },
+    "2026-05": {
+      "ventas_pagadas": 5983,
+      "ingreso_bruto_centimos": 128972466,
+      "ingresos_compra": 5724,
+      "quiebre_observado": 1064
+    },
+    "2026-06": {
+      "ventas_pagadas": 6001,
+      "ingreso_bruto_centimos": 122272000,
+      "ingresos_compra": 5741,
+      "quiebre_observado": 1204
+    },
+    "2026-07": {
+      "ventas_pagadas": 7160,
+      "ingreso_bruto_centimos": 149466328,
+      "ingresos_compra": 6906,
+      "quiebre_observado": 1746
+    },
+    "2026-08": {
+      "ventas_pagadas": 6144,
+      "ingreso_bruto_centimos": 131100770,
+      "ingresos_compra": 7244,
+      "quiebre_observado": 1365
+    },
+    "2026-09": {
+      "ventas_pagadas": 6515,
+      "ingreso_bruto_centimos": 136562513,
+      "ingresos_compra": 6102,
+      "quiebre_observado": 1130
+    },
+    "2026-10": {
+      "ventas_pagadas": 4286,
+      "ingreso_bruto_centimos": 91176719,
+      "ingresos_compra": 3856,
+      "quiebre_observado": 840
+    }
+  }
+}

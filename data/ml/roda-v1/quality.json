@@ -1,0 +1,11 @@
+{
+  "status": "passed",
+  "daily_rows_checked": 694960,
+  "training_rows_checked": 622608,
+  "products_checked": 952,
+  "prefix_invariance_skus": 5,
+  "future_label_purge": "passed",
+  "inventory_reservations_purchases_revenue": "passed",
+  "hashes": "passed",
+  "note": "Verifica coherencia del dataset simulado; no evalúa precisión predictiva real."
+}
