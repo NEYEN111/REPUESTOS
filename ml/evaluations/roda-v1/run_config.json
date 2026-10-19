@@ -1,0 +1,169 @@
+{
+  "started_utc": "2026-10-19T16:53:27.493206+00:00",
+  "git_commit": "9c90e7fcbe518dbba682fa35145e27d4affe8014",
+  "git_worktree_dirty": true,
+  "source_sha256": {
+    "ml/train.py": "6b1216f639c97a7368fb99a8ebfae325a65a3e3fa3301d868f90d377f038bd4a",
+    "ml/reporting.py": "71e68fb9e4a95e446f0b1b1f0180a6c1c4e5cd10cf41473ae701eb9c30ae2d1c",
+    "ml/inference.py": "7a7a3b192a1c393b1f34a0c0c4d6a5a75ab83d0dcc91fefbaa357f0871c59f52",
+    "ml/config.json": "99ef1fb0f5d7a3de43aa4b08e7ab92903d825cdec7a118e0200cbc46c18a94a6",
+    "ml/requirements.txt": "743d8f73ef2c82f878eb96cfe47a3e1c7e5511928b5067e567c8d05b936bafca",
+    "scripts/build_ml_dataset.py": "d337a9e19e2e565e80387f5dc19a5755b9bd9aa56ce2db7964b5943321f7006a"
+  },
+  "config": {
+    "seed": 20261019,
+    "folds": 3,
+    "fold_days": 28,
+    "calibration_days": 28,
+    "interval_coverage": 0.9,
+    "promotion_min_mae_improvement": 0.02,
+    "max_abs_bias_pct": 20,
+    "threads": 2,
+    "search_max_rows": 80000,
+    "forest_trees": 80,
+    "permutation_rows": 3000,
+    "permutation_repeats": 3,
+    "bootstrap_repeats": 500,
+    "bootstrap_block_days": 7,
+    "models": {
+      "Ridge": [
+        {
+          "alpha": 10.0
+        },
+        {
+          "alpha": 100.0
+        }
+      ],
+      "PoissonRegressor": [
+        {
+          "alpha": 0.01
+        },
+        {
+          "alpha": 0.1
+        }
+      ],
+      "RandomForestRegressor": [
+        {
+          "max_depth": 12,
+          "min_samples_leaf": 20
+        },
+        {
+          "max_depth": 16,
+          "min_samples_leaf": 40
+        }
+      ],
+      "ExtraTreesRegressor": [
+        {
+          "max_depth": 12,
+          "min_samples_leaf": 20
+        },
+        {
+          "max_depth": 16,
+          "min_samples_leaf": 40
+        }
+      ],
+      "HistGradientBoostingRegressor": [
+        {
+          "max_leaf_nodes": 15,
+          "l2_regularization": 5.0
+        },
+        {
+          "max_leaf_nodes": 31,
+          "l2_regularization": 15.0
+        }
+      ]
+    }
+  },
+  "mode": "full",
+  "data": {
+    "source": "simulado",
+    "raw_rows": 694960,
+    "training_csv_rows": 622608,
+    "skus": 952,
+    "dataset_sha256": "893e4d18a250a6756522f9dcfce05a1f5f02c8824117e0c70a5b5bf42d1d09d5",
+    "dates": {
+      "entrenamiento": {
+        "start": "2024-12-13",
+        "end": "2026-04-14",
+        "label_end": "2026-04-21",
+        "rows": 464576
+      },
+      "seleccion": {
+        "start": "2026-04-22",
+        "end": "2026-06-08",
+        "label_end": "2026-06-15",
+        "rows": 45696
+      },
+      "calibracion": {
+        "start": "2026-06-16",
+        "end": "2026-07-13",
+        "label_end": "2026-07-20",
+        "rows": 26656
+      },
+      "prueba": {
+        "start": "2026-07-21",
+        "end": "2026-10-11",
+        "label_end": "2026-10-18",
+        "rows": 79016
+      }
+    },
+    "zero_target_fraction_training": 0.4906732160077146,
+    "missing_values": 0,
+    "duplicate_keys": 0,
+    "features": [
+      "sku",
+      "categoria",
+      "familia",
+      "marca",
+      "universal",
+      "dia_semana_siguiente",
+      "mes_siguiente",
+      "dia_mes_siguiente",
+      "fin_mes_proximos_7d",
+      "ventas_hoy",
+      "ventas_lag_1",
+      "ventas_lag_7",
+      "ventas_lag_14",
+      "ventas_lag_28",
+      "ventas_7d",
+      "ventas_14d",
+      "ventas_28d",
+      "ventas_56d",
+      "desviacion_ventas_28d",
+      "dias_sin_ventas_28d",
+      "dias_desde_ultima_venta",
+      "diferencia_ventas_semanas",
+      "vistas_7d",
+      "vistas_28d",
+      "carritos_7d",
+      "carritos_28d",
+      "devoluciones_28d",
+      "quiebres_7d",
+      "quiebres_28d",
+      "proporcion_stock_28d",
+      "stock_fin",
+      "reservado_fin",
+      "disponible_fin",
+      "compras_transito_fin",
+      "compras_vencidas_fin",
+      "minimo",
+      "maximo",
+      "plazo_proveedor_dias",
+      "lote_compra",
+      "precio_centimos",
+      "costo_unitario_centimos",
+      "descuento_pct"
+    ],
+    "excluded": [
+      "fecha_corte",
+      "fuente_datos",
+      "particion",
+      "fecha_objetivo_inicio",
+      "fecha_objetivo_fin",
+      "objetivo_ventas_7d",
+      "diagnostico_quiebre_futuro_7d",
+      "base_ultima_semana",
+      "base_promedio_28d"
+    ]
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "assumptions": [
+    "Inicio de cada semana con stock igual a techo(predicción).",
+    "Horizontes sin solapamiento; sin recepciones, reservas, plazos ni costos dentro del periodo.",
+    "Se compara contra ventas observadas censuradas por el stock del simulador.",
+    "No calcula demanda perdida real, ahorro en soles ni órdenes de compra recomendadas."
+  ],
+  "values": [
+    {
+      "model": "Ridge",
+      "sku_weeks": 11424,
+      "uncovered_observed_units": 3269,
+      "excess_target_units": 10279,
+      "weeks_fully_covered_pct": 84.90021008403362,
+      "mean_target_units": 2.203518907563025
+    },
+    {
+      "model": "PoissonRegressor",
+      "sku_weeks": 11424,
+      "uncovered_observed_units": 3738,
+      "excess_target_units": 9889,
+      "weeks_fully_covered_pct": 83.03571428571429,
+      "mean_target_units": 2.128326330532213
+    },
+    {
+      "model": "RandomForestRegressor",
+      "sku_weeks": 11424,
+      "uncovered_observed_units": 3327,
+      "excess_target_units": 10186,
+      "weeks_fully_covered_pct": 84.51505602240897,
+      "mean_target_units": 2.1903011204481793
+    },
+    {
+      "model": "ExtraTreesRegressor",
+      "sku_weeks": 11424,
+      "uncovered_observed_units": 3389,
+      "excess_target_units": 10150,
+      "weeks_fully_covered_pct": 84.32247899159664,
+      "mean_target_units": 2.18172268907563
+    },
+    {
+      "model": "HistGradientBoostingRegressor",
+      "sku_weeks": 11424,
+      "uncovered_observed_units": 3405,
+      "excess_target_units": 9993,
+      "weeks_fully_covered_pct": 84.25245098039215,
+      "mean_target_units": 2.1665791316526612
+    },
+    {
+      "model": "UltimaSemana",
+      "sku_weeks": 11424,
+      "uncovered_observed_units": 6927,
+      "excess_target_units": 6823,
+      "weeks_fully_covered_pct": 70.72829131652661,
+      "mean_target_units": 1.580794817927171
+    },
+    {
+      "model": "Promedio28Dias",
+      "sku_weeks": 11424,
+      "uncovered_observed_units": 4447,
+      "excess_target_units": 8443,
+      "weeks_fully_covered_pct": 79.95448179271709,
+      "mean_target_units": 1.9396883753501402
+    }
+  ]
+}

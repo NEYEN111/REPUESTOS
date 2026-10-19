@@ -9,3 +9,6 @@
 /ml/requirements.txt text eol=lf
 /notebooks/*.ipynb text eol=lf
 /scripts/verify_ml_bundle.py text eol=lf
+/ml/evaluations/** -text whitespace=cr-at-eol
+# Matplotlib genera espacios en los paths SVG; preservar sus hashes originales.
+/ml/evaluations/**/images/*.svg -whitespace
