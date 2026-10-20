@@ -85,10 +85,32 @@ def train(request):
     if len(fit) < 100 or len(valid) < 30 or fit.target.sum() <= 0:
         raise ValueError('Faltan observaciones para separar entrenamiento y validación temporal (mínimo 100/30 filas).')
     scores = []
+    folds = [(fit, valid)]
+    if freq == 'D':
+        # Three disjoint 14-day windows; each target covers seven days.
+        # Each fold is fitted only on targets fully known at its origin.
+        folds = []
+        for offset in (42, 28, 14):
+            origin = pd.Period(cutoff, freq='D')-offset
+            end = origin+14
+            train_rows = known[known.period.le(str(origin))]
+            validation = known[known.cutoff.ge(str(origin)) & known.period.le(str(end))]
+            distance = (pd.to_datetime(validation.cutoff)-origin.to_timestamp()).dt.days
+            validation = validation[distance.mod(7).eq(0)]
+            if len(train_rows) < 100 or len(validation) < 2:
+                raise ValueError('Faltan datos para tres ventanas temporales: mínimo 100 filas de entrenamiento y dos objetivos semanales por ventana.')
+            folds.append((train_rows, validation))
+        valid = pd.concat([v for _, v in folds])
+        fit = folds[0][0]
     for name, model in candidates().items():
-        model.fit(fit[FEATURES], fit.target)
-        pred = np.maximum(0, model.predict(valid[FEATURES]))
-        scores.append(dict(model=name, **metrics(valid.target, pred)))
+        predictions, actuals, fold_scores = [], [], []
+        for training, validation in folds:
+            model.fit(training[FEATURES], training.target)
+            pred = np.maximum(0, model.predict(validation[FEATURES]))
+            predictions.extend(pred)
+            actuals.extend(validation.target)
+            fold_scores.append(metrics(validation.target, pred))
+        scores.append(dict(model=name, folds=fold_scores, **metrics(actuals, predictions)))
     winner = min(scores, key=lambda s: s['mae'])['model']
     final = candidates()[winner]
     final.fit(known[FEATURES], known.target)
@@ -99,10 +121,16 @@ def train(request):
                 beats_baseline=min(s['mae'] for s in scores) < metrics(valid.target, valid.baseline)['mae'],
                 cutoff=cutoff, split=split, fit_rows=len(fit), validation_rows=len(valid),
                 refit_rows=len(known), features=FEATURES, model_sha256=digest(request['bundle']),
+                temporal_windows=len(folds),
+                windows=[dict(train_rows=len(t), validation_rows=len(v),
+                              training_end=str(t.period.max()), validation_start=str(v.cutoff.min()),
+                              validation_end=str(v.period.max())) for t, v in folds],
+                validation_protocol='Tres ventanas de 14 días; objetivos semanales sin solapamiento.' if freq == 'D' else 'Últimos seis meses.',
                 reason='Menor MAE en validación temporal. Reajustado con el historial disponible hasta el corte.',
                 limitations=['No estima demanda perdida ni stock: solo cantidades observadas.',
                              'Las entradas ausentes se imputan dentro del entrenamiento; los objetivos ausentes se excluyen.',
-                             'No demuestra precisión en Perú ni correspondencia con los SKU de RODA.'])
+                             'No demuestra precisión futura: debe evaluarse con nuevas ventas observadas.' if freq == 'D'
+                             else 'No demuestra precisión en Perú ni correspondencia con los SKU de RODA.'])
 
 
 def load_model(spec):

@@ -11,7 +11,7 @@ const eventName: Record<string, string> = { crear_historial: 'Historial creado',
 
 export function MLLaboratory() {
   const { notify } = useStore();
-  const [did, setDid] = useState(''), [section, setSection] = useState('datos');
+  const [did, setDid] = useState(() => new URLSearchParams(window.location.search).get('dataset') || ''), [section, setSection] = useState('datos');
   const data = useLoad(base + (did ? `?dataset=${did}` : ''));
   const d = data.data, selected = d?.selected, versions = d?.versions || [];
   const [busy, setBusy] = useState(false), [error, setError] = useState('');
@@ -22,10 +22,15 @@ export function MLLaboratory() {
   const [jid, setJid] = useState(''), [q, setQ] = useState(''), [page, setPage] = useState(1);
   const result = useLoad(jid ? `${base}/jobs/${jid}?q=${encodeURIComponent(q)}&page=${page}` : null);
   const running = d?.jobs?.some((j: any) => j.status === 'running');
-  const disabled = busy || running || !!selected?.archived;
+  const managed = selected?.id === 'roda-operacion-diaria';
+  const disabled = busy || running || !!selected?.archived || managed;
   useEffect(() => { if (selected?.id && !did) setDid(selected.id); }, [selected?.id, did]);
   useEffect(() => {
     setPreview(null); setFile(null); setMapping({}); setJid(''); setV1(''); setV2(''); setPredictionVersion(''); setError('');
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('dataset') === did && params.get('result')) {
+      setJid(params.get('result')!); setSection('resultados');
+    }
   }, [did]);
   useEffect(() => {
     if (!running) return;
@@ -63,6 +68,7 @@ export function MLLaboratory() {
         {!!selected?.demo && <button className="secondary" disabled={disabled} onClick={() => setResetOpen(true)}><RefreshCw size={16}/>Restablecer demo</button>}
       </div>
       <div className="ml-notice"><Database size={19}/><div><b>Datos con procedencia, resultados comprobables.</b> {(!selected || selected.demo) ? <>Car Parts contiene ventas mensuales de 2,674 series anónimas (1998–2002). Es una fuente histórica externa; sus códigos no corresponden a los productos de la tienda. <a href={d.source?.source_url || 'https://zenodo.org/records/4656022'} target="_blank" rel="noreferrer">Consultar fuente y licencia CC BY 4.0</a>.</> : <>La procedencia de este historial fue declarada al crearlo: {selected.source}. Valida su origen y cobertura antes de interpretar sus resultados.</>}</div></div>
+      {managed && <div className="ml-notice"><div>Este historial recibe los cierres diarios automáticamente. Consulta aquí sus modelos y resultados. Para ejecutar el ciclo, abre <a href="/gestion/ml/actualizacion">Actualización automática → Revisar ahora</a>.</div></div>}
       {!selected ? <div className="ml-panel lab-empty"><h2>Empieza con un historial verificable</h2><p>Prepara la demostración para recorrer el ciclo V1 → nuevos datos → V2 → evaluación, o crea un historial con tus propios archivos.</p><p>Importar datos y calcular pronósticos no modifica pedidos ni existencias.</p></div> : <>
         <div className="ml-stats">
           {[

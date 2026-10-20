@@ -12,7 +12,7 @@ import threading
 import uuid
 import zipfile
 from contextlib import contextmanager
-from datetime import date
+from datetime import date, timedelta
 from pathlib import Path
 from backend.db import ROOT, now
 from backend.services.predictions import runtime
@@ -138,6 +138,8 @@ def read_file(content, filename):
 
 
 def preview(did, content, filename, mapping, uid):
+    if did == 'roda-operacion-diaria':
+        raise ValueError('Este historial recibe los cierres de la tienda automáticamente. Importa Excel en otro historial.')
     with connection() as c:
         d = dataset(c, did)
         if d['archived']:
@@ -291,7 +293,9 @@ def listing(did=None):
     return dict(datasets=datasets, selected=d, stats=stats, versions=versions, batches=batches, jobs=jobs, activity=events, source=source())
 
 
-def start_job(did, action, uid, version_ids=None):
+def start_job(did, action, uid, version_ids=None, managed=False):
+    if did == 'roda-operacion-diaria' and not managed:
+        raise ValueError('Usa «Revisar ahora» en la actualización automática para conservar los controles de calidad.')
     if action not in ['train', 'predict', 'compare']:
         raise ValueError('Acción no reconocida.')
     if not LOCK.acquire(blocking=False):
@@ -302,6 +306,14 @@ def start_job(did, action, uid, version_ids=None):
             if d['archived']:
                 raise ValueError('Selecciona un historial activo.')
             records = [dict(r) for r in c.execute('SELECT sku,period,units FROM observations WHERE dataset=? ORDER BY sku,period', (did,))]
+            if managed and action == 'train':
+                required = {(date.fromisoformat(now()[:10])-timedelta(days=i)).isoformat() for i in range(1, 91)}
+                observed = {}
+                for r in records:
+                    if r['units'] is not None:
+                        observed.setdefault(r['sku'], set()).add(r['period'])
+                eligible = {sku for sku, days in observed.items() if required <= days}
+                records = [r for r in records if r['sku'] in eligible]
             if not records:
                 raise ValueError('Primero importa el historial.')
             jid = uuid.uuid4().hex
@@ -326,6 +338,8 @@ def start_job(did, action, uid, version_ids=None):
                 else:
                     request.update(specs[0])
             c.execute('INSERT INTO jobs VALUES(?,?,?,?,NULL,NULL,?,NULL,?)', (jid, did, action, 'running', now(), uid))
+            if managed:
+                c.execute('UPDATE automation SET pending_job=? WHERE id=1', (jid,))
             event(c, did, action, {'job': jid, 'data_hash': data_hash}, uid)
         threading.Thread(target=worker, args=(jid, did, request, data_hash), daemon=True).start()
         return dict(id=jid)
@@ -351,7 +365,7 @@ def worker(jid, did, request, data_hash):
                 count = c.execute('SELECT COUNT(*) FROM versions WHERE dataset=?', (did,)).fetchone()[0]
                 c.execute('INSERT INTO versions VALUES(?,?,?,?,?,?,?)',
                           (jid, did, 'V'+str(count+1), request['bundle'], json.dumps(result), data_hash, now()))
-                if count == 0:
+                if count == 0 and did != 'roda-operacion-diaria':
                     c.execute('UPDATE datasets SET active_version=? WHERE id=?', (jid, did))
             c.execute("UPDATE jobs SET status='done',result=?,finished_at=? WHERE id=?", (json.dumps(result), now(), jid))
     except Exception as exc:
@@ -361,7 +375,9 @@ def worker(jid, did, request, data_hash):
         LOCK.release()
 
 
-def activate(did, vid, uid):
+def activate(did, vid, uid, managed=False):
+    if did == 'roda-operacion-diaria' and not managed:
+        raise ValueError('La versión operativa se activa mediante la revisión automática y sus controles de calidad.')
     with connection() as c:
         d = dataset(c, did)
         if d['archived']:

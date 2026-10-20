@@ -10,7 +10,7 @@ const sourceName = (s: string) => s === 'operacion' ? 'Operación de la tienda' 
 
 export function Frame({ title, subtitle, children, action }: { title: string; subtitle: string; children: ReactNode; action?: ReactNode }) {
   return <section className="ml-workspace"><header className="ml-heading"><div><span className="ml-eyebrow">ANÁLISIS PREDICTIVO / INVENTARIO</span><h1>{title}</h1><p>{subtitle}</p></div>{action}</header>
-    <nav className="ml-tabs" aria-label="Análisis predictivo"><NavLink end to="/gestion/ml">Pronósticos</NavLink><NavLink to="/gestion/ml/modelos">Modelos y evaluación</NavLink><NavLink to="/gestion/ml/calidad">Calidad del historial</NavLink><NavLink to="/gestion/ml/laboratorio">Laboratorio y versiones</NavLink></nav>{children}</section>;
+    <nav className="ml-tabs" aria-label="Análisis predictivo"><NavLink end to="/gestion/ml">Pronósticos</NavLink><NavLink to="/gestion/ml/modelos">Modelos y evaluación</NavLink><NavLink to="/gestion/ml/calidad">Calidad del historial</NavLink><NavLink to="/gestion/ml/laboratorio">Laboratorio y versiones</NavLink><NavLink to="/gestion/ml/actualizacion">Actualización automática</NavLink></nav>{children}</section>;
 }
 function Stat({ label, value, note }: { label: string; value: ReactNode; note: string }) {
   return <div className="ml-stat"><span>{label}</span><strong>{value}</strong><small>{note}</small></div>;
@@ -21,6 +21,7 @@ function Notice({ children }: { children: ReactNode }) {
 
 export function Forecasts() {
   const overview = useLoad('/admin/ml/overview');
+  const automatic = useLoad('/admin/ml/automation');
   const { notify } = useStore();
   const [source, setSource] = useState('referencia'), [runId, setRunId] = useState(0);
   const [q, setQ] = useState(''), [rotation, setRotation] = useState(''), [review, setReview] = useState(''), [sort, setSort] = useState('prediction'), [direction, setDirection] = useState('desc'), [page, setPage] = useState(1);
@@ -37,6 +38,7 @@ export function Forecasts() {
   const filter = (setter: (v: string) => void, value: string) => { setter(value); setPage(1); };
   const run = result.data?.run;
   return <Frame title="Pronósticos de inventario" subtitle="Ventas estimadas a siete días, con contexto para decidir." action={<Link className="secondary button" to="/gestion/ml/modelos">Ver evaluación<ArrowRight size={16}/></Link>}>
+    <Notice><Link to="/gestion/ml/actualizacion">Actualización automática de la tienda</Link>: {automatic.data?.active_version ? <>hay una versión operativa aprobada. Consulta allí sus pronósticos y revisiones. Los cálculos de esta pantalla conservan el modelo de referencia original.</> : <>el ciclo reúne cierres completos para entrenar y aprobar un modelo propio. Estos cálculos conservan el modelo de referencia original.</>}</Notice>
     {overview.loading ? <Loading/> : overview.error ? <ErrorBox message={overview.error}/> : <>
       <div className="ml-controlbar"><label>Origen del historial<select value={source} disabled={busy} onChange={e => { setSource(e.target.value); setFailure(''); }}><option value="referencia">Historial de referencia</option><option value="operacion">Operación de la tienda</option></select></label><div className="ml-model-caption"><ChartNoAxesCombined size={23}/><div><b>{overview.data.model}</b><small>Modelo seleccionado · horizonte de 7 días</small></div></div><button onClick={calculate} disabled={busy || !overview.data.runtime_ready || (source === 'operacion' && !overview.data.readiness.ready)}><RefreshCw size={17} className={busy ? 'spin' : ''}/>{busy ? 'Calculando pronóstico…' : 'Calcular pronóstico'}</button></div>
       <Notice>{source === 'referencia' ? <>Este cálculo usa el historial de evaluación al {date(overview.data.reference_cutoff)}. El stock mostrado corresponde a ese corte. <Link to="/gestion/ml/modelos">Ver metodología y origen de datos.</Link></> : <>{overview.data.readiness.ready} de {overview.data.readiness.total} productos tienen historial suficiente. Se requieren 56 cierres completos consecutivos. <Link to="/gestion/ml/calidad">Revisar preparación.</Link></>}</Notice>

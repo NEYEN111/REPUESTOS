@@ -7,7 +7,7 @@ from fastapi.responses import FileResponse,JSONResponse,StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.exceptions import RequestValidationError
 from backend.db import ROOT,connect,transaction,rows,one,now,config,init_db,audit
-from backend.services import catalog,customers,orders,inventory,suppliers,reports,operations,catalog_quality,ml_history,predictions,ml_lab
+from backend.services import catalog,customers,orders,inventory,suppliers,reports,operations,catalog_quality,ml_history,predictions,ml_lab,ml_automation
 from backend.services.payments import provider
 
 async def expiration_loop():
@@ -17,14 +17,18 @@ async def expiration_loop():
             with transaction() as c: orders.expire(c)
             operations.snapshot()
             await asyncio.to_thread(ml_history.capture)
+            await asyncio.to_thread(ml_automation.tick)
         except Exception: logging.exception('No se pudo actualizar el cierre operativo.')
 @asynccontextmanager
 async def lifespan(app):
     init_db()
     ml_lab.recover_jobs()
+    ml_automation.init()
+    ml_automation.recover()
     with transaction() as c: orders.expire(c)
     operations.snapshot()
     await asyncio.to_thread(ml_history.capture)
+    await asyncio.to_thread(ml_automation.tick)
     task=asyncio.create_task(expiration_loop())
     yield
     task.cancel()
@@ -427,6 +431,13 @@ def ml_prediction(pid:int,u=Depends(admin)): return predictions.detail(pid)
 @app.get('/api/admin/ml/runs/{rid}/export')
 def ml_export(rid:int,u=Depends(admin)):
     return Response(predictions.export(rid),media_type='text/csv',headers={'Content-Disposition':f'attachment; filename="pronostico-{rid}.csv"'})
+
+@app.get('/api/admin/ml/automation')
+def automation_status(u=Depends(admin)): return ml_automation.status()
+@app.post('/api/admin/ml/automation/review')
+def automation_review(u=Depends(admin)): return ml_automation.tick(force=True,uid=u['id'])
+@app.post('/api/admin/ml/automation/settings')
+def automation_settings(d:dict,u=Depends(admin)): return ml_automation.configure(d.get('enabled'),u['id'])
 
 @app.get('/api/admin/ml/lab')
 def lab_list(dataset:str|None=None,u=Depends(admin)): return ml_lab.listing(dataset)

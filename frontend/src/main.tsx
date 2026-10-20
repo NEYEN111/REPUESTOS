@@ -18,6 +18,7 @@ import "./precision.css";
 import { InventoryWorkspace, ShipmentsWorkspace, DataQuality } from './operations';
 import { Forecasts, ModelEvaluation, HistoryQuality } from './ml';
 import { MLLaboratory } from './ml-lab';
+import { MLAutomation } from './ml-automation';
 import './ml.css';
 function Entry() {
   const { user } = useStore();
@@ -69,6 +70,7 @@ createRoot(document.getElementById("root")!).render(
             <Route path="ml/modelos" element={<ModelEvaluation />} />
             <Route path="ml/calidad" element={<HistoryQuality />} />
             <Route path="ml/laboratorio" element={<MLLaboratory />} />
+            <Route path="ml/actualizacion" element={<MLAutomation />} />
             <Route path=":section" element={<AdminTable />} />
           </Route>
           <Route path="*" element={<Legal missing />} />
