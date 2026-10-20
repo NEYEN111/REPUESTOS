@@ -84,6 +84,17 @@ def run():
             assert orders == c.execute('SELECT COUNT(*) FROM orders').fetchone()[0]
         assert client.get(base+'/examples/no.csv').status_code == 400
         assert client.get(base+'/examples/02_datos_nuevos.csv').status_code == 200
+        # A trained version must not be approved just because it won among the five candidates.
+        with ml_lab.connection() as c:
+            report = {'candidates': [{'mae': .8}], 'validation_baseline': {'mae': 1.0}}
+            c.execute('INSERT INTO versions VALUES(?,?,?,?,?,?,?)',
+                      ('gate-v1', did, 'V1', '', json.dumps(report), 'gate-1', now()))
+            later = {'scores': [{'version': 'gate-v1', 'mae': .7}], 'baseline': {'mae': .6}}
+            c.execute('INSERT INTO jobs VALUES(?,?,?,?,?,?,?,?,?)',
+                      ('gate-compare', did, 'compare', 'done', json.dumps(later), None, now(), now(), None))
+        assert client.post(base+f'/datasets/{did}/activate', json={'version': 'gate-v1'}).status_code == 400
+        with ml_lab.connection() as c:
+            assert ml_lab.dataset(c, did)['active_version'] is None
     print('PASS: roles, CSV/XLSX, mapping, missing vs zero, duplicates, conflicts, formulas, repeatable reset and unchanged inventory/orders.')
 
 

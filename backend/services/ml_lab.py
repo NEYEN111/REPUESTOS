@@ -54,6 +54,20 @@ def init():
         CREATE TABLE IF NOT EXISTS activity(id INTEGER PRIMARY KEY,dataset TEXT,action TEXT,detail TEXT,
           created_at TEXT,user_id INTEGER);
         """)
+        # Older demonstrations activated V1 automatically even when a simple
+        # historical average was more accurate. Keep the version, revoke that label.
+        for item in c.execute('SELECT id,active_version FROM datasets WHERE demo=1 AND active_version IS NOT NULL').fetchall():
+            version = row(c, 'SELECT report FROM versions WHERE id=? AND dataset=?',
+                          (item['active_version'], item['id']))
+            if not version:
+                continue
+            report = json.loads(version['report'])
+            scores = report.get('candidates') or []
+            baseline = (report.get('validation_baseline') or {}).get('mae')
+            if baseline is not None and (not scores or min(s['mae'] for s in scores) >= baseline * .99):
+                c.execute('UPDATE datasets SET active_version=NULL WHERE id=?', (item['id'],))
+                event(c, item['id'], 'retirar_activacion_legacy',
+                      {'version': item['active_version'], 'reason': 'No superó la referencia histórica en validación.'}, None)
 
 
 def recover_jobs():
@@ -365,7 +379,10 @@ def worker(jid, did, request, data_hash):
                 count = c.execute('SELECT COUNT(*) FROM versions WHERE dataset=?', (did,)).fetchone()[0]
                 c.execute('INSERT INTO versions VALUES(?,?,?,?,?,?,?)',
                           (jid, did, 'V'+str(count+1), request['bundle'], json.dumps(result), data_hash, now()))
-                if count == 0 and did != 'roda-operacion-diaria':
+                if (count == 0 and did != 'roda-operacion-diaria'
+                        and result['candidates'] and
+                        min(score['mae'] for score in result['candidates'])
+                        < result['validation_baseline']['mae'] * .99):
                     c.execute('UPDATE datasets SET active_version=? WHERE id=?', (jid, did))
             c.execute("UPDATE jobs SET status='done',result=?,finished_at=? WHERE id=?", (json.dumps(result), now(), jid))
     except Exception as exc:
@@ -384,14 +401,30 @@ def activate(did, vid, uid, managed=False):
             raise ValueError('El historial está archivado.')
         if not row(c, 'SELECT id FROM versions WHERE dataset=? AND id=?', (did, vid)):
             raise ValueError('Versión no encontrada.')
-        comparisons = [json.loads(r[0]) for r in c.execute("SELECT result FROM jobs WHERE dataset=? AND action='compare' AND status='done' ORDER BY created_at DESC", (did,))]
-        eligible = False
-        for result in comparisons:
+        if vid == d['active_version']:
+            return dict(id=vid)
+        version = row(c, 'SELECT report FROM versions WHERE id=? AND dataset=?', (vid, did))
+        report = json.loads(version['report'])
+        if not d['active_version']:
+            if (not report['candidates'] or min(s['mae'] for s in report['candidates'])
+                    >= report['validation_baseline']['mae'] * .99):
+                raise ValueError('La versión no reduce al menos 1% el error frente al promedio histórico en validación.')
+            comparison = row(c, "SELECT result FROM jobs WHERE dataset=? AND action='compare' AND status='done' ORDER BY created_at DESC LIMIT 1", (did,))
+            if comparison:
+                observed = json.loads(comparison['result'])
+                score = next((s['mae'] for s in observed['scores'] if s['version'] == vid), None)
+                if score is not None and score >= observed['baseline']['mae'] * .99:
+                    raise ValueError('La versión no supera al promedio histórico en las ventas posteriores.')
+        else:
+            comparison = row(c, "SELECT result FROM jobs WHERE dataset=? AND action='compare' AND status='done' ORDER BY created_at DESC LIMIT 1", (did,))
+            if not comparison:
+                raise ValueError('Primero compara ambas versiones con ventas posteriores.')
+            result = json.loads(comparison['result'])
             scores = {s['version']: s['mae'] for s in result['scores']}
-            if vid in scores and d['active_version'] in scores and scores[vid] < scores[d['active_version']]*.99:
-                eligible = True
-        if vid != d['active_version'] and not eligible:
-            raise ValueError('Primero compara con la versión activa. La candidata debe reducir el MAE al menos 1%.')
+            if (vid not in scores or d['active_version'] not in scores
+                    or scores[vid] >= scores[d['active_version']] * .99
+                    or scores[vid] >= result['baseline']['mae'] * .99):
+                raise ValueError('La candidata debe reducir al menos 1% el MAE frente a la activa y al promedio histórico.')
         c.execute('UPDATE datasets SET active_version=? WHERE id=?', (vid, did))
         event(c, did, 'activar_version', {'previous': d['active_version'], 'version': vid}, uid)
     return dict(id=vid)

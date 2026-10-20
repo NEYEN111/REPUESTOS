@@ -179,11 +179,18 @@ def compare(request):
             per_period.append(dict(version=spec['id'], period=period, actual=float(group.target.sum()),
                                    predicted=float(group.prediction.sum()), **metrics(group.target, group.prediction)))
     # Model choice was already fixed using validation, never using this comparison.
+    baseline_score = metrics(common.target, common.baseline)
+    best_score = min(s['mae'] for s in scores)
+    baseline_wins = baseline_score['mae'] <= best_score
+    recommended = scores[1]['version'] if scores[1]['mae'] < scores[0]['mae']*.99 else scores[0]['version']
+    recommended_score = next(s['mae'] for s in scores if s['version'] == recommended)
     return dict(start=common.period.min(), end=common.period.max(), rows=len(common),
                 products=common.sku.nunique(), scores=scores,
-                baseline=metrics(common.target, common.baseline), periods=per_period,
+                baseline=baseline_score, baseline_wins=baseline_wins,
+                approved_recommendation=recommended_score < baseline_score['mae']*.99,
+                periods=per_period,
                 protocol='Mismas filas posteriores a ambos entrenamientos; avance temporal con historial observado anterior.',
-                recommended=scores[1]['version'] if scores[1]['mae'] < scores[0]['mae']*.99 else scores[0]['version'])
+                recommended=recommended)
 
 
 if __name__ == '__main__':
