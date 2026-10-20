@@ -169,6 +169,8 @@ def preview(did, content, filename, mapping, uid):
             parsed = date.fromisoformat(period+'-01' if len(period) == 7 else period)
             if parsed > date.fromisoformat(now()[:10]):
                 raise ValueError('Una observación no puede tener fecha futura.')
+            if period == now()[:7 if d['frequency'] == 'monthly' else 10]:
+                raise ValueError('El periodo todavía no terminó. Importa solo meses o días completos anteriores al actual.')
             u = raw['unidades']
             units = None if u is None or str(u).strip() in ['', '?'] else float(u)
             if units is not None and (not math.isfinite(units) or units < 0 or units != int(units) or units > 1000000):

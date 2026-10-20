@@ -17,6 +17,7 @@ with sqlite3.connect(ROOT/'data/store.db') as src, sqlite3.connect(folder/'store
 from fastapi.testclient import TestClient
 from backend.app import app
 from backend.services import ml_lab
+from backend.db import now
 from openpyxl import Workbook
 
 
@@ -50,6 +51,10 @@ def run():
         assert client.post(base+'/batches/'+r['id']+'/confirm').status_code == 400
         r = upload(b'periodo,sku,unidades\n2020-05,A,-2\n2020-06,A,NaN\n2020-07,A,1.2\n')
         assert r['invalid'] == 3
+        assert upload(('periodo,sku,unidades\n'+now()[:7]+',A,5\n').encode())['invalid'] == 1
+        daily = post('/datasets', {'name':'Control diario','frequency':'daily','source':'Fixture de validación'})['id']
+        current = client.post(base+'/preview',data={'dataset':daily},files={'file':('dia.csv',('periodo,sku,unidades\n'+now()[:10]+',A,3\n').encode())})
+        assert current.status_code == 200 and current.json()['invalid'] == 1
         # An Excel input uses column mapping, preserves true zero, and rejects formulas.
         book = Workbook(); sheet = book.active
         sheet.append(['mes','pieza','cantidad']); sheet.append(['2020-04','A',0])
