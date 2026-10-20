@@ -84,18 +84,38 @@ def run():
             assert orders == c.execute('SELECT COUNT(*) FROM orders').fetchone()[0]
         assert client.get(base+'/examples/no.csv').status_code == 400
         assert client.get(base+'/examples/02_datos_nuevos.csv').status_code == 200
+        excel = client.get(base+'/examples/02_datos_nuevos.xlsx')
+        assert excel.status_code == 200
+        headers, values = ml_lab.read_file(excel.content, '02_datos_nuevos.xlsx')
+        assert headers == ['periodo', 'sku', 'unidades'] and len(values) == 24066
         # A trained version must not be approved just because it won among the five candidates.
         with ml_lab.connection() as c:
             report = {'candidates': [{'mae': .8}], 'validation_baseline': {'mae': 1.0}}
             c.execute('INSERT INTO versions VALUES(?,?,?,?,?,?,?)',
                       ('gate-v1', did, 'V1', '', json.dumps(report), 'gate-1', now()))
+        assert client.post(base+f'/datasets/{did}/activate', json={'version': 'gate-v1'}).status_code == 400
+        with ml_lab.connection() as c:
             later = {'scores': [{'version': 'gate-v1', 'mae': .7}], 'baseline': {'mae': .6}}
             c.execute('INSERT INTO jobs VALUES(?,?,?,?,?,?,?,?,?)',
                       ('gate-compare', did, 'compare', 'done', json.dumps(later), None, now(), now(), None))
         assert client.post(base+f'/datasets/{did}/activate', json={'version': 'gate-v1'}).status_code == 400
         with ml_lab.connection() as c:
-            assert ml_lab.dataset(c, did)['active_version'] is None
-    print('PASS: roles, CSV/XLSX, mapping, missing vs zero, duplicates, conflicts, formulas, repeatable reset and unchanged inventory/orders.')
+            later = {'scores': [{'version': 'gate-v1', 'mae': .7}], 'baseline': {'mae': .9},
+                     'recommended': 'gate-v1', 'snapshot_rows': 4}
+            c.execute('UPDATE jobs SET result=? WHERE id=?', (json.dumps(later), 'gate-compare'))
+        assert client.post(base+f'/datasets/{did}/activate', json={'version': 'gate-v1'}).status_code == 200
+        with ml_lab.connection() as c:
+            c.execute('INSERT INTO versions VALUES(?,?,?,?,?,?,?)',
+                      ('gate-v2', did, 'V2', '', json.dumps(report), 'gate-2', now()))
+            later = {'scores': [{'version': 'gate-v1', 'mae': .8}, {'version': 'gate-v2', 'mae': .6}],
+                     'baseline': {'mae': .9}, 'recommended': 'gate-v2', 'snapshot_rows': 4}
+            c.execute('UPDATE jobs SET result=? WHERE id=?', (json.dumps(later), 'gate-compare'))
+        new_batch = upload(b'periodo,sku,unidades\n2020-06,A,3\n')
+        post('/batches/'+new_batch['id']+'/confirm')
+        assert client.post(base+f'/datasets/{did}/activate', json={'version': 'gate-v2'}).status_code == 400
+        with ml_lab.connection() as c:
+            assert ml_lab.dataset(c, did)['active_version'] == 'gate-v1'
+    print('PASS: roles, CSV/XLSX, mapping, missing vs zero, duplicates, conflicts, formulas, version gate and unchanged inventory/orders.')
 
 
 if __name__ == '__main__':

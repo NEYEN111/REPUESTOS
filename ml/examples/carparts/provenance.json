@@ -31,6 +31,13 @@
       "sha256": "918a3a85d2ee8fb4e968bce95649735b01e31b3eafe0dc924ec6926178bb11bb"
     },
     {
+      "name": "02_datos_nuevos.xlsx",
+      "rows": 24066,
+      "sha256": "636187ef06e87468e73cfb76658ddc8504121bc06171209fdc25126d41dfe874",
+      "derived_from": "02_datos_nuevos.csv",
+      "treatment": "Mismas observaciones y valores; solo cambia el formato y el orden de las filas. Los vacíos siguen siendo desconocidos."
+    },
+    {
       "name": "03_ventas_posteriores.csv",
       "rows": 16044,
       "sha256": "62e0be3fbcfa6f0e47903cf55b5301ffb350bc5a23ce7532ea1f1414f80faf47"

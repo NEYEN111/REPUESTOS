@@ -209,6 +209,7 @@ def preview(did, content, filename, mapping, uid):
                 errors.append(dict(row=line, message=str(e)))
     summary = dict(rows=len(values), accepted=len(records), duplicates=duplicates, missing=missing,
                    invalid=invalid, conflicts=conflicts, errors=errors, headers=headers,
+                   products=len({r['sku'] for r in records}),
                    start=min((r['period'] for r in records), default=None),
                    end=max((r['period'] for r in records), default=None),
                    preview=records[:8], file_sha256=hashlib.sha256(content).hexdigest())
@@ -233,6 +234,8 @@ def confirm(bid, uid):
         summary = json.loads(b['summary'])
         if summary['invalid']:
             raise ValueError('Corrige las filas con errores antes de confirmar.')
+        if not summary['accepted']:
+            raise ValueError('El archivo no contiene observaciones nuevas para confirmar.')
         for r in json.loads(b['records']):
             old = row(c, 'SELECT units FROM observations WHERE dataset=? AND sku=? AND period=?',
                       (b['dataset'], r['sku'], r['period']))
@@ -320,6 +323,8 @@ def start_job(did, action, uid, version_ids=None, managed=False):
             if d['archived']:
                 raise ValueError('Selecciona un historial activo.')
             records = [dict(r) for r in c.execute('SELECT sku,period,units FROM observations WHERE dataset=? ORDER BY sku,period', (did,))]
+            if action == 'train' and d['demo'] and any(r['period'] > '2001-09' for r in records):
+                raise ValueError('Las ventas de octubre de 2001 a marzo de 2002 están reservadas para comparar V1 y V2. No entrenes otra versión con ese bloque.')
             if managed and action == 'train':
                 required = {(date.fromisoformat(now()[:10])-timedelta(days=i)).isoformat() for i in range(1, 91)}
                 observed = {}
@@ -332,6 +337,7 @@ def start_job(did, action, uid, version_ids=None, managed=False):
                 raise ValueError('Primero importa el historial.')
             jid = uuid.uuid4().hex
             request = dict(action=action, frequency=d['frequency'], records=records)
+            request['snapshot_rows'] = len(records)
             data_hash = hashlib.sha256(json.dumps(records, sort_keys=True).encode()).hexdigest()
             if action == 'train':
                 if c.execute('SELECT 1 FROM versions WHERE dataset=? AND data_hash=?', (did, data_hash)).fetchone():
@@ -374,16 +380,12 @@ def worker(jid, did, request, data_hash):
         if process.returncode or 'error' in result:
             raise ValueError(result.get('error', 'No se pudo ejecutar el modelo. Revisa el entorno de ML.'))
         result['data_sha256'] = data_hash
+        result['snapshot_rows'] = request['snapshot_rows']
         with connection() as c:
             if request['action'] == 'train':
                 count = c.execute('SELECT COUNT(*) FROM versions WHERE dataset=?', (did,)).fetchone()[0]
                 c.execute('INSERT INTO versions VALUES(?,?,?,?,?,?,?)',
                           (jid, did, 'V'+str(count+1), request['bundle'], json.dumps(result), data_hash, now()))
-                if (count == 0 and did != 'roda-operacion-diaria'
-                        and result['candidates'] and
-                        min(score['mae'] for score in result['candidates'])
-                        < result['validation_baseline']['mae'] * .99):
-                    c.execute('UPDATE datasets SET active_version=? WHERE id=?', (jid, did))
             c.execute("UPDATE jobs SET status='done',result=?,finished_at=? WHERE id=?", (json.dumps(result), now(), jid))
     except Exception as exc:
         with connection() as c:
@@ -405,25 +407,26 @@ def activate(did, vid, uid, managed=False):
             return dict(id=vid)
         version = row(c, 'SELECT report FROM versions WHERE id=? AND dataset=?', (vid, did))
         report = json.loads(version['report'])
+        comparison = row(c, "SELECT result FROM jobs WHERE dataset=? AND action='compare' AND status='done' ORDER BY created_at DESC,id DESC LIMIT 1", (did,))
+        if not comparison:
+            raise ValueError('Primero compara las versiones con ventas posteriores antes de activar una.')
+        observed = json.loads(comparison['result'])
+        current_rows = c.execute('SELECT COUNT(*) FROM observations WHERE dataset=?', (did,)).fetchone()[0]
+        if observed.get('snapshot_rows') != current_rows:
+            raise ValueError('Hay ventas nuevas desde la comparación. Vuelve a evaluar las versiones.')
+        scores = {s['version']: s['mae'] for s in observed['scores']}
+        if vid not in scores or scores[vid] >= observed['baseline']['mae'] * .99:
+            raise ValueError('La versión no supera al promedio histórico por al menos 1% en ventas posteriores.')
+        if vid != observed.get('recommended'):
+            raise ValueError('Activa únicamente la versión recomendada por la comparación actual.')
         if not d['active_version']:
             if (not report['candidates'] or min(s['mae'] for s in report['candidates'])
                     >= report['validation_baseline']['mae'] * .99):
                 raise ValueError('La versión no reduce al menos 1% el error frente al promedio histórico en validación.')
-            comparison = row(c, "SELECT result FROM jobs WHERE dataset=? AND action='compare' AND status='done' ORDER BY created_at DESC LIMIT 1", (did,))
-            if comparison:
-                observed = json.loads(comparison['result'])
-                score = next((s['mae'] for s in observed['scores'] if s['version'] == vid), None)
-                if score is not None and score >= observed['baseline']['mae'] * .99:
-                    raise ValueError('La versión no supera al promedio histórico en las ventas posteriores.')
         else:
-            comparison = row(c, "SELECT result FROM jobs WHERE dataset=? AND action='compare' AND status='done' ORDER BY created_at DESC LIMIT 1", (did,))
-            if not comparison:
-                raise ValueError('Primero compara ambas versiones con ventas posteriores.')
-            result = json.loads(comparison['result'])
-            scores = {s['version']: s['mae'] for s in result['scores']}
             if (vid not in scores or d['active_version'] not in scores
                     or scores[vid] >= scores[d['active_version']] * .99
-                    or scores[vid] >= result['baseline']['mae'] * .99):
+                    or scores[vid] >= observed['baseline']['mae'] * .99):
                 raise ValueError('La candidata debe reducir al menos 1% el MAE frente a la activa y al promedio histórico.')
         c.execute('UPDATE datasets SET active_version=? WHERE id=?', (vid, did))
         event(c, did, 'activar_version', {'previous': d['active_version'], 'version': vid}, uid)
