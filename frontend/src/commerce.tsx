@@ -326,6 +326,7 @@ export function Checkout() {
     [params] = useSearchParams(),
     qid = params.get("quote"),
     [quoted, setQuoted] = useState<any>(null),
+    [prices, setPrices] = useState<{ products: any[]; loading: boolean; error: string }>({ products: [], loading: !qid && cart.length > 0, error: '' }),
     [busy, setBusy] = useState(false),
     [error, setError] = useState(""),
     [key] = useState(() => crypto.randomUUID()),
@@ -344,6 +345,16 @@ export function Checkout() {
       consent: false,
     });
   const update = (k: string, v: any) => setD({ ...d, [k]: v });
+  const productIds = cart.map((p: any) => p.id).join(',');
+  useEffect(() => {
+    if (qid) return;
+    let alive = true;
+    setPrices({ products: [], loading: true, error: '' });
+    Promise.all(productIds ? productIds.split(',').map(id => api('/products/' + id)) : [])
+      .then(products => { if (alive) setPrices({ products, loading: false, error: '' }); })
+      .catch(e => { if (alive) setPrices({ products: [], loading: false, error: e.message }); });
+    return () => { alive = false; };
+  }, [qid, productIds]);
   useEffect(() => {
     if (qid)
       api(
@@ -357,7 +368,7 @@ export function Checkout() {
   }, [qid]);
   const items = qid
     ? quoted?.items?.map((i: any) => ({ ...i, id: i.product_id })) || []
-    : cart;
+    : cart.map((item: any) => ({ ...item, ...prices.products.find(p => p.id === item.id), quantity: item.quantity }));
   const subtotal = items.reduce(
       (s: number, p: any) => s + p.price_cents * p.quantity,
       0,
@@ -401,6 +412,8 @@ export function Checkout() {
       setBusy(false);
     }
   };
+  if (!qid && prices.loading) return <div className="container page"><Loading /></div>;
+  if (!qid && prices.error) return <div className="container page"><ErrorBox message={prices.error} /><Link className="button" to="/carrito">Volver al carrito</Link></div>;
   return (
     <div className="container page">
       <div className="checkout-steps">
