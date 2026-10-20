@@ -13,6 +13,7 @@ sys.path.insert(0,str(ROOT))
 fd,target=tempfile.mkstemp(suffix='.db',dir=ROOT/'.tmp');os.close(fd)
 with sqlite3.connect(ROOT/'data/store.db') as src, sqlite3.connect(target) as dst: src.backup(dst)
 os.environ['DATABASE_PATH']=target
+os.environ['ML_LAB_DIR']=target+'.lab'
 from fastapi.testclient import TestClient
 from backend.app import app
 from backend.db import connect, transaction, now

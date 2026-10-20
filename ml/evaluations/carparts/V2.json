@@ -1,0 +1,95 @@
+{
+  "winner": "Extra Trees",
+  "candidates": [
+    {
+      "model": "Ridge",
+      "n": 15054,
+      "mae": 0.6394056019208683,
+      "rmse": 1.1259497988632123,
+      "wape": 142.91925658970678,
+      "bias": 0.03624175110198547,
+      "r2": 0.06583161986437436
+    },
+    {
+      "model": "Poisson",
+      "n": 15054,
+      "mae": 0.6470839544662739,
+      "rmse": 1.140128237151453,
+      "wape": 144.63551374217204,
+      "bias": 0.02599810355296792,
+      "r2": 0.04215659921466175
+    },
+    {
+      "model": "Random Forest",
+      "n": 15054,
+      "mae": 0.6349864285091816,
+      "rmse": 1.1289280718815142,
+      "wape": 141.93148767300997,
+      "bias": 0.03311004054607243,
+      "r2": 0.060883107732806474
+    },
+    {
+      "model": "Extra Trees",
+      "n": 15054,
+      "mae": 0.6316805552360298,
+      "rmse": 1.1250514365596802,
+      "wape": 141.19256241311348,
+      "bias": 0.026983856343383093,
+      "r2": 0.06732171624974692
+    },
+    {
+      "model": "Hist. Gradient Boosting",
+      "n": 15054,
+      "mae": 0.6327333876045703,
+      "rmse": 1.1278766685503845,
+      "wape": 141.4278903786073,
+      "bias": 0.023183044197398705,
+      "r2": 0.06263154655848757
+    }
+  ],
+  "validation_baseline": {
+    "n": 15054,
+    "mae": 0.6071420663389576,
+    "rmse": 1.1432195742449245,
+    "wape": 135.7077456075229,
+    "bias": 0.022590895000221427,
+    "r2": 0.036955375387535794
+  },
+  "beats_baseline": false,
+  "cutoff": "2001-09",
+  "split": "2001-03",
+  "fit_rows": 68056,
+  "validation_rows": 15054,
+  "refit_rows": 83110,
+  "features": [
+    "lag1",
+    "lag2",
+    "lag3",
+    "lag6",
+    "lag12",
+    "mean",
+    "std",
+    "recent",
+    "zero_share",
+    "missing",
+    "month_sin",
+    "month_cos"
+  ],
+  "model_sha256": "692afcc2c7a487c7e98bb83e6a6424d2a6002f30ab13476d40cb7bdf38414832",
+  "reason": "Menor MAE en validación temporal. Reajustado con el historial disponible hasta el corte.",
+  "limitations": [
+    "No estima demanda perdida ni stock: solo cantidades observadas.",
+    "Las entradas ausentes se imputan dentro del entrenamiento; los objetivos ausentes se excluyen.",
+    "No demuestra precisión en Perú ni correspondencia con los SKU de RODA."
+  ],
+  "version": "V2",
+  "environment": {
+    "numpy": "2.2.6",
+    "pandas": "2.2.3",
+    "scikit-learn": "1.7.2",
+    "scipy": "1.15.3",
+    "joblib": "1.5.1"
+  },
+  "source": "10.5281/zenodo.4656022",
+  "data_sha256": "2c3cd527dd10694b757eabbb435f4fd4f5e113f40a2a58cce7ab3b8a2814de22"
+}

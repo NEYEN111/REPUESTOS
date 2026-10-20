@@ -2,12 +2,12 @@ import json,secrets,sqlite3,io,csv,asyncio,logging
 from contextlib import asynccontextmanager
 from pathlib import Path
 from PIL import Image,UnidentifiedImageError
-from fastapi import FastAPI,Request,Response,Depends,HTTPException,UploadFile,File
+from fastapi import FastAPI,Request,Response,Depends,HTTPException,UploadFile,File,Form
 from fastapi.responses import FileResponse,JSONResponse,StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.exceptions import RequestValidationError
 from backend.db import ROOT,connect,transaction,rows,one,now,config,init_db,audit
-from backend.services import catalog,customers,orders,inventory,suppliers,reports,operations,catalog_quality,ml_history,predictions
+from backend.services import catalog,customers,orders,inventory,suppliers,reports,operations,catalog_quality,ml_history,predictions,ml_lab
 from backend.services.payments import provider
 
 async def expiration_loop():
@@ -21,6 +21,7 @@ async def expiration_loop():
 @asynccontextmanager
 async def lifespan(app):
     init_db()
+    ml_lab.recover_jobs()
     with transaction() as c: orders.expire(c)
     operations.snapshot()
     await asyncio.to_thread(ml_history.capture)
@@ -426,6 +427,41 @@ def ml_prediction(pid:int,u=Depends(admin)): return predictions.detail(pid)
 @app.get('/api/admin/ml/runs/{rid}/export')
 def ml_export(rid:int,u=Depends(admin)):
     return Response(predictions.export(rid),media_type='text/csv',headers={'Content-Disposition':f'attachment; filename="pronostico-{rid}.csv"'})
+
+@app.get('/api/admin/ml/lab')
+def lab_list(dataset:str|None=None,u=Depends(admin)): return ml_lab.listing(dataset)
+@app.post('/api/admin/ml/lab/datasets')
+def lab_create(d:dict,u=Depends(admin)):
+    return {'id':ml_lab.create(str(d.get('name','')),d.get('frequency'),str(d.get('source','')),u['id'])}
+@app.post('/api/admin/ml/lab/demo')
+def lab_demo(u=Depends(admin)): return ml_lab.demo(u['id'])
+@app.post('/api/admin/ml/lab/datasets/{did}/reset')
+def lab_reset(did:str,u=Depends(admin)): return ml_lab.reset(did,u['id'])
+@app.post('/api/admin/ml/lab/preview')
+async def lab_preview(dataset:str=Form(...),mapping:str=Form('{}'),file:UploadFile=File(...),u=Depends(admin)):
+    try: columns=json.loads(mapping)
+    except (ValueError,TypeError): raise ValueError('La selección de columnas no es válida.')
+    if not isinstance(columns,dict): raise ValueError('La selección de columnas no es válida.')
+    content=await file.read(8*1024*1024+1)
+    return await asyncio.to_thread(ml_lab.preview,dataset,content,file.filename or '',columns,u['id'])
+@app.post('/api/admin/ml/lab/batches/{bid}/confirm')
+def lab_confirm(bid:str,u=Depends(admin)): return ml_lab.confirm(bid,u['id'])
+@app.get('/api/admin/ml/lab/examples/{name}')
+def lab_example(name:str,u=Depends(admin)): return FileResponse(ml_lab.example_path(name),filename=name)
+@app.post('/api/admin/ml/lab/datasets/{did}/jobs')
+def lab_job(did:str,d:dict,u=Depends(admin)):
+    return ml_lab.start_job(did,d.get('action'),u['id'],d.get('versions'))
+@app.get('/api/admin/ml/lab/jobs/{jid}')
+def lab_result(jid:str,q:str='',page:int=1,u=Depends(admin)): return ml_lab.results(jid,q,page)
+@app.get('/api/admin/ml/lab/jobs/{jid}/export')
+def lab_export(jid:str,u=Depends(admin)):
+    return Response(ml_lab.export(jid),media_type='text/csv',headers={'Content-Disposition':'attachment; filename="predicciones-laboratorio.csv"'})
+@app.post('/api/admin/ml/lab/datasets/{did}/activate')
+def lab_activate(did:str,d:dict,u=Depends(admin)): return ml_lab.activate(did,d.get('version'),u['id'])
+@app.get('/api/admin/ml/lab/versions/{vid}/download')
+def lab_model_download(vid:str,u=Depends(admin)):
+    path,label=ml_lab.version_file(vid)
+    return FileResponse(path,filename=f'RODA-laboratorio-{label}.joblib',media_type='application/octet-stream')
 
 app.mount('/media',StaticFiles(directory=ROOT/'backend/static'),name='media')
 DIST=ROOT/'frontend/dist'

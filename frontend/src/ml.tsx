@@ -8,9 +8,9 @@ const labels: Record<string, string> = { Ridge: 'Ridge', PoissonRegressor: 'Regr
 const coverage: Record<string, string> = { insuficiente_en_intervalo: 'Stock bajo el intervalo', cubre_intervalo: 'Cubre el intervalo', posible_faltante: 'Posible faltante' };
 const sourceName = (s: string) => s === 'operacion' ? 'Operación de la tienda' : 'Historial de referencia';
 
-function Frame({ title, subtitle, children, action }: { title: string; subtitle: string; children: ReactNode; action?: ReactNode }) {
+export function Frame({ title, subtitle, children, action }: { title: string; subtitle: string; children: ReactNode; action?: ReactNode }) {
   return <section className="ml-workspace"><header className="ml-heading"><div><span className="ml-eyebrow">ANÁLISIS PREDICTIVO / INVENTARIO</span><h1>{title}</h1><p>{subtitle}</p></div>{action}</header>
-    <nav className="ml-tabs" aria-label="Análisis predictivo"><NavLink end to="/gestion/ml">Pronósticos</NavLink><NavLink to="/gestion/ml/modelos">Modelos y evaluación</NavLink><NavLink to="/gestion/ml/calidad">Calidad del historial</NavLink></nav>{children}</section>;
+    <nav className="ml-tabs" aria-label="Análisis predictivo"><NavLink end to="/gestion/ml">Pronósticos</NavLink><NavLink to="/gestion/ml/modelos">Modelos y evaluación</NavLink><NavLink to="/gestion/ml/calidad">Calidad del historial</NavLink><NavLink to="/gestion/ml/laboratorio">Laboratorio y versiones</NavLink></nav>{children}</section>;
 }
 function Stat({ label, value, note }: { label: string; value: ReactNode; note: string }) {
   return <div className="ml-stat"><span>{label}</span><strong>{value}</strong><small>{note}</small></div>;

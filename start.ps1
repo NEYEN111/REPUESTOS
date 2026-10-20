@@ -11,7 +11,7 @@ if (!(Test-Path '.venv/Scripts/python.exe')) {
     if ($LASTEXITCODE -ne 0) { throw 'No se pudo crear el entorno Python.' }
 }
 $pythonExe = Join-Path $PSScriptRoot '.venv/Scripts/python.exe'
-& $pythonExe -c 'import importlib.util,sys; sys.exit(0 if all(importlib.util.find_spec(m) for m in ["""fastapi""","""uvicorn""","""multipart""","""PIL""","""tzdata"""]) else 1)'
+& $pythonExe -c 'import importlib.util,sys; sys.exit(0 if all(importlib.util.find_spec(m) for m in ["""fastapi""","""uvicorn""","""multipart""","""PIL""","""tzdata""","""openpyxl"""]) else 1)'
 if ($LASTEXITCODE -ne 0) {
     python -m pip --python $pythonExe install -r requirements.txt
     if ($LASTEXITCODE -ne 0) { throw 'No se pudieron instalar las dependencias Python.' }

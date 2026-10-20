@@ -17,7 +17,7 @@ export function WorkspaceShell({ children }: { children: ReactNode }) {
   const { user, config, notify } = useStore();
   const { pathname } = useLocation();
   const groups = [
-    ...(user.role === 'admin' ? [{ name: 'Análisis predictivo', links: [['ml', 'Pronósticos', ChartNoAxesCombined], ['ml/modelos', 'Modelos y evaluación', FileText], ['ml/calidad', 'Calidad del historial', Boxes]] }] : []),
+    ...(user.role === 'admin' ? [{ name: 'Análisis predictivo', links: [['ml', 'Pronósticos', ChartNoAxesCombined], ['ml/modelos', 'Modelos y evaluación', FileText], ['ml/calidad', 'Calidad del historial', Boxes], ['ml/laboratorio', 'Laboratorio y versiones', ChartNoAxesCombined]] }] : []),
     { name: 'Almacén', links: [['alertas', 'Alertas de stock', Bell], ['movimientos', 'Kardex', RotateCcw], ['conteos', 'Conteos físicos', Boxes], ['proveedores', 'Proveedores', Truck]] },
     { name: 'Clientes', links: [['clientes', 'Clientes', Users], ['cotizaciones', 'Cotizaciones', FileText], ['reclamos', 'Reclamos', MessageSquare]] },
     { name: 'Catálogos', links: [['vehiculos', 'Vehículos', CarFront], ['categorias', 'Categorías', Tags], ['marcas', 'Marcas', Package]] },

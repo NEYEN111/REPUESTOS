@@ -6,6 +6,7 @@ folder=ROOT/'.tmp';folder.mkdir(exist_ok=True)
 fd,target=tempfile.mkstemp(suffix='.db',dir=folder);os.close(fd)
 src=sqlite3.connect(ROOT/'data/store.db');dst=sqlite3.connect(target);src.backup(dst);dst.close();src.close()
 os.environ['DATABASE_PATH']=target
+os.environ['ML_LAB_DIR']=target+'.lab'
 from fastapi.testclient import TestClient
 from PIL import Image
 from backend.app import app
