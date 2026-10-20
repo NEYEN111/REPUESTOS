@@ -19,6 +19,7 @@ from backend.services.predictions import runtime
 
 FOLDER = Path(os.getenv('ML_LAB_DIR', str(ROOT/'data/ml/laboratorio')))
 EXAMPLES = ROOT/'ml/examples/carparts'
+SIMULATION = ROOT/'ml/examples/roda-ensayo'
 LOCK = threading.Lock()
 
 
@@ -53,6 +54,8 @@ def init():
           status TEXT,result TEXT,error TEXT,created_at TEXT,finished_at TEXT,user_id INTEGER);
         CREATE TABLE IF NOT EXISTS activity(id INTEGER PRIMARY KEY,dataset TEXT,action TEXT,detail TEXT,
           created_at TEXT,user_id INTEGER);
+        CREATE TABLE IF NOT EXISTS scenarios(dataset TEXT PRIMARY KEY REFERENCES datasets(id),
+          kind TEXT NOT NULL, provenance_hash TEXT NOT NULL);
         """)
         # Older demonstrations activated V1 automatically even when a simple
         # historical average was more accurate. Keep the version, revoke that label.
@@ -259,6 +262,58 @@ def example_path(name):
     return path
 
 
+def simulation_source():
+    path = SIMULATION/'provenance.json'
+    return json.loads(path.read_text(encoding='utf-8')) if path.exists() else None
+
+
+def simulation_example_path(name):
+    manifest = simulation_source()
+    entry = next((f for f in (manifest or {}).get('stages', []) if f['name'] == name), None)
+    if not entry:
+        raise ValueError('Archivo de ensayo no encontrado. Ejecuta scripts/prepare_ml_simulation.py.')
+    path = SIMULATION/name
+    if hashlib.sha256(path.read_bytes()).hexdigest() != entry['sha256']:
+        raise ValueError('El archivo de ensayo cambió respecto a su procedencia.')
+    return path
+
+
+def simulation(uid):
+    manifest = simulation_source()
+    if not manifest or manifest.get('kind') != 'synthetic_calibrated_trial':
+        raise ValueError('Prepara el ensayo con scripts/prepare_ml_simulation.py.')
+    path = simulation_example_path('01_historial_90_dias.csv')
+    if manifest['end'] >= now()[:10]:
+        raise ValueError('El ensayo contiene un día aún no cerrado. Vuelve a prepararlo.')
+    source_text = ('ENSAYO SINTÉTICO calibrado con Car Parts (Zenodo DOI '
+                   f"{manifest['source_doi']}). SKU y fechas asignados para prueba; "
+                   'no son ventas de RODA.')
+    did = create('RODA · ensayo diario calibrado', 'daily', source_text, uid)
+    with connection() as c:
+        c.execute('INSERT INTO scenarios VALUES(?,?,?)',
+                  (did, 'roda-calibrated', hashlib.sha256((SIMULATION/'provenance.json').read_bytes()).hexdigest()))
+    batch = preview(did, path.read_bytes(), path.name, None, uid)
+    if batch['invalid'] or batch['accepted'] != manifest['stages'][0]['rows']:
+        raise ValueError('El bloque inicial del ensayo no pasó la validación.')
+    confirm(batch['id'], uid)
+    return {'id': did}
+
+
+def reset_simulation(did, uid):
+    with connection() as c:
+        d = dataset(c, did)
+        scenario = row(c, 'SELECT kind FROM scenarios WHERE dataset=?', (did,))
+        if d['archived'] or not scenario or scenario['kind'] != 'roda-calibrated':
+            raise ValueError('Selecciona un ensayo activo para restablecerlo.')
+        if c.execute("SELECT 1 FROM jobs WHERE dataset=? AND status='running'", (did,)).fetchone():
+            raise ValueError('Espera a que finalice el cálculo.')
+    result = simulation(uid)
+    with connection() as c:
+        c.execute('UPDATE datasets SET archived=1 WHERE id=?', (did,))
+        event(c, did, 'archivar_ensayo', {'replacement': result['id']}, uid)
+    return result
+
+
 def demo(uid):
     if not source():
         raise ValueError('Prepara los datos con scripts/prepare_real_ml.py.')
@@ -293,6 +348,8 @@ def listing(did=None):
         if not did:
             return dict(datasets=datasets, source=source(), selected=None)
         d = dataset(c, did)
+        scenario = row(c, 'SELECT kind,provenance_hash FROM scenarios WHERE dataset=?', (did,))
+        d['scenario'] = scenario['kind'] if scenario else None
         stats = dict(c.execute('SELECT COUNT(*) rows,COUNT(DISTINCT sku) products,MIN(period) start,MAX(period) end,SUM(units IS NULL) missing FROM observations WHERE dataset=?', (did,)).fetchone())
         versions = [dict(r) for r in c.execute('SELECT * FROM versions WHERE dataset=? ORDER BY created_at,id', (did,))]
         for v in versions:
@@ -307,7 +364,8 @@ def listing(did=None):
                 value = json.loads(j['result'])
                 j['result'] = {k: v for k, v in value.items() if k != 'items'}
         events = [dict(r) for r in c.execute('SELECT * FROM activity WHERE dataset=? ORDER BY id DESC LIMIT 20', (did,))]
-    return dict(datasets=datasets, selected=d, stats=stats, versions=versions, batches=batches, jobs=jobs, activity=events, source=source())
+    return dict(datasets=datasets, selected=d, stats=stats, versions=versions, batches=batches, jobs=jobs, activity=events,
+                source=source(), simulation=simulation_source() if scenario else None)
 
 
 def start_job(did, action, uid, version_ids=None, managed=False):
@@ -325,6 +383,11 @@ def start_job(did, action, uid, version_ids=None, managed=False):
             records = [dict(r) for r in c.execute('SELECT sku,period,units FROM observations WHERE dataset=? ORDER BY sku,period', (did,))]
             if action == 'train' and d['demo'] and any(r['period'] > '2001-09' for r in records):
                 raise ValueError('Las ventas de octubre de 2001 a marzo de 2002 están reservadas para comparar V1 y V2. No entrenes otra versión con ese bloque.')
+            scenario = row(c, 'SELECT kind FROM scenarios WHERE dataset=?', (did,))
+            if action == 'train' and scenario and scenario['kind'] == 'roda-calibrated':
+                cutoff = simulation_source()['stages'][1]['end']
+                if any(r['period'] > cutoff for r in records):
+                    raise ValueError('Los últimos 30 días están reservados para evaluar V1 y V2. No entrenes con ese bloque.')
             if managed and action == 'train':
                 required = {(date.fromisoformat(now()[:10])-timedelta(days=i)).isoformat() for i in range(1, 91)}
                 observed = {}

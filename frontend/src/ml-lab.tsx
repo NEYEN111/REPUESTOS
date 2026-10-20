@@ -7,7 +7,7 @@ import './ml-lab.css';
 const base = '/admin/ml/lab';
 const num = (v: number | null | undefined, digits = 2) => v == null ? '—' : v.toLocaleString('es-PE', { maximumFractionDigits: digits });
 const actionName: Record<string, string> = { train: 'Entrenamiento', predict: 'Pronóstico', compare: 'Comparación' };
-const eventName: Record<string, string> = { crear_historial: 'Historial creado', importar: 'Archivo confirmado', train: 'Entrenamiento iniciado', predict: 'Pronóstico solicitado', compare: 'Comparación solicitada', activar_version: 'Versión activada', archivar_demostracion: 'Demostración archivada' };
+const eventName: Record<string, string> = { crear_historial: 'Historial creado', importar: 'Archivo confirmado', train: 'Entrenamiento iniciado', predict: 'Pronóstico solicitado', compare: 'Comparación solicitada', activar_version: 'Versión activada', archivar_demostracion: 'Demostración archivada', archivar_ensayo: 'Ensayo archivado' };
 
 export function MLLaboratory() {
   const { notify } = useStore();
@@ -23,6 +23,7 @@ export function MLLaboratory() {
   const result = useLoad(jid ? `${base}/jobs/${jid}?q=${encodeURIComponent(q)}&page=${page}` : null);
   const running = d?.jobs?.some((j: any) => j.status === 'running');
   const managed = selected?.id === 'roda-operacion-diaria';
+  const simulation = selected?.scenario === 'roda-calibrated';
   const disabled = busy || running || !!selected?.archived || managed;
   useEffect(() => { if (selected?.id && !did) setDid(selected.id); }, [selected?.id, did]);
   useEffect(() => {
@@ -67,6 +68,20 @@ export function MLLaboratory() {
     : !currentComparison
     ? { number: '05 / 05', title: 'Compara V1, V2 y el promedio histórico', detail: 'La comparación debe actualizarse si añades ventas. Solo una mejora comprobada permite activar un modelo.', section: 'versiones', action: 'Ir a comparación' }
     : { number: '05 / 05', title: 'Revisa la comparación terminada', detail: 'Consulta errores, periodos observados y la decisión de aprobación.', section: 'resultados', action: 'Ver resultados' };
+  const simStages = d?.simulation?.stages || [];
+  const simDays = simulation && d?.stats?.start && d?.stats?.end
+    ? Math.round((Date.parse(d.stats.end + 'T00:00:00Z') - Date.parse(d.stats.start + 'T00:00:00Z')) / 86400000) + 1 : 0;
+  const simulationStep = !simulation || simStages.length < 3 ? null : !versions.length
+    ? { number: '01 / 05', title: 'Entrena V1 con 90 días de ensayo', detail: 'Historial sintético diario calibrado con ventas mensuales públicas. El contador operativo de la tienda no cambia.', section: 'versiones', action: 'Ir a entrenamiento' }
+    : d.stats.end < simStages[1].end
+    ? { number: '02 / 05', title: 'Carga 30 días nuevos desde Excel', detail: 'Importa el archivo para mostrar cómo cambia el historial. Estas cantidades son de ensayo.', file: '02_datos_nuevos_30_dias.xlsx', action: 'Descargar Excel' }
+    : versions.length < 2
+    ? { number: '03 / 05', title: 'Entrena V2 con 30 días adicionales', detail: 'La V1 queda guardada para comparar los modelos con la misma prueba posterior.', section: 'versiones', action: 'Ir a entrenamiento' }
+    : d.stats.end < simStages[2].end
+    ? { number: '04 / 05', title: 'Carga 30 días posteriores reservados', detail: 'Ninguna versión ha visto este bloque al entrenarse.', file: '03_ventas_posteriores_30_dias.csv', action: 'Descargar CSV' }
+    : !currentComparison
+    ? { number: '05 / 05', title: 'Compara V1, V2 y el promedio histórico', detail: 'Mide el error en las mismas ventas posteriores de ensayo.', section: 'versiones', action: 'Ir a comparación' }
+    : { number: '05 / 05', title: 'Revisa la comparación del ensayo', detail: 'Los resultados describen este escenario sintético; no validan la precisión en ventas reales.', section: 'resultados', action: 'Ver resultados' };
   return <Frame title="Laboratorio y versiones" subtitle="Importa ventas, entrena cinco modelos y comprueba cómo cambia su precisión."
     action={<button className="secondary" disabled={busy} onClick={() => setNewOpen(true)}><Plus size={17}/>Nuevo historial</button>}>
     <ErrorBox message={error || data.error}/>
@@ -77,20 +92,22 @@ export function MLLaboratory() {
           {d.datasets.map((h: any) => <option key={h.id} value={h.id}>{h.name}{h.archived ? ' · archivado' : ''} · {h.id.slice(0, 5)}</option>)}
         </select></label>
         <button className="secondary" disabled={busy || running} onClick={() => execute(async () => { const r = await api(base + '/demo', { method: 'POST' }); setDid(r.id); setSection('datos'); notify('Demostración preparada con el historial inicial.'); })}><FlaskConical size={17}/>Preparar demostración</button>
-        {!!selected?.demo && <button className="secondary" disabled={disabled} onClick={() => setResetOpen(true)}><RefreshCw size={16}/>Restablecer demo</button>}
+        <button className="secondary" disabled={busy || running} onClick={() => execute(async () => { const r = await api(base + '/simulation', { method: 'POST' }); setDid(r.id); setSection('datos'); notify('Ensayo calibrado preparado con 90 días.'); })}><Database size={17}/>Crear ensayo de 90 días</button>
+        {(!!selected?.demo || simulation) && <button className="secondary" disabled={disabled} onClick={() => setResetOpen(true)}><RefreshCw size={16}/>Restablecer {simulation ? 'ensayo' : 'demo'}</button>}
       </div>
-      <div className="ml-notice"><Database size={19}/><div><b>Datos con procedencia, resultados comprobables.</b> {(!selected || selected.demo) ? <>Car Parts contiene ventas mensuales de 2,674 series anónimas (1998–2002). Es una fuente histórica externa; sus códigos no corresponden a los productos de la tienda. <a href={d.source?.source_url || 'https://zenodo.org/records/4656022'} target="_blank" rel="noreferrer">Consultar fuente y licencia CC BY 4.0</a>.</> : <>La procedencia de este historial fue declarada al crearlo: {selected.source}. Valida su origen y cobertura antes de interpretar sus resultados.</>}</div></div>
+      <div className="ml-notice"><Database size={19}/><div><b>Datos con procedencia, resultados comprobables.</b> {simulation ? <>Este ensayo usa patrones mensuales de <a href={d.simulation?.source_url} target="_blank" rel="noreferrer">Car Parts (CC BY 4.0)</a>. La distribución diaria y la asociación con 120 SKU de RODA son simuladas. No representa ventas reales ni cambia el historial operativo.</> : (!selected || selected.demo) ? <>Car Parts contiene ventas mensuales de 2,674 series anónimas (1998–2002). Es una fuente histórica externa; sus códigos no corresponden a los productos de la tienda. <a href={d.source?.source_url || 'https://zenodo.org/records/4656022'} target="_blank" rel="noreferrer">Consultar fuente y licencia CC BY 4.0</a>.</> : <>La procedencia de este historial fue declarada al crearlo: {selected.source}. Valida su origen y cobertura antes de interpretar sus resultados.</>}</div></div>
       {managed && <div className="ml-notice"><div>Este historial recibe los cierres diarios automáticamente. Consulta aquí sus modelos y resultados. Para ejecutar el ciclo, abre <a href="/gestion/ml/actualizacion">Actualización automática → Revisar ahora</a>.</div></div>}
       {!selected ? <div className="ml-panel lab-empty"><h2>Empieza con un historial verificable</h2><p>Prepara la demostración para recorrer el ciclo V1 → nuevos datos → V2 → evaluación, o crea un historial con tus propios archivos.</p><p>Importar datos y calcular pronósticos no modifica pedidos ni existencias.</p></div> : <>
         <div className="ml-stats">
           {[
             ['Observaciones', num(d.stats.rows, 0), `${num(d.stats.products, 0)} series o productos`],
             ['Periodo disponible', d.stats.end || 'Sin datos', `Desde ${d.stats.start || '—'} · ${selected.frequency === 'monthly' ? 'mensual' : 'diario'}`],
-            ['Valores desconocidos', num(d.stats.missing || 0, 0), 'Se conservan; no se convierten en cero'],
+            simulation ? ['Días de ensayo', `${Math.min(simDays, 90)} / 90`, `${Math.max(0, simDays - 90)} días adicionales · no cuentan como cierres reales`] : ['Valores desconocidos', num(d.stats.missing || 0, 0), 'Se conservan; no se convierten en cero'],
             ['Versión activa', selected.active_version ? label(selected.active_version) : versions.length ? 'Sin modelo aprobado' : 'Sin entrenar', 'Activa únicamente en este historial'],
           ].map(([title, value, note]) => <div className="ml-stat" key={title}><span>{title}</span><strong>{value}</strong><small>{note}</small></div>)}
         </div>
         {demoStep && !selected.archived && <section className="lab-next-step"><span>{demoStep.number}</span><div><h2>{demoStep.title}</h2><p>{demoStep.detail}</p></div>{demoStep.file ? <a className="button" href={`/api${base}/examples/${demoStep.file}`}><Download size={16}/>{demoStep.action}</a> : <button onClick={() => { setSection(demoStep.section!); if (demoStep.section === 'resultados' && currentComparison) viewResult(currentComparison.id); }}>{demoStep.action}<ArrowRight size={16}/></button>}</section>}
+        {simulationStep && !selected.archived && <section className="lab-next-step"><span>{simulationStep.number}</span><div><h2>{simulationStep.title}</h2><p>{simulationStep.detail}</p></div>{simulationStep.file ? <a className="button" href={`/api${base}/simulation/examples/${simulationStep.file}`}><Download size={16}/>{simulationStep.action}</a> : <button onClick={() => { setSection(simulationStep.section!); if (simulationStep.section === 'resultados' && currentComparison) viewResult(currentComparison.id); }}>{simulationStep.action}<ArrowRight size={16}/></button>}</section>}
         {!!selected.archived && <div className="ml-notice">Historial archivado: sus importaciones, modelos y resultados se conservan para consulta.</div>}
         {running && <div className="ml-progress" role="status"><RefreshCw size={17} className="spin"/> Cálculo en curso. El entrenamiento puede tardar varios minutos; la pantalla actualizará el resultado.</div>}
         <div className="lab-subnav" role="group" aria-label="Secciones del laboratorio">{[['datos', '01', 'Datos e importación'], ['versiones', '02', 'Modelos y versiones'], ['resultados', '03', 'Resultados']].map(([key, step, text]) => <button key={key} className={section === key ? 'selected' : ''} aria-pressed={section === key} onClick={() => setSection(key)}><span>{step}</span>{text}</button>)}</div>
@@ -104,7 +121,15 @@ export function MLLaboratory() {
             ].map(([fileName, title, period, description], i) => <article key={fileName}><span className="lab-stage-number">0{i + 1}</span><h3>{title}</h3><b>{period}</b><p>{description}</p><a className="secondary button small" href={`/api${base}/examples/${fileName}`}><Download size={15}/>Descargar {fileName.endsWith('.xlsx') ? 'Excel' : 'CSV'}</a></article>)}</div>
             <p className="lab-helper">Puedes modificar el Excel para ensayar el flujo. Si cambias cantidades, identifica ese archivo como prueba: los cambios ya no son observaciones originales de la fuente pública.</p>
           </section>}
-          <section className="ml-panel"><div className="ml-panel-title"><div><h2>Importar ventas observadas</h2><p>Una fila por producto y periodo. Las compras o ventas de prueba deben identificarse como tales en la procedencia.</p></div><span className="ml-tag">CSV / XLSX · máx. 8 MB</span></div>
+          {simulation && <section className="ml-panel"><div className="ml-panel-title"><div><h2>Ensayo diario con 120 SKU de RODA</h2><p>90 días iniciales, 30 días nuevos y 30 días posteriores para evaluar. Todos los registros de esta sección son sintéticos.</p></div><span className="ml-tag">18,000 filas de ensayo</span></div>
+            <div className="lab-stages">{[
+              ['01_historial_90_dias.csv', 'V1 · 90 días', simStages[0], 'Ya cargado. Entrena V1 sin usar los bloques posteriores.'],
+              ['02_datos_nuevos_30_dias.xlsx', 'V2 · 30 días nuevos', simStages[1], 'Carga este Excel y entrena V2.'],
+              ['03_ventas_posteriores_30_dias.csv', 'Evaluación · 30 días', simStages[2], 'Carga después de V2 y compara ambos modelos.'],
+            ].map(([fileName, title, stage, description]: any, i) => <article key={fileName}><span className="lab-stage-number">0{i + 1}</span><h3>{title}</h3><b>{stage?.start} – {stage?.end}</b><p>{description}</p><a className="secondary button small" href={`/api${base}/simulation/examples/${fileName}`}><Download size={15}/>Descargar {fileName.endsWith('.xlsx') ? 'Excel' : 'CSV'}</a></article>)}</div>
+            <p className="lab-helper">Fuente: <a href={d.simulation?.source_url} target="_blank" rel="noreferrer">Car Parts, DOI {d.simulation?.source_doi}</a>. Las fechas, las ventas por día y el vínculo con cada SKU son generados para este ensayo. Su precisión no demuestra precisión futura en la tienda.</p>
+          </section>}
+          <section className="ml-panel"><div className="ml-panel-title"><div><h2>{simulation ? 'Importar datos nuevos del ensayo' : 'Importar ventas observadas'}</h2><p>Una fila por producto y periodo. Las compras o ventas de prueba deben identificarse como tales en la procedencia.</p></div><span className="ml-tag">CSV / XLSX · máx. 8 MB</span></div>
             <p className="lab-helper">Columnas: <code>periodo</code>, <code>sku</code>, <code>unidades</code>. Periodo: {selected.frequency === 'monthly' ? 'AAAA-MM' : 'AAAA-MM-DD'}. Carga solo periodos completos anteriores al actual. Unidades enteras, cero si no hubo ventas, vacío si no se conoce. Excel: una hoja, sin fórmulas.</p>
             <div className="lab-upload"><label>Archivo de ventas<input key={did} type="file" accept=".csv,.xlsx" disabled={disabled} onChange={e => { setFile(e.target.files?.[0] || null); setPreview(null); setMapping({}); }}/></label><button disabled={disabled || !file} onClick={upload}><Upload size={17}/>{busy ? 'Revisando…' : 'Revisar archivo'}</button></div>
             {preview?.needs_mapping && <div className="lab-mapping"><h3>Relaciona las columnas</h3><p>Selecciona qué columna de tu archivo corresponde a cada dato.</p><div className="lab-fields">{['periodo', 'sku', 'unidades'].map(k => <label key={k}>{k}<select value={mapping[k] || ''} onChange={e => setMapping({ ...mapping, [k]: e.target.value })}><option value="">Seleccionar columna</option>{preview.headers.map((h: string) => <option key={h} value={h}>{h}</option>)}</select></label>)}</div><button className="secondary" disabled={disabled || Object.keys(mapping).length < 3} onClick={upload}>Validar columnas</button></div>}
@@ -118,8 +143,9 @@ export function MLLaboratory() {
         </>}
 
         {section === 'versiones' && <>
-          <section className="ml-panel"><div className="ml-panel-title"><div><h2>Entrenar y conservar cada versión</h2><p>Ridge, Poisson, Random Forest, Extra Trees y Hist. Gradient Boosting compiten con el mismo corte temporal.</p></div><button disabled={disabled || !d.stats.rows || (selected.demo && d.stats.end > '2001-09')} onClick={() => job('train')}><RefreshCw size={16}/>Entrenar {`V${versions.length + 1}`}</button></div>
+          <section className="ml-panel"><div className="ml-panel-title"><div><h2>Entrenar y conservar cada versión</h2><p>Ridge, Poisson, Random Forest, Extra Trees y Hist. Gradient Boosting compiten con el mismo corte temporal.</p></div><button disabled={disabled || !d.stats.rows || (selected.demo && d.stats.end > '2001-09') || (simulation && d.stats.end > simStages[1]?.end)} onClick={() => job('train')}><RefreshCw size={16}/>Entrenar {`V${versions.length + 1}`}</button></div>
             {selected.demo && d.stats.end > '2001-09' && <div className="ml-notice">El bloque de octubre de 2001 a marzo de 2002 se reserva para evaluar V1 y V2. Entrenar otra versión con él invalidaría esa demostración.</div>}
+            {simulation && d.stats.end > simStages[1]?.end && <div className="ml-notice">Los últimos 30 días se reservan para evaluar V1 y V2. Entrenar con ellos invalidaría la prueba posterior.</div>}
             <p className="lab-helper">Se elige el menor MAE de validación y se reajusta con el historial disponible. Predecir utiliza un modelo guardado; no lo reentrena. Ninguna versión se activa hasta compararla con ventas posteriores y superar al promedio histórico por al menos 1%. <a className="lab-notebook-link" href="https://colab.research.google.com/github/NEYEN111/REPUESTOS/blob/main/notebooks/RODA_ML_Datos_Reales.ipynb" target="_blank" rel="noreferrer">Abrir cuaderno completo en Colab</a></p>
             {!versions.length && <p>Importa un historial y ejecuta el primer entrenamiento.</p>}
             {versions.map((v: any) => <details className="lab-version" key={v.id} open={versions.length === 1}><summary><span><b>{v.label} · {v.report.winner}</b><small>Entrenado hasta {v.report.cutoff} · {num(v.report.refit_rows, 0)} objetivos observados</small></span><span className={`ml-tag ${selected.active_version === v.id ? 'success' : ''}`}>{selected.active_version === v.id ? 'Activa' : 'En evaluación'}</span></summary>
@@ -151,7 +177,7 @@ export function MLLaboratory() {
       </>}
     </>}
     {newOpen && <Modal title="Nuevo historial de ventas" onClose={() => { if (!busy) setNewOpen(false); }}><form className="lab-new" onSubmit={e => { e.preventDefault(); execute(async () => { const r = await api(base + '/datasets', { method: 'POST', body: { name, frequency, source } }); setDid(r.id); setSection('datos'); setNewOpen(false); setName(''); setSource(''); }); }}><p>Usa un historial independiente para cada fuente. Indica si procede de operaciones reales, de una fuente pública o de pruebas.</p><ErrorBox message={error}/><label>Nombre<input required maxLength={120} value={name} onChange={e => setName(e.target.value)}/></label><label>Frecuencia<select value={frequency} onChange={e => setFrequency(e.target.value)}><option value="monthly">Mensual · pronóstico del próximo mes</option><option value="daily">Diaria · pronóstico de siete días</option></select></label><label>Procedencia<textarea required maxLength={1000} value={source} onChange={e => setSource(e.target.value)} placeholder="Empresa o fuente, URL o referencia y tratamiento aplicado"/></label><button disabled={busy}>Crear historial</button></form></Modal>}
-    {resetOpen && <Modal title="Restablecer la demostración" onClose={() => { if (!busy) setResetOpen(false); }}><p>Se archivará esta demostración con sus versiones y resultados. Se abrirá una nueva con el historial inicial de 1998–2000.</p><p>Los pedidos, productos y existencias de la tienda no cambian. Podrás consultar la demostración anterior en el selector de historiales.</p><ErrorBox message={error}/><button disabled={busy} onClick={() => execute(async () => { const r = await api(`${base}/datasets/${did}/reset`, { method: 'POST' }); setDid(r.id); setResetOpen(false); setSection('datos'); notify('Nueva demostración preparada. La anterior se conserva archivada.'); })}>{busy ? 'Preparando…' : 'Archivar y restablecer'}</button></Modal>}
+    {resetOpen && <Modal title={simulation ? 'Restablecer el ensayo' : 'Restablecer la demostración'} onClose={() => { if (!busy) setResetOpen(false); }}><p>Se archivará este historial con sus versiones y resultados. Se abrirá uno nuevo con el bloque inicial.</p><p>Los pedidos, productos y existencias de la tienda no cambian. Podrás consultar el historial anterior en el selector.</p><ErrorBox message={error}/><button disabled={busy} onClick={() => execute(async () => { const r = await api(`${base}/datasets/${did}/${simulation ? 'reset-simulation' : 'reset'}`, { method: 'POST' }); setDid(r.id); setResetOpen(false); setSection('datos'); notify('Nuevo historial preparado. El anterior se conserva archivado.'); })}>{busy ? 'Preparando…' : 'Archivar y restablecer'}</button></Modal>}
   </Frame>;
 }
 

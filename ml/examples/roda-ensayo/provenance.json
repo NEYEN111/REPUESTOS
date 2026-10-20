@@ -1,0 +1,529 @@
+{
+  "kind": "synthetic_calibrated_trial",
+  "label": "Ensayo calibrado, no ventas reales de RODA",
+  "source_url": "https://zenodo.org/records/4656022",
+  "source_doi": "10.5281/zenodo.4656022",
+  "source_license": "CC BY 4.0",
+  "source_sha256": "80557703397c7dca6c007bd28930b0e213e529f428afd02e5af87804fdc38ee1",
+  "source_frequency": "monthly",
+  "output_frequency": "daily",
+  "method": "120 series con al menos 30 meses conocidos y 12 unidades, seleccionadas por cuantiles de volumen. Para cada mes se elige determinísticamente un valor mensual histórico del mismo mes y se distribuye entre días con semilla fija. Asociación de series anónimas a SKU existentes solo para el ensayo.",
+  "limitations": "No son transacciones observadas en Perú. La distribución diaria, la fecha y la asociación de SKU son simuladas. La precisión del ensayo no acredita precisión operativa.",
+  "seed": 104729,
+  "products": 120,
+  "start": "2026-05-23",
+  "end": "2026-10-19",
+  "stages": [
+    {
+      "name": "01_historial_90_dias.csv",
+      "rows": 10800,
+      "sha256": "369de7a65540fcfd1cfbccb53d3b5fafccbfc23ce7246a9171ffd35ee6d38ad9",
+      "start": "2026-05-23",
+      "end": "2026-08-20"
+    },
+    {
+      "name": "02_datos_nuevos_30_dias.csv",
+      "rows": 3600,
+      "sha256": "d3c6d8727747eec39b5ce284a3f632446a0d54026af947258891c5e157288422",
+      "start": "2026-08-21",
+      "end": "2026-09-19"
+    },
+    {
+      "name": "03_ventas_posteriores_30_dias.csv",
+      "rows": 3600,
+      "sha256": "f488b65e7e374a1ace1d1d5570df97d63f63b8ca7969a1be99666e301cdd2544",
+      "start": "2026-09-20",
+      "end": "2026-10-19"
+    },
+    {
+      "name": "02_datos_nuevos_30_dias.xlsx",
+      "rows": 3600,
+      "sha256": "093eddc0a1749cdf1884c7c46c0a8d5aee6d771791b66f323c52dadb5010f88a",
+      "start": "2026-08-21",
+      "end": "2026-09-19",
+      "derived_from": "02_datos_nuevos_30_dias.csv"
+    }
+  ],
+  "sku_mapping": [
+    {
+      "sku": "RP-002-01",
+      "serie_fuente": "T1137"
+    },
+    {
+      "sku": "RP-002-02",
+      "serie_fuente": "T1209"
+    },
+    {
+      "sku": "RP-002-03",
+      "serie_fuente": "T1383"
+    },
+    {
+      "sku": "RP-002-04",
+      "serie_fuente": "T1613"
+    },
+    {
+      "sku": "RP-002-05",
+      "serie_fuente": "T1217"
+    },
+    {
+      "sku": "RP-002-06",
+      "serie_fuente": "T1285"
+    },
+    {
+      "sku": "RP-002-07",
+      "serie_fuente": "T1517"
+    },
+    {
+      "sku": "RP-002-08",
+      "serie_fuente": "T1218"
+    },
+    {
+      "sku": "RP-003-01",
+      "serie_fuente": "T1562"
+    },
+    {
+      "sku": "RP-003-02",
+      "serie_fuente": "T1198"
+    },
+    {
+      "sku": "RP-003-03",
+      "serie_fuente": "T1309"
+    },
+    {
+      "sku": "RP-003-04",
+      "serie_fuente": "T1399"
+    },
+    {
+      "sku": "RP-003-05",
+      "serie_fuente": "T1526"
+    },
+    {
+      "sku": "RP-003-06",
+      "serie_fuente": "T1855"
+    },
+    {
+      "sku": "RP-003-07",
+      "serie_fuente": "T1210"
+    },
+    {
+      "sku": "RP-003-08",
+      "serie_fuente": "T1287"
+    },
+    {
+      "sku": "RP-004-01",
+      "serie_fuente": "T1416"
+    },
+    {
+      "sku": "RP-004-02",
+      "serie_fuente": "T1542"
+    },
+    {
+      "sku": "RP-004-03",
+      "serie_fuente": "T1708"
+    },
+    {
+      "sku": "RP-004-04",
+      "serie_fuente": "T2084"
+    },
+    {
+      "sku": "RP-004-05",
+      "serie_fuente": "T1282"
+    },
+    {
+      "sku": "RP-004-06",
+      "serie_fuente": "T1407"
+    },
+    {
+      "sku": "RP-004-07",
+      "serie_fuente": "T1480"
+    },
+    {
+      "sku": "RP-004-08",
+      "serie_fuente": "T1687"
+    },
+    {
+      "sku": "RP-005-01",
+      "serie_fuente": "T1258"
+    },
+    {
+      "sku": "RP-005-02",
+      "serie_fuente": "T1405"
+    },
+    {
+      "sku": "RP-005-03",
+      "serie_fuente": "T1544"
+    },
+    {
+      "sku": "RP-005-04",
+      "serie_fuente": "T1661"
+    },
+    {
+      "sku": "RP-005-05",
+      "serie_fuente": "T2024"
+    },
+    {
+      "sku": "RP-005-06",
+      "serie_fuente": "T1434"
+    },
+    {
+      "sku": "RP-005-07",
+      "serie_fuente": "T1479"
+    },
+    {
+      "sku": "RP-005-08",
+      "serie_fuente": "T1637"
+    },
+    {
+      "sku": "RP-006-01",
+      "serie_fuente": "T1968"
+    },
+    {
+      "sku": "RP-006-02",
+      "serie_fuente": "T1459"
+    },
+    {
+      "sku": "RP-006-03",
+      "serie_fuente": "T1557"
+    },
+    {
+      "sku": "RP-006-04",
+      "serie_fuente": "T1634"
+    },
+    {
+      "sku": "RP-006-05",
+      "serie_fuente": "T1779"
+    },
+    {
+      "sku": "RP-006-06",
+      "serie_fuente": "T2171"
+    },
+    {
+      "sku": "RP-006-07",
+      "serie_fuente": "T1588"
+    },
+    {
+      "sku": "RP-006-08",
+      "serie_fuente": "T1747"
+    },
+    {
+      "sku": "RP-007-01",
+      "serie_fuente": "T1900"
+    },
+    {
+      "sku": "RP-007-02",
+      "serie_fuente": "T1570"
+    },
+    {
+      "sku": "RP-007-03",
+      "serie_fuente": "T1650"
+    },
+    {
+      "sku": "RP-007-04",
+      "serie_fuente": "T1951"
+    },
+    {
+      "sku": "RP-007-05",
+      "serie_fuente": "T1589"
+    },
+    {
+      "sku": "RP-007-06",
+      "serie_fuente": "T1716"
+    },
+    {
+      "sku": "RP-007-07",
+      "serie_fuente": "T1867"
+    },
+    {
+      "sku": "RP-007-08",
+      "serie_fuente": "T1655"
+    },
+    {
+      "sku": "RP-008-01",
+      "serie_fuente": "T1814"
+    },
+    {
+      "sku": "RP-008-02",
+      "serie_fuente": "T2007"
+    },
+    {
+      "sku": "RP-008-03",
+      "serie_fuente": "T1721"
+    },
+    {
+      "sku": "RP-008-04",
+      "serie_fuente": "T1817"
+    },
+    {
+      "sku": "RP-008-05",
+      "serie_fuente": "T1925"
+    },
+    {
+      "sku": "RP-008-06",
+      "serie_fuente": "T2256"
+    },
+    {
+      "sku": "RP-008-07",
+      "serie_fuente": "T1799"
+    },
+    {
+      "sku": "RP-008-08",
+      "serie_fuente": "T2045"
+    },
+    {
+      "sku": "RP-010-01",
+      "serie_fuente": "T1929"
+    },
+    {
+      "sku": "RP-010-02",
+      "serie_fuente": "T1734"
+    },
+    {
+      "sku": "RP-010-03",
+      "serie_fuente": "T1904"
+    },
+    {
+      "sku": "RP-010-04",
+      "serie_fuente": "T2017"
+    },
+    {
+      "sku": "RP-010-05",
+      "serie_fuente": "T1801"
+    },
+    {
+      "sku": "RP-010-06",
+      "serie_fuente": "T1971"
+    },
+    {
+      "sku": "RP-010-07",
+      "serie_fuente": "T1808"
+    },
+    {
+      "sku": "RP-010-08",
+      "serie_fuente": "T1930"
+    },
+    {
+      "sku": "RP-011-01",
+      "serie_fuente": "T2018"
+    },
+    {
+      "sku": "RP-011-02",
+      "serie_fuente": "T2238"
+    },
+    {
+      "sku": "RP-011-03",
+      "serie_fuente": "T1966"
+    },
+    {
+      "sku": "RP-011-04",
+      "serie_fuente": "T2143"
+    },
+    {
+      "sku": "RP-011-05",
+      "serie_fuente": "T2053"
+    },
+    {
+      "sku": "RP-011-06",
+      "serie_fuente": "T1913"
+    },
+    {
+      "sku": "RP-011-07",
+      "serie_fuente": "T2113"
+    },
+    {
+      "sku": "RP-011-08",
+      "serie_fuente": "T2003"
+    },
+    {
+      "sku": "RP-012-01",
+      "serie_fuente": "T2077"
+    },
+    {
+      "sku": "RP-012-02",
+      "serie_fuente": "T2203"
+    },
+    {
+      "sku": "RP-012-03",
+      "serie_fuente": "T1965"
+    },
+    {
+      "sku": "RP-012-04",
+      "serie_fuente": "T2117"
+    },
+    {
+      "sku": "RP-012-05",
+      "serie_fuente": "T2230"
+    },
+    {
+      "sku": "RP-012-06",
+      "serie_fuente": "T1987"
+    },
+    {
+      "sku": "RP-012-07",
+      "serie_fuente": "T2266"
+    },
+    {
+      "sku": "RP-012-08",
+      "serie_fuente": "T2115"
+    },
+    {
+      "sku": "RP-013-01",
+      "serie_fuente": "T2051"
+    },
+    {
+      "sku": "RP-013-02",
+      "serie_fuente": "T2252"
+    },
+    {
+      "sku": "RP-013-03",
+      "serie_fuente": "T2168"
+    },
+    {
+      "sku": "RP-013-04",
+      "serie_fuente": "T2300"
+    },
+    {
+      "sku": "RP-013-05",
+      "serie_fuente": "T2194"
+    },
+    {
+      "sku": "RP-013-06",
+      "serie_fuente": "T2309"
+    },
+    {
+      "sku": "RP-013-07",
+      "serie_fuente": "T2164"
+    },
+    {
+      "sku": "RP-013-08",
+      "serie_fuente": "T2378"
+    },
+    {
+      "sku": "RP-014-01",
+      "serie_fuente": "T2294"
+    },
+    {
+      "sku": "RP-014-02",
+      "serie_fuente": "T2666"
+    },
+    {
+      "sku": "RP-014-03",
+      "serie_fuente": "T2233"
+    },
+    {
+      "sku": "RP-014-04",
+      "serie_fuente": "T2364"
+    },
+    {
+      "sku": "RP-014-05",
+      "serie_fuente": "T2245"
+    },
+    {
+      "sku": "RP-014-06",
+      "serie_fuente": "T2358"
+    },
+    {
+      "sku": "RP-014-07",
+      "serie_fuente": "T2653"
+    },
+    {
+      "sku": "RP-014-08",
+      "serie_fuente": "T2373"
+    },
+    {
+      "sku": "RP-015-01",
+      "serie_fuente": "T2353"
+    },
+    {
+      "sku": "RP-015-02",
+      "serie_fuente": "T2270"
+    },
+    {
+      "sku": "RP-015-03",
+      "serie_fuente": "T2276"
+    },
+    {
+      "sku": "RP-015-04",
+      "serie_fuente": "T2449"
+    },
+    {
+      "sku": "RP-015-05",
+      "serie_fuente": "T2474"
+    },
+    {
+      "sku": "RP-015-06",
+      "serie_fuente": "T2357"
+    },
+    {
+      "sku": "RP-015-07",
+      "serie_fuente": "T2603"
+    },
+    {
+      "sku": "RP-015-08",
+      "serie_fuente": "T2638"
+    },
+    {
+      "sku": "RP-017-01",
+      "serie_fuente": "T2482"
+    },
+    {
+      "sku": "RP-017-02",
+      "serie_fuente": "T2443"
+    },
+    {
+      "sku": "RP-017-03",
+      "serie_fuente": "T2460"
+    },
+    {
+      "sku": "RP-017-04",
+      "serie_fuente": "T2461"
+    },
+    {
+      "sku": "RP-017-05",
+      "serie_fuente": "T2440"
+    },
+    {
+      "sku": "RP-017-06",
+      "serie_fuente": "T2558"
+    },
+    {
+      "sku": "RP-017-07",
+      "serie_fuente": "T2541"
+    },
+    {
+      "sku": "RP-017-08",
+      "serie_fuente": "T2649"
+    },
+    {
+      "sku": "RP-018-01",
+      "serie_fuente": "T2581"
+    },
+    {
+      "sku": "RP-018-02",
+      "serie_fuente": "T2625"
+    },
+    {
+      "sku": "RP-018-03",
+      "serie_fuente": "T2565"
+    },
+    {
+      "sku": "RP-018-04",
+      "serie_fuente": "T2609"
+    },
+    {
+      "sku": "RP-018-05",
+      "serie_fuente": "T2586"
+    },
+    {
+      "sku": "RP-018-06",
+      "serie_fuente": "T2559"
+    },
+    {
+      "sku": "RP-018-07",
+      "serie_fuente": "T2665"
+    },
+    {
+      "sku": "RP-018-08",
+      "serie_fuente": "T2621"
+    }
+  ]
+}

@@ -448,6 +448,12 @@ def lab_create(d:dict,u=Depends(admin)):
     return {'id':ml_lab.create(str(d.get('name','')),d.get('frequency'),str(d.get('source','')),u['id'])}
 @app.post('/api/admin/ml/lab/demo')
 def lab_demo(u=Depends(admin)): return ml_lab.demo(u['id'])
+@app.post('/api/admin/ml/lab/simulation')
+def lab_simulation(u=Depends(admin)): return ml_lab.simulation(u['id'])
+@app.post('/api/admin/ml/lab/datasets/{did}/reset-simulation')
+def lab_reset_simulation(did:str,u=Depends(admin)): return ml_lab.reset_simulation(did,u['id'])
+@app.get('/api/admin/ml/lab/simulation/examples/{name}')
+def lab_simulation_example(name:str,u=Depends(admin)): return FileResponse(ml_lab.simulation_example_path(name),filename=name)
 @app.post('/api/admin/ml/lab/datasets/{did}/reset')
 def lab_reset(did:str,u=Depends(admin)): return ml_lab.reset(did,u['id'])
 @app.post('/api/admin/ml/lab/preview')

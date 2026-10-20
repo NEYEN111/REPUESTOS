@@ -44,6 +44,7 @@ export function MLAutomation() {
           ['Versión activa', active?.label || 'Sin modelo aprobado', active?.report.winner || 'No se activa por cumplir una fecha'],
         ].map(([label, value, note]) => <div className="ml-stat" key={label}><span>{label}</span><strong>{value}</strong><small>{note}</small></div>)}
       </div>
+      <section className="ml-panel"><div className="ml-panel-title"><div><h2>Ensayo de 90 días para la presentación</h2><p>En el laboratorio puedes crear un historial sintético diario calibrado con Car Parts, entrenar V1, cargar 30 días desde Excel, entrenar V2 y comparar con 30 días posteriores.</p></div><Link className="secondary button" to="/gestion/ml/laboratorio">Abrir laboratorio<ArrowRight size={16}/></Link></div><p className="lab-helper">El ensayo usa SKU del catálogo, pero sus ventas y fechas no son operaciones de RODA. Por eso no incrementa el contador de cierres observados que aparece arriba.</p></section>
       <section className="ml-panel">
         <div className="ml-panel-title"><div><h2>Cómo se actualiza</h2><p>El carrito registra intención. Las ventas pagadas alimentan los cierres diarios y los pronósticos.</p></div><Clock3 size={21}/></div>
         <div className="auto-steps">
