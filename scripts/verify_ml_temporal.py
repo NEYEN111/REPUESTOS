@@ -8,7 +8,7 @@ from threadpoolctl import threadpool_limits
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from ml.lab_engine import train, frame, predict, FEATURES
+from ml.lab_engine import train, frame, predict, compare, FEATURES
 
 
 def run():
@@ -36,7 +36,16 @@ def run():
         assert report['validation_rows'] == 60  # 10 SKU × 2 weeks × 3 disjoint windows.
         result = predict(dict(records=records, bundle=str(folder/'fixture.joblib'), sha256=report['model_sha256'], id='fixture'))
         assert len(result['items']) == 10 and all(r['prediction'] >= 0 for r in result['items'])
-    print('PASS: cinco algoritmos entrenados; tres ventanas sin solapamiento; sin fuga futura; objetivos desconocidos excluidos; joblib y predicción verificados.')
+        later = records + [
+            dict(sku=f'TEST-{sku}', period=(date(2020, 1, 1)+timedelta(days=day)).isoformat(),
+                 units=int(rng.poisson(1+sku/4)))
+            for sku in range(10) for day in range(100, 140)
+        ]
+        checked = compare(dict(records=later, versions=[
+            dict(id='fixture', bundle=str(folder/'fixture.joblib'), sha256=report['model_sha256'])]))
+        assert len(checked['scores']) == 1 and checked['recommended'] == 'fixture'
+        assert checked['rows'] >= 30 and checked['start'] > report['cutoff']
+    print('PASS: cinco algoritmos entrenados; tres ventanas sin solapamiento; sin fuga futura; objetivos desconocidos excluidos; joblib, predicción y primera comparación verificados.')
     print('Fixture artificial de verificación, no incorporada a la tienda. Ganador:', report['winner'])
 
 

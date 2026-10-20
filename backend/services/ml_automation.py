@@ -178,28 +178,25 @@ def review(state, uid):
             if not result['beats_baseline'] or min(x['mae'] for x in result['candidates']) >= result['validation_baseline']['mae']*.99:
                 update(candidate=None, pending_job=None)
                 return 'Versión guardada, sin activar: no reduce al menos 1% el error frente a la referencia en validación.', 1
-            if not d['active_version'] or d['active_version'] == pending['id']:
-                with lab.connection() as c:
-                    c.execute('UPDATE datasets SET active_version=? WHERE id=?', (pending['id'], DATASET))
-                    if not d['active_version']:
-                        lab.event(c, DATASET, 'activar_version', {'version': pending['id'], 'reason': 'Primera versión: supera referencia en validación temporal.'}, uid)
-                update(pending_job=None)
-                refresh_prediction(pending['id'], quality['cutoff'], uid)
-                return 'Primera versión aprobada en validación. Calculando pronósticos a siete días.', 1/1440
             update(candidate=pending['id'], pending_job=None)
-            return 'Nueva candidata guardada. Esperando 28 días posteriores para compararla con la activa.', 1
+            return ('Primera versión guardada, sin activar. Esperando 28 días posteriores para comprobarla frente al promedio histórico.'
+                    if not d['active_version'] else 'Nueva candidata guardada. Esperando 28 días posteriores para compararla con la activa.'), 1
         if pending['action'] == 'compare':
             scores = {x['version']: x['mae'] for x in result['scores']}
             candidate = state['candidate']
-            promote = (candidate in scores and d['active_version'] in scores
-                       and scores[candidate] < scores[d['active_version']]*.99
-                       and scores[candidate] < result['baseline']['mae']*.99)
+            promote = (candidate in scores and candidate == result.get('recommended')
+                       and scores[candidate] < result['baseline']['mae']*.99
+                       and (not d['active_version'] or
+                            d['active_version'] in scores and scores[candidate] < scores[d['active_version']]*.99))
             if promote:
                 lab.activate(DATASET, candidate, uid, managed=True)
             update(candidate=None, pending_job=None)
-            job = lab.start_job(DATASET, 'predict', uid, [candidate if promote else d['active_version']], managed=True)
-            update(pending_job=job['id'])
-            return ('Candidata aprobada y activada.' if promote else 'Se conserva la versión activa: la candidata no supera ambos controles.')+' Actualizando pronósticos.', 1/1440
+            active = candidate if promote else d['active_version']
+            if active:
+                job = lab.start_job(DATASET, 'predict', uid, [active], managed=True)
+                update(pending_job=job['id'])
+                return ('Candidata aprobada y activada.' if promote else 'Se conserva la versión activa: la candidata no supera ambos controles.')+' Actualizando pronósticos.', 1/1440
+            return 'Primera versión no aprobada: no supera al promedio histórico en ventas posteriores. Se reunirán más datos.', 1
         if pending['action'] == 'predict':
             update(pending_job=None)
             return 'Pronósticos actualizados con la versión activa. Comprobando el siguiente paso del ciclo.', 1/1440
@@ -212,7 +209,8 @@ def review(state, uid):
             if refresh_prediction(d['active_version'], quality['cutoff'], uid):
                 return 'Actualizando pronósticos con la activa mientras la candidata reúne ventas posteriores para evaluación.', 1/1440
             return f'Candidata en observación: faltan {28-elapsed} días para evaluar ventas posteriores al entrenamiento.', 1
-        job = lab.start_job(DATASET, 'compare', uid, [d['active_version'], state['candidate']], managed=True)
+        ids = [d['active_version'], state['candidate']] if d['active_version'] else [state['candidate']]
+        job = lab.start_job(DATASET, 'compare', uid, ids, managed=True)
         update(pending_job=job['id'])
         return 'Comparando ambas versiones sobre las mismas ventas posteriores, sin reentrenarlas.', 1/1440
     if not quality['ready']:

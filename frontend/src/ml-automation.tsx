@@ -50,11 +50,11 @@ export function MLAutomation() {
           {[
             ['01', 'Acumular', 'Se sincronizan días completos. Los días sin observación permanecen desconocidos.'],
             ['02', 'Entrenar', 'Cada 30 días nuevos, cinco algoritmos compiten en tres ventanas temporales.'],
-            ['03', 'Comprobar', 'La candidata espera 28 días posteriores para compararse con la activa en las mismas ventas.'],
-            ['04', 'Activar', 'Debe reducir al menos 1% el MAE frente a la activa y al promedio histórico. Si falla, se conserva la anterior.'],
+            ['03', 'Comprobar', 'Cada candidata espera 28 días posteriores. La primera se compara con el promedio histórico; las demás, también con la activa.'],
+            ['04', 'Activar', 'Debe reducir al menos 1% el MAE frente al promedio histórico y, si existe, frente a la activa. Si falla, no se activa.'],
           ].map(([step, title, text]) => <article key={step}><span className="lab-stage-number">{step}</span><h3>{title}</h3><p>{text}</p></article>)}
         </div>
-        <p className="lab-helper"><b>La primera versión</b> se aprueba si supera al promedio histórico por al menos 1% en validación temporal. A partir de la segunda también se exige comparación con ventas posteriores. Una nueva versión puede ser V3 sin convertirse en la versión activa. El MAE mide cuántas unidades se equivoca el pronóstico semanal, en promedio; un valor menor es mejor. El umbral de 1% es una regla de aprobación, no una garantía de mejora futura.</p>
+        <p className="lab-helper"><b>Ninguna versión se aprueba solo por la validación.</b> También debe superar al promedio histórico con ventas posteriores que no vio al entrenarse. Una nueva versión puede ser V3 sin convertirse en la activa. El MAE mide cuántas unidades se equivoca el pronóstico semanal, en promedio; un valor menor es mejor. El umbral de 1% es una regla de aprobación, no una garantía de mejora futura.</p>
         <div className="auto-schedule"><span>Última revisión<br/><b>{stamp(s.last_check)}</b></span><span>Próxima comprobación del historial<br/><b>{s.enabled ? stamp(s.next_check) : 'Programación pausada'}</b></span><span>Frecuencia de entrenamiento<br/><b>30 días nuevos completos</b></span></div>
         <p>«Revisar ahora» ejecuta los mismos controles de la programación. No adelanta fechas ni crea ventas. Si el servidor estuvo apagado, revisará lo pendiente al iniciarse.</p>
       </section>

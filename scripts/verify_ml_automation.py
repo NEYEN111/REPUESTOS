@@ -83,6 +83,27 @@ def run():
     with patch.object(lab, 'start_job') as start:
         auto.tick(force=True)
         start.assert_not_called()  # Same month is not trained again.
+    # A first version that passes validation still needs genuinely later observations.
+    first_report = {'cutoff': (today-timedelta(days=29)).isoformat(),
+                    'beats_baseline': True, 'candidates': [{'mae': .7}],
+                    'validation_baseline': {'mae': 1}}
+    with lab.connection() as c:
+        c.execute('INSERT INTO versions VALUES(?,?,?,?,?,?,?)',
+                  ('first-v1', auto.DATASET, 'V1', 'unused.joblib', json.dumps(first_report), 'first', now()))
+    completed('first-v1', 'train', first_report)
+    assert 'sin activar' in auto.tick(force=True)['message']
+    assert auto.status()['active_version'] is None
+    with patch.object(lab, 'start_job', return_value={'id': 'first-comparison'}) as start:
+        auto.tick(force=True)
+        assert start.call_args.args[1] == 'compare'
+        assert start.call_args.args[3] == ['first-v1']
+    first_comparison = {'scores': [{'version': 'first-v1', 'mae': .7}],
+                        'baseline': {'mae': .9}, 'recommended': 'first-v1',
+                        'snapshot_rows': 720}
+    completed('first-comparison', 'compare', first_comparison)
+    with patch.object(lab, 'start_job', return_value={'id': 'first-prediction'}):
+        assert 'aprobada' in auto.tick(force=True)['message']
+    assert auto.status()['active_version'] == 'first-v1'
     # Lease protects concurrent review and survives process instances.
     with lab.connection() as c:
         c.execute("UPDATE automation SET lease_until='2099-01-01',lease_token='other' WHERE id=1")
@@ -95,7 +116,8 @@ def run():
         c.execute('UPDATE datasets SET active_version=? WHERE id=?', ('v1', auto.DATASET))
     auto.update(candidate='v2')
     # Better than incumbent but worse than baseline: retain incumbent.
-    comparison = {'scores': [{'version': 'v1', 'mae': 1}, {'version': 'v2', 'mae': .8}], 'baseline': {'mae': .7}}
+    comparison = {'scores': [{'version': 'v1', 'mae': 1}, {'version': 'v2', 'mae': .8}],
+                  'baseline': {'mae': .7}, 'recommended': 'v2', 'snapshot_rows': 720}
     completed('comparison1', 'compare', comparison)
     with patch.object(lab, 'start_job', return_value={'id': 'prediction'}):
         assert 'conserva' in auto.tick(force=True)['message']
@@ -148,7 +170,7 @@ def run():
     assert path.exists() and label == 'V1'
     with connect() as c:
         assert [tuple(x) for x in before] == [tuple(x) for x in c.execute('SELECT id,stock,reserved FROM products ORDER BY id')]
-    print('PASS: permisos, cierres, ceros, aislamiento, pausas, revisión manual, idempotencia, bloqueo, comparación, promoción y auditoría.')
+    print('PASS: permisos, cierres, ceros, aislamiento, pausas, revisión manual, idempotencia, primera versión en observación, comparación, promoción y auditoría.')
 
 
 if __name__ == '__main__':

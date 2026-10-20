@@ -345,8 +345,9 @@ def start_job(did, action, uid, version_ids=None, managed=False):
                 request['bundle'] = str(FOLDER/(jid+'.joblib'))
             else:
                 ids = version_ids or ([d['active_version']] if d['active_version'] else [])
-                if not isinstance(ids, list) or not all(isinstance(v, str) for v in ids) or len(ids) != (2 if action == 'compare' else 1) or len(set(ids)) != len(ids):
-                    raise ValueError('Selecciona una versión para predecir o dos versiones distintas para comparar.')
+                expected = 1 if action != 'compare' or (managed and not d['active_version']) else 2
+                if not isinstance(ids, list) or not all(isinstance(v, str) for v in ids) or len(ids) != expected or len(set(ids)) != len(ids):
+                    raise ValueError('Selecciona una versión para predecir o las versiones necesarias para comparar.')
                 specs = []
                 for vid in ids:
                     v = row(c, 'SELECT * FROM versions WHERE id=? AND dataset=?', (vid, did))
