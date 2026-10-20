@@ -14,7 +14,7 @@ def seed(reset=False):
         with transaction() as c:
             # Explicit reset is for the academic dataset; preserve a recoverable backup.
             c.execute('PRAGMA defer_foreign_keys=ON')
-            for table in ['catalog_quality','product_price_history','stock_observations','shipments','inventory_counts','inventory_policy','purchase_receipt_items','purchase_receipts','daily_stock','audit','alerts','events','complaints','purchase_items','purchase_orders','suppliers','inventory_movements','order_history','payments','order_items','orders','quote_items','quotes','addresses','garage','product_images','compatibility','products','vehicles','categories','brands','sessions','users','ubigeo']: c.execute('DELETE FROM '+table)
+            for table in ['ml_predictions','ml_runs','ml_samples','ml_daily','catalog_quality','product_price_history','stock_observations','shipments','inventory_counts','inventory_policy','purchase_receipt_items','purchase_receipts','daily_stock','audit','alerts','events','complaints','purchase_items','purchase_orders','suppliers','inventory_movements','order_history','payments','order_items','orders','quote_items','quotes','addresses','garage','product_images','compatibility','products','vehicles','categories','brands','sessions','users','ubigeo']: c.execute('DELETE FROM '+table)
     init_db()
     with transaction() as c:
         if one(c,'SELECT id FROM products LIMIT 1'):

@@ -36,3 +36,4 @@ def init_db():
     with connect() as c:
         c.executescript((ROOT/'backend/schema.sql').read_text(encoding='utf-8'))
         migrate(c)
+        c.executescript((ROOT/'backend/ml_schema.sql').read_text(encoding='utf-8'))

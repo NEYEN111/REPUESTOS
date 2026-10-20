@@ -16,7 +16,7 @@ function Heading({label,title,text,children}:any){return <div className="admin-p
 
 export function InventoryWorkspace(){
   const {user,categories}=useStore(); const [params,setParams]=useSearchParams();const replenish=params.get('vista')==='reposicion';
-  const [q,setQ]=useState(''),[status,setStatus]=useState(''),[category,setCategory]=useState(''),[sort,setSort]=useState('name'),[direction,setDirection]=useState('asc'),[page,setPage]=useState(1);
+  const [q,setQ]=useState(()=>params.get('q')||''),[status,setStatus]=useState(''),[category,setCategory]=useState(''),[sort,setSort]=useState('name'),[direction,setDirection]=useState('asc'),[page,setPage]=useState(1);
   const [row,setRow]=useState<any>(null),[selected,setSelected]=useState<any[]>([]),[purchase,setPurchase]=useState(false);
   const query=new URLSearchParams({q,status,category,sort,direction,page:String(page),replenish:String(replenish)});
   const l=useLoad('/admin/operations/inventory?'+query);const s=l.data?.summary;

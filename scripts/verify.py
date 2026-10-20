@@ -27,6 +27,9 @@ def run():
         vehicles=get(customer,'/vehicles');v=next(v for v in vehicles if v['brand']=='Toyota' and v['model']=='Yaris' and v['year']==2018)
         products=get(customer,f"/products?category=frenos&vehicle={v['id']}")['items'];assert products and all(p['compatible'] for p in products)
         assert get(customer,'/products?q=pastilas')['total']>0
+        exact=get(admin,'/admin/products?q=RP-025-04&limit=8')
+        assert exact['total']==1 and exact['items'][0]['sku']=='RP-025-04'
+        assert get(admin,'/admin/products?q=RP-999-99&limit=8')['total']==0
         p=next(p for p in products if p['available']>2);pid=p['id'];start=get(admin,f'/admin/products/{pid}')
         quote=post(customer,'/quotes',{'items':[{'product_id':pid,'quantity':1}]})
         q=get(customer,f"/quotes/{quote['id']}");assert q['total_cents']==p['price_cents']

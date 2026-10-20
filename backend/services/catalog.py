@@ -29,8 +29,9 @@ def buscar_repuestos(vehiculo=None,texto='',category='',brand='',sort='recommend
             def match(p):
                 s=normalize(' '.join(str(p[k]) for k in ['name','sku','oem','brand','category','parent_name','specs']))
                 words=s.split()
-                return all(q in s or (len(q)>3 and any(difflib.SequenceMatcher(None,q,w).ratio()>=.78 for w in words)) for q in query)
-            result=[p for p in result if match(p)]
+                return all(q in s or (len(q)>3 and not any(char.isdigit() for char in q) and any(difflib.SequenceMatcher(None,q,w).ratio()>=.78 for w in words)) for q in query)
+            exact=[p for p in result if normalize(p['sku'])==normalize(texto.strip())]
+            result=exact or [p for p in result if match(p)]
         key={'price_asc':lambda p:p['price_cents'],'price_desc':lambda p:-p['price_cents'],'name':lambda p:p['name'],'stock':lambda p:p['stock']}.get(sort,lambda p:(-p['featured'],p['id']))
         if admin and sort in ['sku','brand','price_cents','stock','active','name']:
             result.sort(key=lambda p:p[sort],reverse=direction=='desc')

@@ -32,4 +32,5 @@ data/ml/roda-v1/*
 !data/ml/roda-v1/manifest.json
 !data/ml/roda-v1/quality.json
 *.joblib
+!ml/deployed/roda-v2/model.joblib
 .ipynb_checkpoints/

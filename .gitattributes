@@ -7,6 +7,9 @@
 /ml/*.py text eol=lf
 /ml/*.json text eol=lf
 /ml/requirements.txt text eol=lf
+/ml/runtime-requirements.txt text eol=lf
+/ml/deployed/**/*.joblib -text
+/ml/deployed/**/*.json text eol=lf
 /notebooks/*.ipynb text eol=lf
 /scripts/verify_ml_bundle.py text eol=lf
 /ml/evaluations/** -text whitespace=cr-at-eol

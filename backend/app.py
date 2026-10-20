@@ -7,7 +7,7 @@ from fastapi.responses import FileResponse,JSONResponse,StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.exceptions import RequestValidationError
 from backend.db import ROOT,connect,transaction,rows,one,now,config,init_db,audit
-from backend.services import catalog,customers,orders,inventory,suppliers,reports,operations,catalog_quality
+from backend.services import catalog,customers,orders,inventory,suppliers,reports,operations,catalog_quality,ml_history,predictions
 from backend.services.payments import provider
 
 async def expiration_loop():
@@ -16,12 +16,14 @@ async def expiration_loop():
         try:
             with transaction() as c: orders.expire(c)
             operations.snapshot()
+            await asyncio.to_thread(ml_history.capture)
         except Exception: logging.exception('No se pudo actualizar el cierre operativo.')
 @asynccontextmanager
 async def lifespan(app):
     init_db()
     with transaction() as c: orders.expire(c)
     operations.snapshot()
+    await asyncio.to_thread(ml_history.capture)
     task=asyncio.create_task(expiration_loop())
     yield
     task.cancel()
@@ -403,6 +405,27 @@ async def import_products(file:UploadFile=File(...),u=Depends(staff)):
             catalog.save_product(d,u['id'],p['id'] if p else None)
         except (ValueError,KeyError,sqlite3.Error) as e: results.append({'row':n,'error':str(e)})
     return {'imported':len(data)-len(results),'errors':results}
+
+@app.get('/api/admin/ml/overview')
+def ml_overview(u=Depends(admin)): return predictions.overview()
+@app.get('/api/admin/ml/evaluation')
+def ml_evaluation(u=Depends(admin)): return predictions.evaluation()
+@app.get('/api/admin/ml/images/{name}')
+def ml_image(name:str,u=Depends(admin)): return FileResponse(predictions.asset(name))
+@app.post('/api/admin/ml/calculate')
+def ml_calculate(d:dict,u=Depends(admin)): return predictions.calculate(d.get('source',''),u['id'])
+@app.post('/api/admin/ml/capture')
+def ml_capture(u=Depends(admin)):
+    ml_history.capture()
+    return predictions.readiness()
+@app.get('/api/admin/ml/runs/{rid}')
+def ml_run(rid:int,q:str='',rotation:str='',review:str='',sort:str='prediction',direction:str='desc',page:int=1,limit:int=15,u=Depends(admin)):
+    return predictions.listing(rid,q,rotation,review,sort,direction,page,limit)
+@app.get('/api/admin/ml/predictions/{pid}')
+def ml_prediction(pid:int,u=Depends(admin)): return predictions.detail(pid)
+@app.get('/api/admin/ml/runs/{rid}/export')
+def ml_export(rid:int,u=Depends(admin)):
+    return Response(predictions.export(rid),media_type='text/csv',headers={'Content-Disposition':f'attachment; filename="pronostico-{rid}.csv"'})
 
 app.mount('/media',StaticFiles(directory=ROOT/'backend/static'),name='media')
 DIST=ROOT/'frontend/dist'

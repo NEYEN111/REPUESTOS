@@ -16,6 +16,8 @@ import {
 import "./styles.css";
 import "./precision.css";
 import { InventoryWorkspace, ShipmentsWorkspace, DataQuality } from './operations';
+import { Forecasts, ModelEvaluation, HistoryQuality } from './ml';
+import './ml.css';
 function Entry() {
   const { user } = useStore();
   return ["admin", "empleado"].includes(user?.role) ? <Navigate to="/gestion" replace /> : <Home />;
@@ -62,6 +64,9 @@ createRoot(document.getElementById("root")!).render(
             <Route path="inventario" element={<InventoryWorkspace />} />
             <Route path="envios" element={<ShipmentsWorkspace />} />
             <Route path="calidad" element={<DataQuality />} />
+            <Route path="ml" element={<Forecasts />} />
+            <Route path="ml/modelos" element={<ModelEvaluation />} />
+            <Route path="ml/calidad" element={<HistoryQuality />} />
             <Route path=":section" element={<AdminTable />} />
           </Route>
           <Route path="*" element={<Legal missing />} />
