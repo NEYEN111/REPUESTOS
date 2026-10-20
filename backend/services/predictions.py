@@ -12,6 +12,7 @@ from backend.services.catalog import normalize
 
 BUNDLE=ROOT/'ml/deployed/roda-v2'
 EVALUATION=ROOT/'ml/evaluations/roda-v2'
+EXTERNAL_WEEKLY=ROOT/'ml/evaluations/uci-weekly-v1'
 LOCK=threading.Lock()
 REASONS={
  'evidencia_insuficiente_global':'El modelo necesita revisión en este conjunto de datos.',
@@ -142,7 +143,13 @@ def evaluation():
     return {'data':summary['data'],'selection':summary['selection'],'evaluation':summary['evaluation'],
        'models':quality['models'],'assets':summary['assets'],'policy':quality['policy'],
        'methodology':quality['methodology'],'limitations':summary['limitations'],
-       'test_status':quality['test_status'],'run_id':quality['evaluation_id']}
+       'test_status':quality['test_status'],'run_id':quality['evaluation_id'],
+       'external_weekly':load_json(EXTERNAL_WEEKLY/'report.json')}
+
+def external_image(name):
+    if name not in {'01_metodos.png','02_rotacion.png'}:
+        raise ValueError('Gráfico no encontrado.')
+    return EXTERNAL_WEEKLY/'images'/name
 
 def asset(name):
     allowed={Path(a['png']).name for a in load_json(EVALUATION/'dashboard.json')['assets']}

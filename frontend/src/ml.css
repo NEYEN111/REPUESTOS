@@ -6,6 +6,7 @@
 @media(min-width:1600px){.ml-stat>strong{font-size:38px}.ml-table{font-size:13px}.ml-table th{font-size:12px}.ml-product img{width:48px;height:48px}.ml-model-grid summary{font-size:14px}}
 @media(prefers-reduced-motion:reduce){.ml-tabs a{transition:none}.ml-workspace .spin{animation:none}}
 .ml-quality-table th:last-child{width:27%}.ml-quality-table th:first-child{width:30%}
+.ml-external-body{padding:0 22px 22px}.ml-external-metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border:1px solid var(--ml-line);margin:8px 0 18px}.ml-external-metrics>div{padding:14px 18px;border-right:1px solid var(--ml-line)}.ml-external-metrics>div:last-child{border:0}.ml-external-metrics span{display:block;font-size:11px;color:var(--ml-muted)}.ml-external-metrics b{display:block;font-size:17px;margin-top:7px}.ml-external .ml-table{margin:18px 0}.ml-external-figures{display:grid;grid-template-columns:1fr 1fr;gap:16px}.ml-external-figures figure{margin:0;min-width:0}.ml-external-figures img{display:block;width:100%;height:auto;border:1px solid var(--ml-line)}.ml-external-figures figcaption,.ml-external-source{font-size:11px;color:var(--ml-muted);line-height:1.6;margin-top:8px}.ml-external-source a{text-decoration:underline}
 .ml-table:not(.ml-metrics):not(.ml-quality-table) th:last-child{width:112px}.ml-table button{white-space:nowrap}.ml-table button svg{flex-shrink:0}
 @media(max-width:1450px){
   .ml-heading{margin-bottom:12px}.ml-heading h1{font-size:38px;margin:5px 0}.ml-heading p{margin:4px 0}

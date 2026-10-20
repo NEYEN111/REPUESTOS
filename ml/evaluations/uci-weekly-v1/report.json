@@ -1,0 +1,443 @@
+{
+  "source": {
+    "title": "Sales Transactions Weekly",
+    "publisher": "UCI Machine Learning Repository",
+    "url": "https://archive.ics.uci.edu/dataset/396/Sales%2BTransactions%2BDataset%2BWeekly",
+    "doi": "10.24432/C5XS4Q",
+    "license": "CC BY 4.0",
+    "archive_sha256": "dededa20f199af8f2bb96184bb1696befda902849a700bde283fe763afc90ba9",
+    "csv_sha256": "6f939a928c04820bc291a6184f4f1d0be694b8de58d949e808852804f25969c3",
+    "products": 811,
+    "weeks": 52,
+    "scope": "Productos anónimos de venta minorista; no son SKU de RODA ni repuestos verificados.",
+    "excluded_columns": "MIN, MAX y Normalized 0..51, derivados de la serie completa."
+  },
+  "protocol": {
+    "train_targets": "W8-W35",
+    "validation_targets": "W36-W43",
+    "test_targets": "W44-W51",
+    "test_locked_before_selection": true,
+    "forecast_horizon": "Una semana, con ventas previas conocidas al emitir cada pronóstico.",
+    "segments_fixed_from": "W0-W35",
+    "refit": "W8-W43 después de elegir algoritmo y parámetros con W36-W43."
+  },
+  "data": {
+    "training_rows": 22708,
+    "validation_rows": 6488,
+    "test_rows": 6488,
+    "zero_fraction": 0.2821540358531727,
+    "products_by_rotation": {
+      "baja": 242,
+      "media": 61,
+      "alta": 508
+    }
+  },
+  "selection": {
+    "ml_winner": "Extra Trees",
+    "reference_winner": "Croston SBA",
+    "selected_model_artifact": "selected_model.joblib",
+    "selected_model_sha256": "9a0698bc9731a1f40572e134732dd815fe91bae0a20789bed560899f1257f52b",
+    "intermittent_parameters": {
+      "Croston SBA": {
+        "alpha": 0.1,
+        "beta": 0.1,
+        "validation_mae": 1.949320650979776
+      },
+      "TSB": {
+        "alpha": 0.1,
+        "beta": 0.1,
+        "validation_mae": 1.954032080536336
+      }
+    },
+    "segment_choices": {
+      "baja": "Promedio 8 semanas",
+      "media": "Croston SBA",
+      "alta": "Croston SBA"
+    },
+    "methods": [
+      {
+        "method": "Croston SBA",
+        "family": "Referencia",
+        "n": 6488,
+        "mae": 1.949320650979776,
+        "rmse": 3.215141680306823,
+        "wape_pct": 23.829804954603635,
+        "bias": -0.2958920451567106,
+        "actual_units": 53073,
+        "predicted_units": 51153.25241102326
+      },
+      {
+        "method": "TSB",
+        "family": "Referencia",
+        "n": 6488,
+        "mae": 1.954032080536336,
+        "rmse": 3.1787382474763852,
+        "wape_pct": 23.887400634069582,
+        "bias": 0.11761557295861101,
+        "actual_units": 53073,
+        "predicted_units": 53836.08983735547
+      },
+      {
+        "method": "Extra Trees",
+        "family": "ML",
+        "n": 6488,
+        "mae": 1.9813462845729302,
+        "rmse": 3.2198736934175693,
+        "wape_pct": 24.22130781058009,
+        "bias": 0.058018908756156895,
+        "actual_units": 53073,
+        "predicted_units": 53449.42668000994
+      },
+      {
+        "method": "Ridge",
+        "family": "ML",
+        "n": 6488,
+        "mae": 1.9871356647014788,
+        "rmse": 3.204759021138069,
+        "wape_pct": 24.29208108187439,
+        "bias": 0.021575495150431303,
+        "actual_units": 53073,
+        "predicted_units": 53212.981812535996
+      },
+      {
+        "method": "Promedio 8 semanas",
+        "family": "Referencia",
+        "n": 6488,
+        "mae": 1.9895769112207151,
+        "rmse": 3.280424746494998,
+        "wape_pct": 24.321924519058655,
+        "bias": -0.23360434648581999,
+        "actual_units": 53073,
+        "predicted_units": 51557.375
+      },
+      {
+        "method": "Random Forest",
+        "family": "ML",
+        "n": 6488,
+        "mae": 1.9928448485816046,
+        "rmse": 3.2421068895659486,
+        "wape_pct": 24.36187398036186,
+        "bias": 0.08627132715605368,
+        "actual_units": 53073,
+        "predicted_units": 53632.72837058848
+      },
+      {
+        "method": "Hist. Gradient Boosting",
+        "family": "ML",
+        "n": 6488,
+        "mae": 2.020436956207101,
+        "rmse": 3.254297560591687,
+        "wape_pct": 24.699178437005017,
+        "bias": 0.07354658136835072,
+        "actual_units": 53073,
+        "predicted_units": 53550.17021991786
+      },
+      {
+        "method": "Poisson",
+        "family": "ML",
+        "n": 6488,
+        "mae": 2.2708048126608897,
+        "rmse": 3.5812130071230146,
+        "wape_pct": 27.75984328103528,
+        "bias": -0.20050572042815576,
+        "actual_units": 53073,
+        "predicted_units": 51772.11888586213
+      },
+      {
+        "method": "Última semana",
+        "family": "Referencia",
+        "n": 6488,
+        "mae": 2.600801479654747,
+        "rmse": 4.279319696558253,
+        "wape_pct": 31.793944190077816,
+        "bias": -0.040073982737361284,
+        "actual_units": 53073,
+        "predicted_units": 52813.0
+      }
+    ]
+  },
+  "test": {
+    "methods": [
+      {
+        "method": "Ridge",
+        "family": "ML",
+        "n": 6488,
+        "mae": 2.261148253692944,
+        "rmse": 3.6032415378842315,
+        "wape_pct": 25.952324281700783,
+        "bias": -0.28971212520592654,
+        "actual_units": 56528,
+        "predicted_units": 54648.34773166395
+      },
+      {
+        "method": "TSB",
+        "family": "Referencia",
+        "n": 6488,
+        "mae": 2.2637439575251577,
+        "rmse": 3.6483175078356864,
+        "wape_pct": 25.982116466924747,
+        "bias": -0.33840841084062645,
+        "actual_units": 56528,
+        "predicted_units": 54332.40623046602
+      },
+      {
+        "method": "Extra Trees",
+        "family": "ML",
+        "n": 6488,
+        "mae": 2.2712538891353486,
+        "rmse": 3.648373369434134,
+        "wape_pct": 26.06831169103832,
+        "bias": -0.24919649451928513,
+        "actual_units": 56528,
+        "predicted_units": 54911.21314355888
+      },
+      {
+        "method": "Random Forest",
+        "family": "ML",
+        "n": 6488,
+        "mae": 2.278078879415789,
+        "rmse": 3.6592708431583505,
+        "wape_pct": 26.146645502493698,
+        "bias": -0.2557522684842626,
+        "actual_units": 56528,
+        "predicted_units": 54868.67928207411
+      },
+      {
+        "method": "Hist. Gradient Boosting",
+        "family": "ML",
+        "n": 6488,
+        "mae": 2.286737316053746,
+        "rmse": 3.66300956346416,
+        "wape_pct": 26.24602269062536,
+        "bias": -0.23757296179912826,
+        "actual_units": 56528,
+        "predicted_units": 54986.62662384725
+      },
+      {
+        "method": "Política por rotación",
+        "family": "Política",
+        "n": 6488,
+        "mae": 2.288774891118105,
+        "rmse": 3.693386992635421,
+        "wape_pct": 26.269408954101092,
+        "bias": -0.746016507894963,
+        "actual_units": 56528,
+        "predicted_units": 51687.844896777475
+      },
+      {
+        "method": "Croston SBA",
+        "family": "Referencia",
+        "n": 6488,
+        "mae": 2.2904780879552296,
+        "rmse": 3.694802288739432,
+        "wape_pct": 26.28895739218357,
+        "bias": -0.7702764775417543,
+        "actual_units": 56528,
+        "predicted_units": 51530.446213709096
+      },
+      {
+        "method": "Promedio 8 semanas",
+        "family": "Referencia",
+        "n": 6488,
+        "mae": 2.3029438964241677,
+        "rmse": 3.722703002922134,
+        "wape_pct": 26.43203368242287,
+        "bias": -0.3099568434032059,
+        "actual_units": 56528,
+        "predicted_units": 54517.0
+      },
+      {
+        "method": "Poisson",
+        "family": "ML",
+        "n": 6488,
+        "mae": 2.607400959158832,
+        "rmse": 4.100728558043389,
+        "wape_pct": 29.92643897364581,
+        "bias": -0.48701542510535345,
+        "actual_units": 56528,
+        "predicted_units": 53368.243921916466
+      },
+      {
+        "method": "Última semana",
+        "family": "Referencia",
+        "n": 6488,
+        "mae": 2.7655672009864367,
+        "rmse": 4.433141496333101,
+        "wape_pct": 31.74179167846023,
+        "bias": -0.07136251541307029,
+        "actual_units": 56528,
+        "predicted_units": 56065.0
+      }
+    ],
+    "by_rotation": [
+      {
+        "rotation": "baja",
+        "method": "Extra Trees",
+        "n": 1936,
+        "mae": 0.47175109947764193,
+        "rmse": 0.7077858868511774,
+        "wape_pct": 112.7543368628043,
+        "bias": -0.13983727650551817,
+        "actual_units": 810,
+        "predicted_units": 539.2750326853168
+      },
+      {
+        "rotation": "baja",
+        "method": "Croston SBA",
+        "n": 1936,
+        "mae": 0.4623839571690415,
+        "rmse": 0.7346310945521678,
+        "wape_pct": 110.5154742073166,
+        "bias": -0.20003805943614816,
+        "actual_units": 810,
+        "predicted_units": 422.72631693161713
+      },
+      {
+        "rotation": "baja",
+        "method": "TSB",
+        "n": 1936,
+        "mae": 0.45086296785614155,
+        "rmse": 0.7104885465865771,
+        "wape_pct": 107.76181552709754,
+        "bias": -0.16090660964744377,
+        "actual_units": 810,
+        "predicted_units": 498.4848037225489
+      },
+      {
+        "rotation": "baja",
+        "method": "Promedio 8 semanas",
+        "n": 1936,
+        "mae": 0.45667613636363635,
+        "rmse": 0.7103806652535778,
+        "wape_pct": 109.15123456790124,
+        "bias": -0.1187370867768595,
+        "actual_units": 810,
+        "predicted_units": 580.125
+      },
+      {
+        "rotation": "baja",
+        "method": "Política por rotación",
+        "n": 1936,
+        "mae": 0.45667613636363635,
+        "rmse": 0.7103806652535778,
+        "wape_pct": 109.15123456790124,
+        "bias": -0.1187370867768595,
+        "actual_units": 810,
+        "predicted_units": 580.125
+      },
+      {
+        "rotation": "media",
+        "method": "Extra Trees",
+        "n": 488,
+        "mae": 1.1387637124380632,
+        "rmse": 1.5755638253819644,
+        "wape_pct": 60.667761099320394,
+        "bias": -0.5584734755394937,
+        "actual_units": 916,
+        "predicted_units": 643.4649439367271
+      },
+      {
+        "rotation": "media",
+        "method": "Croston SBA",
+        "n": 488,
+        "mae": 1.1702496348180575,
+        "rmse": 1.6353436143856923,
+        "wape_pct": 62.34517705144237,
+        "bias": -0.7207911330292003,
+        "actual_units": 916,
+        "predicted_units": 564.2539270817504
+      },
+      {
+        "rotation": "media",
+        "method": "TSB",
+        "n": 488,
+        "mae": 1.142310312041669,
+        "rmse": 1.584741398997773,
+        "wape_pct": 60.85670658038587,
+        "bias": -0.5984379934835481,
+        "actual_units": 916,
+        "predicted_units": 623.9622591800285
+      },
+      {
+        "rotation": "media",
+        "method": "Promedio 8 semanas",
+        "n": 488,
+        "mae": 1.1390881147540983,
+        "rmse": 1.5543949622829107,
+        "wape_pct": 60.685043668122276,
+        "bias": -0.46542008196721313,
+        "actual_units": 916,
+        "predicted_units": 688.875
+      },
+      {
+        "rotation": "media",
+        "method": "Política por rotación",
+        "n": 488,
+        "mae": 1.1702496348180575,
+        "rmse": 1.6353436143856923,
+        "wape_pct": 62.34517705144237,
+        "bias": -0.7207911330292003,
+        "actual_units": 916,
+        "predicted_units": 564.2539270817504
+      },
+      {
+        "rotation": "alta",
+        "method": "Extra Trees",
+        "n": 4064,
+        "mae": 3.264485337709561,
+        "rmse": 4.551165917279318,
+        "wape_pct": 24.20873036102999,
+        "bias": -0.26415522467105457,
+        "actual_units": 54802,
+        "predicted_units": 53728.473166936834
+      },
+      {
+        "rotation": "alta",
+        "method": "Croston SBA",
+        "n": 4064,
+        "mae": 3.295857448765515,
+        "rmse": 4.6060726443825,
+        "wape_pct": 24.44137927773266,
+        "bias": -1.0478676255669954,
+        "actual_units": 54802,
+        "predicted_units": 50543.465969695724
+      },
+      {
+        "rotation": "alta",
+        "method": "TSB",
+        "n": 4064,
+        "mae": 3.2620208312936514,
+        "rmse": 4.550511148949276,
+        "wape_pct": 24.19045410455348,
+        "bias": -0.391742330816083,
+        "actual_units": 54802,
+        "predicted_units": 53209.95916756344
+      },
+      {
+        "rotation": "alta",
+        "method": "Promedio 8 semanas",
+        "n": 4064,
+        "mae": 3.3222194881889764,
+        "rmse": 4.6469340497786416,
+        "wape_pct": 24.636874566621657,
+        "bias": -0.3823818897637795,
+        "actual_units": 54802,
+        "predicted_units": 53248.0
+      },
+      {
+        "rotation": "alta",
+        "method": "Política por rotación",
+        "n": 4064,
+        "mae": 3.295857448765515,
+        "rmse": 4.6060726443825,
+        "wape_pct": 24.44137927773266,
+        "bias": -1.0478676255669954,
+        "actual_units": 54802,
+        "predicted_units": 50543.465969695724
+      }
+    ],
+    "ml_approved_against_reference": false,
+    "decision": "No aprobar ML: no supera por al menos 1% la mejor referencia elegida en validación y en prueba.",
+    "limitation": "Evaluación externa semanal de productos anónimos. No acredita precisión ni política de compra para RODA."
+  }
+}

@@ -415,6 +415,8 @@ async def import_products(file:UploadFile=File(...),u=Depends(staff)):
 def ml_overview(u=Depends(admin)): return predictions.overview()
 @app.get('/api/admin/ml/evaluation')
 def ml_evaluation(u=Depends(admin)): return predictions.evaluation()
+@app.get('/api/admin/ml/external-images/{name}')
+def ml_external_image(name:str,u=Depends(admin)): return FileResponse(predictions.external_image(name))
 @app.get('/api/admin/ml/images/{name}')
 def ml_image(name:str,u=Depends(admin)): return FileResponse(predictions.asset(name))
 @app.post('/api/admin/ml/calculate')
