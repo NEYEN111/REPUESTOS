@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Download, Upload, RefreshCw, Plus, ArrowRight, Database, FlaskConical } from 'lucide-react';
 import { api, useLoad, useStore, Loading, ErrorBox, Modal, Pagination } from './lib';
 import { Frame } from './ml';
+import { MLExplanation } from './ml-explain';
 import './ml-lab.css';
 
 const base = '/admin/ml/lab';
@@ -11,7 +12,7 @@ const eventName: Record<string, string> = { crear_historial: 'Historial creado',
 
 export function MLLaboratory() {
   const { notify } = useStore();
-  const [did, setDid] = useState(() => new URLSearchParams(window.location.search).get('dataset') || ''), [section, setSection] = useState('datos');
+  const [did, setDid] = useState(() => new URLSearchParams(window.location.search).get('dataset') || ''), [section, setSection] = useState(() => new URLSearchParams(window.location.search).get('section') === 'explicar' ? 'explicar' : 'datos');
   const data = useLoad(base + (did ? `?dataset=${did}` : ''));
   const d = data.data, selected = d?.selected, versions = d?.versions || [];
   const [busy, setBusy] = useState(false), [error, setError] = useState('');
@@ -25,7 +26,12 @@ export function MLLaboratory() {
   const managed = selected?.id === 'roda-operacion-diaria';
   const simulation = selected?.scenario === 'roda-calibrated';
   const disabled = busy || running || !!selected?.archived || managed;
-  useEffect(() => { if (selected?.id && !did) setDid(selected.id); }, [selected?.id, did]);
+  useEffect(() => {
+    if (selected?.id && !did) {
+      const ready = section === 'explicar' ? d?.datasets?.find((item: any) => !item.archived && item.version_count >= 2 && item.comparison_count > 0) : null;
+      setDid(ready?.id || selected.id);
+    }
+  }, [selected?.id, did, d?.datasets]);
   useEffect(() => {
     setPreview(null); setFile(null); setMapping({}); setJid(''); setV1(''); setV2(''); setPredictionVersion(''); setError('');
     const params = new URLSearchParams(window.location.search);
@@ -110,7 +116,9 @@ export function MLLaboratory() {
         {simulationStep && !selected.archived && <section className="lab-next-step"><span>{simulationStep.number}</span><div><h2>{simulationStep.title}</h2><p>{simulationStep.detail}</p></div>{simulationStep.file ? <a className="button" href={`/api${base}/simulation/examples/${simulationStep.file}`}><Download size={16}/>{simulationStep.action}</a> : <button onClick={() => { setSection(simulationStep.section!); if (simulationStep.section === 'resultados' && currentComparison) viewResult(currentComparison.id); }}>{simulationStep.action}<ArrowRight size={16}/></button>}</section>}
         {!!selected.archived && <div className="ml-notice">Historial archivado: sus importaciones, modelos y resultados se conservan para consulta.</div>}
         {running && <div className="ml-progress" role="status"><RefreshCw size={17} className="spin"/> Cálculo en curso. El entrenamiento puede tardar varios minutos; la pantalla actualizará el resultado.</div>}
-        <div className="lab-subnav" role="group" aria-label="Secciones del laboratorio">{[['datos', '01', 'Datos e importación'], ['versiones', '02', 'Modelos y versiones'], ['resultados', '03', 'Resultados']].map(([key, step, text]) => <button key={key} className={section === key ? 'selected' : ''} aria-pressed={section === key} onClick={() => setSection(key)}><span>{step}</span>{text}</button>)}</div>
+        <div className="lab-subnav" role="group" aria-label="Secciones del laboratorio">{[['datos', '01', 'Datos e importación'], ['versiones', '02', 'Modelos y versiones'], ['resultados', '03', 'Resultados'], ['explicar', '04', 'Explicar el ML']].map(([key, step, text]) => <button key={key} className={section === key ? 'selected' : ''} aria-pressed={section === key} onClick={() => setSection(key)}><span>{step}</span>{text}</button>)}</div>
+
+        {section === 'explicar' && <MLExplanation key={selected.id} data={d} navigate={setSection} openReady={(id) => setDid(id)}/>}
 
         {section === 'datos' && <>
           {!!selected.demo && <section className="ml-panel"><div className="ml-panel-title"><div><h2>Un recorrido que puedes repetir</h2><p>Carga cada archivo después de completar el paso anterior. Los CSV también se abren en Excel.</p></div><span className="ml-tag">136,374 registros originales</span></div>

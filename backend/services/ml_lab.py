@@ -343,6 +343,13 @@ def reset(did, uid):
 def listing(did=None):
     with connection() as c:
         datasets = [dict(r) for r in c.execute('SELECT * FROM datasets ORDER BY created_at DESC,id DESC')]
+        readiness = {r['dataset']: dict(r) for r in c.execute('''
+            SELECT v.dataset, COUNT(*) version_count,
+                   (SELECT COUNT(*) FROM jobs j WHERE j.dataset=v.dataset AND j.action='compare' AND j.status='done') comparison_count
+            FROM versions v GROUP BY v.dataset''')}
+        for item in datasets:
+            item['version_count'] = readiness.get(item['id'], {}).get('version_count', 0)
+            item['comparison_count'] = readiness.get(item['id'], {}).get('comparison_count', 0)
         if not did:
             did = next((d['id'] for d in datasets if not d['archived']), None)
         if not did:
