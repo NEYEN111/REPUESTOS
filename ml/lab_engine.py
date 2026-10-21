@@ -49,9 +49,20 @@ def frame(records, frequency):
                      month_sin=float(np.sin(2*np.pi*end.month/12)),
                      month_cos=float(np.cos(2*np.pi*end.month/12)))
             future = values[i:i+horizon]
+            # All additional signals end at the forecast origin, never at its target.
+            history = values[max(0, i-3*window):i]
+            observed = history[np.isfinite(history)]
+            positive = np.flatnonzero(np.isfinite(history) & (history > 0))
+            f.update(long_mean=float(observed.mean()), history_count=len(observed),
+                     positive_size=float(observed[observed > 0].mean()) if (observed > 0).any() else 0.,
+                     since_sale=float(len(history)-1-positive[-1]) if len(positive) else float(len(history)))
+            for span in (horizon, 2*horizon):
+                recent = past[-span:]
+                f[f'mean_{span}'] = float(np.nanmean(recent)) if np.isfinite(recent).any() else np.nan
             target = float(future.sum()) if len(future) == horizon and np.isfinite(future).all() else np.nan
             result.append(dict(sku=sku, cutoff=str(grid[i-1]), period=str(end), target=target,
-                               baseline=f['mean']*horizon, **f))
+                               baseline=f['mean']*horizon,
+                               seasonal=f[f'mean_{horizon}']*horizon, **f))
     if not result:
         raise ValueError('Historial insuficiente: se necesitan 12 meses o 28 días por producto.')
     return pd.DataFrame(result)
@@ -59,6 +70,28 @@ def frame(records, frequency):
 
 FEATURES = ['lag1', 'lag2', 'lag3', 'lag6', 'lag12', 'mean', 'std', 'recent',
             'zero_share', 'missing', 'month_sin', 'month_cos']
+
+
+def feature_names(frequency):
+    horizon = 1 if frequency == 'monthly' else 7
+    return FEATURES + ['long_mean', 'history_count', 'positive_size', 'since_sale',
+                       f'mean_{horizon}', f'mean_{2*horizon}']
+
+
+def diagnostics(rows, predictions):
+    predictions = np.asarray(predictions)
+    segments = []
+    for name, mask in [('Sin ventas', rows.target.eq(0)), ('Con ventas', rows.target.gt(0))]:
+        if mask.any():
+            segments.append(dict(segment=name, **metrics(rows.target[mask], predictions[mask.to_numpy()])))
+    return segments
+
+
+def references(rows):
+    return [dict(model=name, **metrics(rows.target, pred)) for name, pred in (
+        ('Promedio histórico', rows.baseline),
+        ('Último periodo equivalente', rows.seasonal.fillna(rows.baseline)),
+        ('Cero ventas (diagnóstico)', np.zeros(len(rows))))]
 
 
 def candidates():
@@ -76,6 +109,9 @@ def candidates():
 
 def train(request):
     data = frame(request['records'], request['frequency'])
+    # Extended signals remain an explicit experiment; the retrospective trial
+    # did not justify replacing the existing production feature contract.
+    features = feature_names(request['frequency']) if request.get('feature_set') == 'extended' else FEATURES
     cutoff = max(r['period'] for r in request['records'])
     freq = 'M' if request['frequency'] == 'monthly' else 'D'
     split = str(pd.Period(cutoff, freq=freq)-(6 if freq == 'M' else 28))
@@ -105,22 +141,25 @@ def train(request):
     for name, model in candidates().items():
         predictions, actuals, fold_scores = [], [], []
         for training, validation in folds:
-            model.fit(training[FEATURES], training.target)
-            pred = np.maximum(0, model.predict(validation[FEATURES]))
+            model.fit(training[features], training.target)
+            pred = np.maximum(0, model.predict(validation[features]))
             predictions.extend(pred)
             actuals.extend(validation.target)
             fold_scores.append(metrics(validation.target, pred))
-        scores.append(dict(model=name, folds=fold_scores, **metrics(actuals, predictions)))
+        scores.append(dict(model=name, folds=fold_scores, segments=diagnostics(valid, predictions),
+                           **metrics(actuals, predictions)))
     winner = min(scores, key=lambda s: s['mae'])['model']
     final = candidates()[winner]
-    final.fit(known[FEATURES], known.target)
-    bundle = dict(model=final, features=FEATURES, frequency=request['frequency'],
-                  cutoff=cutoff, skus=sorted(known.sku.unique().tolist()), schema=1)
+    final.fit(known[features], known.target)
+    bundle = dict(model=final, features=features, frequency=request['frequency'],
+                  cutoff=cutoff, skus=sorted(known.sku.unique().tolist()), schema=2)
     joblib.dump(bundle, request['bundle'])
     return dict(winner=winner, candidates=scores, validation_baseline=metrics(valid.target, valid.baseline),
+                validation_references=references(valid), zero_target_share=float(valid.target.eq(0).mean()),
+                feature_set='extended' if features != FEATURES else 'stable',
                 beats_baseline=min(s['mae'] for s in scores) < metrics(valid.target, valid.baseline)['mae'],
                 cutoff=cutoff, split=split, fit_rows=len(fit), validation_rows=len(valid),
-                refit_rows=len(known), features=FEATURES, model_sha256=digest(request['bundle']),
+                refit_rows=len(known), features=features, model_sha256=digest(request['bundle']),
                 temporal_windows=len(folds),
                 windows=[dict(train_rows=len(t), validation_rows=len(v),
                               training_end=str(t.period.max()), validation_start=str(v.cutoff.min()),
@@ -146,7 +185,7 @@ def predict(request):
     selected = data[data.cutoff.eq(cutoff) & data.sku.isin(bundle['skus'])].copy()
     if selected.empty:
         raise ValueError('No hay productos conocidos con historial suficiente hasta el corte.')
-    selected['prediction'] = np.maximum(0, bundle['model'].predict(selected[FEATURES]))
+    selected['prediction'] = np.maximum(0, bundle['model'].predict(selected[bundle['features']]))
     return dict(cutoff=cutoff, version=request.get('id'), model_sha256=request['sha256'],
                 frequency=bundle['frequency'],
                 items=selected[['sku', 'period', 'prediction', 'baseline', 'missing']].to_dict('records'),
@@ -172,8 +211,8 @@ def compare(request):
         raise ValueError('Faltan periodos completos y no superpuestos para evaluar.')
     scores, per_period = [], []
     for spec, bundle in zip(request['versions'], models):
-        pred = np.maximum(0, bundle['model'].predict(common[FEATURES]))
-        scores.append(dict(version=spec['id'], **metrics(common.target, pred)))
+        pred = np.maximum(0, bundle['model'].predict(common[bundle['features']]))
+        scores.append(dict(version=spec['id'], segments=diagnostics(common, pred), **metrics(common.target, pred)))
         tmp = common.assign(prediction=pred)
         for period, group in tmp.groupby('period'):
             per_period.append(dict(version=spec['id'], period=period, actual=float(group.target.sum()),
@@ -187,6 +226,7 @@ def compare(request):
     return dict(start=common.period.min(), end=common.period.max(), rows=len(common),
                 products=common.sku.nunique(), scores=scores,
                 baseline=baseline_score, baseline_wins=baseline_wins,
+                references=references(common), zero_target_share=float(common.target.eq(0).mean()),
                 approved_recommendation=recommended_score < baseline_score['mae']*.99,
                 periods=per_period,
                 protocol='Mismas filas posteriores a ambos entrenamientos; avance temporal con historial observado anterior.',

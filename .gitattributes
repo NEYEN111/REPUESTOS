@@ -16,5 +16,7 @@
 /ml/examples/carparts/*.csv -text whitespace=cr-at-eol
 /ml/examples/carparts/*.zip -text
 /ml/examples/carparts/*.json text eol=lf
+/ml/examples/roda-ensayo/*.csv -text whitespace=cr-at-eol
+/ml/examples/roda-ensayo/*.xlsx -text
 # Matplotlib genera espacios en los paths SVG; preservar sus hashes originales.
 /ml/evaluations/**/images/*.svg -whitespace
