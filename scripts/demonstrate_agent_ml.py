@@ -33,4 +33,7 @@ with tempfile.TemporaryDirectory(prefix='agent-controls-ml-',dir=db.ROOT/'.tmp')
         'note':'Demostración aislada: predicción real del modelo sobre historial académico. Se recrea la fecha del pronóstico y un stock de ejemplo; no se altera la tienda ni se crea evidencia operativa actual.'}
     c.close();db.DB=original;gc.collect()
 (db.ROOT/'artifacts/agent-ml-demonstration.json').write_text(json.dumps(result,ensure_ascii=False,indent=2),encoding='utf-8')
+release=db.ROOT/'ml/evaluations/agents/ml-replenishment.json'
+release.parent.mkdir(parents=True,exist_ok=True)
+release.write_text(json.dumps(result,ensure_ascii=False,indent=2),encoding='utf-8')
 print(json.dumps(result,ensure_ascii=False))

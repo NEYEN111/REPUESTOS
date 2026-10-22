@@ -52,6 +52,11 @@ async def evaluate():
         'results':results}
     path=db.ROOT/'artifacts/agent-mode-evaluation.json'
     path.write_text(json.dumps(output,ensure_ascii=False,indent=2),encoding='utf-8')
+    release=db.ROOT/'ml/evaluations/agents/mode-comparison.json'
+    release.parent.mkdir(parents=True,exist_ok=True)
+    release.write_text(json.dumps({**output,'results':[
+        {key:value for key,value in result.items() if key!='evidence'} for result in results
+    ]},ensure_ascii=False,indent=2),encoding='utf-8')
     print(str(path),flush=True)
 
 if __name__=='__main__':asyncio.run(evaluate())

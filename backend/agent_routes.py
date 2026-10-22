@@ -35,10 +35,12 @@ def router(admin):
     @api.get('/evaluation')
     def evaluation():
         path=ROOT/'artifacts/agent-mode-evaluation.json'
+        if not path.exists():path=ROOT/'ml/evaluations/agents/mode-comparison.json'
         if not path.exists(): return None
         result=json.loads(path.read_text(encoding='utf-8'))
         result['results']=[{k:v for k,v in row.items() if k!='evidence'} for row in result['results']]
         ml_path=ROOT/'artifacts/agent-ml-demonstration.json'
+        if not ml_path.exists():ml_path=ROOT/'ml/evaluations/agents/ml-replenishment.json'
         result['ml_demo']=json.loads(ml_path.read_text(encoding='utf-8')) if ml_path.exists() else None
         return result
 

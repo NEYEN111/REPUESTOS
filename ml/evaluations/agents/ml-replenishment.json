@@ -1,0 +1,16 @@
+{
+  "sku": "RP-010-02",
+  "prediction": 3.388336181640625,
+  "rounded_units": 4,
+  "available": 2,
+  "minimum": 1,
+  "policy_target": 3,
+  "without_ml": 0,
+  "with_ml": 2,
+  "basis": "ml_operativo",
+  "cutoff": "2026-10-18",
+  "model_hash": "cfe6e68f4af9a6464eefa9dade81f9c47793b87acaef55816649d85f068f7ad2",
+  "review": false,
+  "passed": true,
+  "note": "Demostración aislada: predicción real del modelo sobre historial académico. Se recrea la fecha del pronóstico y un stock de ejemplo; no se altera la tienda ni se crea evidencia operativa actual."
+}
