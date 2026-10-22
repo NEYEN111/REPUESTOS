@@ -48,6 +48,7 @@ import {
 } from "./lib";
 
 import { WorkspaceShell } from "./workspace";
+import { AssistantChat } from "./assistant";
 
 export function Logo() {
   const { config } = useStore();
@@ -265,6 +266,7 @@ export function StoreLayout() {
           </span>
         </div>
       </footer>}
+      {!managing && config.ASSISTANT_ENABLED && <AssistantChat vehicleId={active?.id} />}
     </>
   );
 }

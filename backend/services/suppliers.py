@@ -1,12 +1,13 @@
 from backend.db import transaction,one,rows,now,audit
 from backend.services.orders import code
 from backend.services.inventory import move
+from contextlib import nullcontext
 
-def crear_orden_compra(proveedor,items,user_id=None,actor='usuario',expected_at='',note='',request_key=None):
+def crear_orden_compra(proveedor,items,user_id=None,actor='usuario',expected_at='',note='',request_key=None,connection=None):
     from backend.services.operations import valid_date
     expected_at=valid_date(expected_at)
     if not items: raise ValueError('Agrega productos a la orden de compra.')
-    with transaction() as c:
+    with (nullcontext(connection) if connection is not None else transaction()) as c:
         if request_key:
             prior=one(c,'SELECT id FROM purchase_orders WHERE request_key=?',(request_key,))
             if prior: return prior['id']

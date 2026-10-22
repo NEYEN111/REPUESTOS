@@ -1,14 +1,16 @@
-import json,secrets,sqlite3,io,csv,asyncio,logging
+import json,secrets,sqlite3,io,csv,asyncio,logging,os
 from contextlib import asynccontextmanager
 from pathlib import Path
+from urllib.parse import urlsplit
 from PIL import Image,UnidentifiedImageError
 from fastapi import FastAPI,Request,Response,Depends,HTTPException,UploadFile,File,Form
 from fastapi.responses import FileResponse,JSONResponse,StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.exceptions import RequestValidationError
-from backend.db import ROOT,connect,transaction,rows,one,now,config,init_db,audit
-from backend.services import catalog,customers,orders,inventory,suppliers,reports,operations,catalog_quality,ml_history,predictions,ml_lab,ml_automation
+from backend.db import ROOT,connect,transaction,rows,one,now,config,init_db,audit,IntegrityError,DatabaseError
+from backend.services import catalog,customers,orders,inventory,suppliers,reports,operations,catalog_quality,ml_history,predictions,ml_lab,ml_automation,assistant
 from backend.services.payments import provider
+from backend.services import agent_data,agents
 
 async def expiration_loop():
     while True:
@@ -22,6 +24,8 @@ async def expiration_loop():
 @asynccontextmanager
 async def lifespan(app):
     init_db()
+    assistant.init()
+    agent_data.init()
     ml_lab.recover_jobs()
     ml_automation.init()
     ml_automation.recover()
@@ -30,12 +34,17 @@ async def lifespan(app):
     await asyncio.to_thread(ml_history.capture)
     await asyncio.to_thread(ml_automation.tick)
     task=asyncio.create_task(expiration_loop())
-    yield
-    task.cancel()
+    agent_task=asyncio.create_task(agents.worker())
+    try:
+        yield
+    finally:
+        task.cancel()
+        agent_task.cancel()
+        await asyncio.gather(task,agent_task,return_exceptions=True)
 app=FastAPI(title='Tienda de repuestos · API',lifespan=lifespan)
 @app.exception_handler(ValueError)
 async def value_error(request,exc): return JSONResponse({'detail':str(exc)},status_code=400)
-@app.exception_handler(sqlite3.IntegrityError)
+@app.exception_handler(IntegrityError)
 async def integrity_error(request,exc): return JSONResponse({'detail':'Los datos están duplicados o tienen una referencia no válida.'},status_code=400)
 @app.exception_handler(RequestValidationError)
 async def validation_error(request,exc): return JSONResponse({'detail':'Revisa los campos obligatorios y sus formatos.'},status_code=422)
@@ -43,8 +52,17 @@ async def validation_error(request,exc): return JSONResponse({'detail':'Revisa l
 async def secure_headers(request,call_next):
     if request.method not in ['GET','HEAD','OPTIONS']:
         origin=request.headers.get('origin')
-        if origin and origin not in ['http://127.0.0.1:8000','http://localhost:8000','http://127.0.0.1:5173','http://localhost:5173']:
-            return JSONResponse({'detail':'Origen no autorizado.'},status_code=403)
+        if origin:
+            allowed={item.strip().rstrip('/') for item in os.getenv('APP_ORIGINS','').split(',') if item.strip()}
+            allowed.update({'http://127.0.0.1:8000','http://localhost:8000','http://127.0.0.1:5173','http://localhost:5173'})
+            # Render terminates HTTPS at its proxy; the browser's same-origin URL
+            # still uses the public Host and forwarded scheme.
+            host=request.headers.get('host','').lower()
+            scheme=request.headers.get('x-forwarded-proto',request.url.scheme).split(',')[0].strip().lower()
+            parsed=urlsplit(origin)
+            same_origin=parsed.netloc.lower()==host and parsed.scheme.lower()==scheme
+            if origin.rstrip('/') not in allowed and not same_origin:
+                return JSONResponse({'detail':'Origen no autorizado.'},status_code=403)
     response=await call_next(request)
     response.headers['X-Content-Type-Options']='nosniff';response.headers['Referrer-Policy']='same-origin'
     if request.url.path.startswith('/api') or response.headers.get('content-type','').startswith('text/html'):
@@ -64,21 +82,27 @@ def staff(u=Depends(require_user)):
 def admin(u=Depends(staff)):
     if u['role']!='admin': raise HTTPException(403,'Esta sección requiere un administrador.')
     return u
+
+from backend.agent_routes import router as agent_router
+app.include_router(agent_router(admin))
 def owner(record,u,token=''):
     if not record: raise HTTPException(404,'Registro no encontrado.')
     if u and (u['role'] in ['admin','empleado'] or record['user_id']==u['id']): return
     if token and secrets.compare_digest(record['guest_token'],token): return
     raise HTTPException(403,'No tienes acceso a este registro.')
-def session_response(response,result):
-    token,u=result;response.set_cookie('session',token,httponly=True,samesite='lax',max_age=604800);return u
+def session_response(response,result,request):
+    token,u=result
+    secure=request.headers.get('x-forwarded-proto',request.url.scheme).split(',')[0].strip().lower()=='https'
+    response.set_cookie('session',token,httponly=True,samesite='lax',secure=secure,max_age=604800)
+    return u
 @app.get('/api/config')
-def get_config(): return config()
+def get_config(): return {**config(), 'ASSISTANT_ENABLED': assistant.enabled()}
 @app.get('/api/health')
 def health(): return {'ok':True}
 @app.post('/api/auth/login')
-def login(d:dict,response:Response): return session_response(response,customers.login(d.get('email',''),d.get('password',''),d.get('admin',False)))
+def login(d:dict,response:Response,request:Request): return session_response(response,customers.login(d.get('email',''),d.get('password',''),d.get('admin',False)),request)
 @app.post('/api/auth/register')
-def register(d:dict,response:Response): return session_response(response,customers.register(d))
+def register(d:dict,response:Response,request:Request): return session_response(response,customers.register(d),request)
 @app.post('/api/auth/logout')
 def logout(request:Request,response:Response):
     with transaction() as c: c.execute('DELETE FROM sessions WHERE token=?',(request.cookies.get('session',''),))
@@ -102,6 +126,26 @@ def products(q:str='',vehicle:int|None=None,category:str='',brand:str='',sort:st
     return catalog.buscar_repuestos(vehicle,q,category,brand,sort,page,limit,in_stock,offer,max_price)
 @app.get('/api/products/{pid}')
 def product(pid:int,vehicle:int|None=None): return catalog.product_detail(pid,vehicle)
+_assistant_requests={}
+@app.post('/api/assistant/chat')
+async def assistant_chat(d:assistant.ChatRequest,request:Request):
+    import time
+    now_mono=time.monotonic(); client_ip=request.client.host if request.client else 'unknown'
+    for address in list(_assistant_requests):
+        if not _assistant_requests[address] or now_mono-_assistant_requests[address][-1]>=60:
+            del _assistant_requests[address]
+    if len(_assistant_requests)>512:
+        raise HTTPException(429,'El asistente está ocupado. Intenta nuevamente en un momento.')
+    recent=[stamp for stamp in _assistant_requests.get(client_ip,[]) if now_mono-stamp<60]
+    if len(recent)>=12: raise HTTPException(429,'Alcanzaste el límite de consultas por minuto. Espera un momento.')
+    recent.append(now_mono);_assistant_requests[client_ip]=recent
+    return await assistant.reply(d)
+@app.delete('/api/assistant/conversations/{token}')
+def assistant_reset(token:str):
+    import re
+    if not re.fullmatch(r'[a-f0-9]{64}',token): raise ValueError('Conversación no válida.')
+    assistant.forget(token)
+    return {'ok':True}
 @app.post('/api/events')
 def event(d:dict,u=Depends(current_user)):
     if d.get('type') not in ['search','product_view','cart_add','cart_remove','cart_update']: raise ValueError('Evento no válido.')
@@ -408,7 +452,7 @@ async def import_products(file:UploadFile=File(...),u=Depends(staff)):
             with connect() as c: p=one(c,'SELECT id FROM products WHERE sku=?',(d['sku'],))
             d['compatibility']=json.loads(d['compatibility']) if d.get('compatibility') else catalog.product_detail(p['id'],admin=True)['compatibility'] if p else []
             catalog.save_product(d,u['id'],p['id'] if p else None)
-        except (ValueError,KeyError,sqlite3.Error) as e: results.append({'row':n,'error':str(e)})
+        except (ValueError,KeyError,DatabaseError) as e: results.append({'row':n,'error':str(e)})
     return {'imported':len(data)-len(results),'errors':results}
 
 @app.get('/api/admin/ml/overview')

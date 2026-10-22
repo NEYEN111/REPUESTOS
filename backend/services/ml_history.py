@@ -1,7 +1,7 @@
 """Observaciones de la operación. Un día incompleto nunca se rellena con ceros."""
 import json
 from datetime import date, timedelta
-from backend.db import transaction, rows, now
+from backend.db import transaction, rows, now, is_postgres
 
 
 def capture():
@@ -9,10 +9,12 @@ def capture():
     day, slot = stamp[:10], int(stamp[11:13])//2
     with transaction() as c:
         # A closed day requires observations at both ends and all twelve 2h slots.
-        eligible=rows(c,'''SELECT * FROM ml_daily WHERE date<? AND complete=0
+        missing_policy = "(payload::jsonb->>'_missing_policy')::integer=0" if is_postgres() else "json_extract(payload,'$._missing_policy')=0"
+        incomplete_reason = "payload::jsonb->>'_incomplete_reason' IS NULL" if is_postgres() else "json_extract(payload,'$._incomplete_reason') IS NULL"
+        eligible=rows(c,f'''SELECT * FROM ml_daily WHERE date<? AND complete=0
           AND substr(first_seen,12,5)<='00:02' AND substr(last_seen,12,5)>='23:59'
-          AND json_extract(payload,'$._missing_policy')=0
-          AND json_extract(payload,'$._incomplete_reason') IS NULL
+          AND {missing_policy}
+          AND {incomplete_reason}
           AND (SELECT COUNT(*) FROM ml_samples s WHERE s.product_id=ml_daily.product_id AND s.date=ml_daily.date)=12''',(day,))
         closed_events={}
         for closed_day in {r['date'] for r in eligible}:
@@ -43,7 +45,7 @@ def capture():
         c.executemany('INSERT OR IGNORE INTO ml_samples VALUES(?,?,?,?,?)',
                       [(p['id'],day,slot,p['stock']-p['reserved'],stamp) for p in products])
         samples = {r['product_id']:r for r in rows(c, '''SELECT product_id,COUNT(*) checks,
-           SUM(available>0) stocked FROM ml_samples WHERE date=? GROUP BY product_id''', (day,))}
+           SUM(CASE WHEN available>0 THEN 1 ELSE 0 END) stocked FROM ml_samples WHERE date=? GROUP BY product_id''', (day,))}
         movement = {}
         for m in rows(c, 'SELECT product_id,kind,SUM(quantity) qty,SUM(reserved_delta) res FROM inventory_movements WHERE created_at>=? AND created_at<? GROUP BY product_id,kind', (day,day+'T99')):
             movement.setdefault(m['product_id'], {})[m['kind']] = m
@@ -90,8 +92,9 @@ def capture():
 
 
 def evaluate_matured(c, today, stamp):
-    pending=rows(c, '''SELECT p.id,p.product_id,r.cutoff FROM ml_predictions p JOIN ml_runs r ON r.id=p.run_id
-        WHERE r.source='operacion' AND p.actual IS NULL AND date(r.cutoff,'+7 days')<?''',(today,))
+    due_expression = "(r.cutoff::date + INTERVAL '7 days')::date<?::date" if is_postgres() else "date(r.cutoff,'+7 days')<?"
+    pending=rows(c, f'''SELECT p.id,p.product_id,r.cutoff FROM ml_predictions p JOIN ml_runs r ON r.id=p.run_id
+        WHERE r.source='operacion' AND p.actual IS NULL AND {due_expression}''',(today,))
     for p in pending:
         end=(date.fromisoformat(p['cutoff'])+timedelta(days=7)).isoformat()
         days=rows(c, 'SELECT payload FROM ml_daily WHERE product_id=? AND date>? AND date<=? AND complete=1', (p['product_id'],p['cutoff'],end))

@@ -1,4 +1,6 @@
 """Additive, repeatable upgrades for existing installations."""
+from backend.db import table_columns
+
 def migrate(c):
     for table, column, declaration in [
         ('purchase_orders', 'expected_at', "TEXT NOT NULL DEFAULT ''"),
@@ -10,7 +12,7 @@ def migrate(c):
         ('inventory_movements', 'available_after', 'INTEGER'),
         ('inventory_policy', 'source', "TEXT NOT NULL DEFAULT 'manual'"),
     ]:
-        columns = {r[1] for r in c.execute(f'PRAGMA table_info({table})')}
+        columns = table_columns(c, table)
         if columns and column not in columns:
             c.execute(f'ALTER TABLE {table} ADD COLUMN {column} {declaration}')
             if column == 'received_quantity':
@@ -55,5 +57,5 @@ def migrate(c):
       image_kind TEXT NOT NULL DEFAULT 'pendiente', manufacturer_reference TEXT NOT NULL DEFAULT '',
       rules_version TEXT NOT NULL DEFAULT '', updated_at TEXT NOT NULL);
     ''')
-    if 'source' not in {r[1] for r in c.execute('PRAGMA table_info(inventory_policy)')}:
+    if 'source' not in table_columns(c, 'inventory_policy'):
         c.execute("ALTER TABLE inventory_policy ADD COLUMN source TEXT NOT NULL DEFAULT 'manual'")

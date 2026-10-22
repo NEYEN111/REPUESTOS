@@ -19,6 +19,7 @@ import { InventoryWorkspace, ShipmentsWorkspace, DataQuality } from './operation
 import { Forecasts, ModelEvaluation, HistoryQuality } from './ml';
 import { MLLaboratory } from './ml-lab';
 import { MLAutomation } from './ml-automation';
+import { AgentsWorkspace } from './agents';
 import './ml.css';
 function Entry() {
   const { user } = useStore();
@@ -71,6 +72,7 @@ createRoot(document.getElementById("root")!).render(
             <Route path="ml/calidad" element={<HistoryQuality />} />
             <Route path="ml/laboratorio" element={<MLLaboratory />} />
             <Route path="ml/actualizacion" element={<MLAutomation />} />
+            <Route path="agentes" element={<AgentsWorkspace />} />
             <Route path=":section" element={<AdminTable />} />
           </Route>
           <Route path="*" element={<Legal missing />} />

@@ -1,13 +1,20 @@
-import sys,json,random,shutil,argparse,calendar,sqlite3
+import sys,json,random,shutil,argparse,calendar,sqlite3,os
 from pathlib import Path
 from datetime import datetime,timedelta
 ROOT=Path(__file__).resolve().parents[1];sys.path.insert(0,str(ROOT))
-from backend.db import init_db,transaction,one,rows,now,DB
+from backend.db import init_db,transaction,one,rows,now,DB,is_postgres
 from backend.services.customers import password_hash
 from backend.services.inventory import refresh_alert
 
 def seed(reset=False):
+    if os.getenv('RENDER') == 'true' and not is_postgres():
+        raise RuntimeError('Configura DATABASE_URL de Neon antes de iniciar en Render; SQLite local no es persistente allí.')
+    if reset and is_postgres():
+        raise RuntimeError('El restablecimiento con respaldo SQLite es solo local; no se aplica a Neon.')
+    if is_postgres() and (not os.getenv('SEED_PASSWORD') or len(os.getenv('SEED_PASSWORD', '')) < 14):
+        raise RuntimeError('Configura SEED_PASSWORD con al menos 14 caracteres en el servicio antes de sembrar la cuenta inicial.')
     init_db()
+    seed_password=os.getenv('SEED_PASSWORD') or 'Roda2026!'
     if reset and DB.exists():
         backup=DB.with_suffix('.backup.db')
         with sqlite3.connect(DB) as source,sqlite3.connect(backup) as target: source.backup(target)
@@ -21,7 +28,7 @@ def seed(reset=False):
             print('La base ya contiene datos. Usa --reset para regenerar (crea una copia de respaldo).');return
         rng=random.Random(20261013);stamp=now();today=datetime.fromisoformat(stamp).date()
         for name,email,role in [('Administrador','admin@roda.pe','admin'),('Valeria Torres','empleado@roda.pe','empleado'),('Diego Mendoza','cliente@roda.pe','cliente'),('Lucía Salazar','lucia@example.com','cliente'),('Carlos Ramos','carlos@example.com','cliente'),('Ana Paredes','ana@example.com','cliente'),('José Quispe','jose@example.com','cliente'),('María Vargas','maria@example.com','cliente')]:
-            c.execute('INSERT INTO users(name,email,password_hash,role,phone,document,consent_at,created_at) VALUES(?,?,?,?,?,?,?,?)',(name,email,password_hash('Roda2026!'),role,'987654321','12345678',stamp,stamp))
+            c.execute('INSERT INTO users(name,email,password_hash,role,phone,document,consent_at,created_at) VALUES(?,?,?,?,?,?,?,?)',(name,email,password_hash(seed_password),role,'987654321','12345678',stamp,stamp))
         models={'Toyota':[('Yaris','1.3 / 1.5 VVT-i'),('Corolla','1.8 VVT-i'),('Hilux','2.8 diésel'),('RAV4','2.0 gasolina')],'Hyundai':[('Accent','1.4 / 1.6 MPI'),('Elantra','1.6 MPI'),('Tucson','2.0 MPI'),('Grand i10','1.2 MPI')],'Kia':[('Rio','1.4 MPI'),('Picanto','1.0 / 1.2 MPI'),('Sportage','2.0 MPI'),('Cerato','1.6 MPI')],'Nissan':[('Versa','1.6'),('Sentra','1.8'),('March','1.6'),('Frontier','2.5 diésel')],'Suzuki':[('Swift','1.2'),('Vitara','1.6'),('Alto','0.8 / 1.0'),('Ertiga','1.4 / 1.5')],'Chevrolet':[('Sail','1.4'),('Spark','1.2')],'Mitsubishi':[('L200','2.4 diésel')],'Mazda':[('Mazda 3','2.0 Skyactiv')]}
         vehicle_models=[]
         for brand,items in models.items():
@@ -106,7 +113,10 @@ def seed(reset=False):
     from backend.services.catalog_quality import normalize_demo
     normalize_demo()
     print(f'Seed completo: {len(products)} productos, {len(cats)} categorías, {order_count} pedidos y 365 días de historial.')
-    print('Credenciales locales de demostración (contraseña común: Roda2026!):')
+    if os.getenv('SEED_PASSWORD'):
+        print('Contraseña de las cuentas iniciales definida mediante SEED_PASSWORD.')
+    else:
+        print('Credenciales locales de demostración (contraseña común: Roda2026!):')
     print('Admin: admin@roda.pe | Empleado: empleado@roda.pe | Cliente: cliente@roda.pe')
 
 if __name__=='__main__':

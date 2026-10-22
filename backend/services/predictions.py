@@ -7,7 +7,7 @@ import subprocess
 import threading
 from datetime import date,timedelta
 from pathlib import Path
-from backend.db import ROOT,connect,transaction,rows,one,now,audit
+from backend.db import ROOT,connect,transaction,rows,one,now,audit,is_postgres
 from backend.services.catalog import normalize
 
 BUNDLE=ROOT/'ml/deployed/roda-v2'
@@ -32,20 +32,23 @@ def contract(): return load_json(BUNDLE/'contract.json')
 def readiness():
     cutoff=(date.fromisoformat(now()[:10])-timedelta(days=1)).isoformat()
     first=(date.fromisoformat(cutoff)-timedelta(days=55)).isoformat()
+    sales_expr = "(d.payload::jsonb->>'ventas_pagadas')::integer" if is_postgres() else "json_extract(d.payload,'$.ventas_pagadas')"
+    continuous_sales_expr = "(payload::jsonb->>'ventas_pagadas')::integer" if is_postgres() else "json_extract(payload,'$.ventas_pagadas')"
+    date_offset_expr = "CAST(?::date-date::date AS INTEGER)" if is_postgres() else "CAST(julianday(?)-julianday(date) AS INTEGER)"
     with connect() as c:
         total=one(c,'SELECT COUNT(*) n FROM products WHERE active=1')['n']
-        data=rows(c, '''SELECT p.id,p.sku,p.name,COUNT(d.date) days,MIN(d.date) first,MAX(d.date) last,
+        data=rows(c, f'''SELECT p.id,p.sku,p.name,COUNT(d.date) days,MIN(d.date) first,MAX(d.date) last,
           COALESCE(SUM(d.complete),0) complete_days,
           SUM(CASE WHEN d.complete=1 AND d.date>=? AND d.date<=? THEN 1 ELSE 0 END) window_days,
-          MAX(CASE WHEN d.complete=1 THEN json_extract(d.payload,'$.ventas_pagadas') ELSE 0 END) sold
+          MAX(CASE WHEN d.complete=1 THEN {sales_expr} ELSE 0 END) sold
           FROM products p LEFT JOIN ml_daily d ON d.product_id=p.id WHERE p.active=1 GROUP BY p.id''',(first,cutoff))
         sample=one(c,'SELECT MIN(first_seen) first,MAX(last_seen) last,COUNT(DISTINCT date) days FROM ml_daily')
-        continuous={r['product_id']:r for r in rows(c, '''WITH history AS (
-          SELECT product_id,date,json_extract(payload,'$.ventas_pagadas') sales,
+        continuous={r['product_id']:r for r in rows(c, f'''WITH history AS (
+          SELECT product_id,date,{continuous_sales_expr} sales,
             ROW_NUMBER() OVER(PARTITION BY product_id ORDER BY date DESC)-1 offset
           FROM ml_daily WHERE complete=1 AND date<=?)
-          SELECT product_id,COUNT(*) days,MAX(sales>0) sold FROM history
-          WHERE CAST(julianday(?)-julianday(date) AS INTEGER)=offset GROUP BY product_id''',(cutoff,cutoff))}
+          SELECT product_id,COUNT(*) days,MAX(CASE WHEN sales>0 THEN 1 ELSE 0 END) sold FROM history
+          WHERE {date_offset_expr}=offset GROUP BY product_id''',(cutoff,cutoff))}
     known=set(contract()['known_skus'])
     for row in data:
         sequence=continuous.get(row['id'],{})

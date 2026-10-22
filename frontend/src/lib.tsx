@@ -154,22 +154,23 @@ export function Provider({ children }: any) {
       body: { type, session_id: sid, vehicle_id: vehicle, ...payload },
     }).catch(() => {});
   };
-  const add = (p: any, quantity = 1) => {
-    if (p.available <= 0) return;
-    setCart((old) => {
-      const prev = old.find((i) => i.id === p.id);
-      if ((prev?.quantity || 0) + quantity > p.available) {
-        notify("No hay más unidades disponibles.", true);
-        return old;
-      }
-      return prev
-        ? old.map((i) =>
-            i.id === p.id ? { ...i, quantity: i.quantity + quantity } : i,
-          )
-        : [...old, { ...p, quantity }];
-    });
-    event("cart_add", { product_id: p.id, payload: { quantity } });
+  const cartRef = useRef(cart);
+  cartRef.current = cart;
+  const add = (p: any, quantity = 1, source = "catalogo") => {
+    const old = cartRef.current;
+    const prev = old.find((i: any) => i.id === p.id);
+    if (!Number.isInteger(quantity) || quantity < 1 || (prev?.quantity || 0) + quantity > p.available) {
+      notify("No hay suficientes unidades disponibles para esa cantidad.", true);
+      return false;
+    }
+    const next = prev
+      ? old.map((i: any) => i.id === p.id ? { ...i, ...p, quantity: i.quantity + quantity } : i)
+      : [...old, { ...p, quantity }];
+    cartRef.current = next;
+    setCart(next);
+    event("cart_add", { product_id: p.id, payload: { quantity, source } });
     notify("Producto agregado al carrito.");
+    return true;
   };
   const saveGarage = async (ids: number[], active: number | null) => {
     if (user)

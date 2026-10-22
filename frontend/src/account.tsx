@@ -483,6 +483,16 @@ export function Legal({ missing = false }: any) {
             invitados. La sesión se mantiene mediante una cookie HTTP protegida
             contra acceso desde scripts.
           </p>
+          <h2>Asistente de repuestos</h2>
+          <p>
+            El asistente utiliza el proveedor LLM configurado para interpretar tus preguntas. Envía el
+            texto de la consulta, el contexto reciente y referencias públicas del
+            catálogo; no consulta tus documentos, pagos ni direcciones.
+            Evita escribir datos personales o claves. La conversación caduca
+            después de 24 horas sin actividad y se elimina en la siguiente
+            limpieza de la aplicación. Puedes borrarla antes desde
+            «Nueva conversación» en el asistente.
+          </p>
           <h2>Tus opciones</h2>
           <p>
             Puedes editar tu perfil, quitar vehículos y eliminar direcciones

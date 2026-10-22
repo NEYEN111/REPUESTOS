@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: roda-repuestos
+    runtime: python
+    plan: free
+    branch: main
+    buildCommand: pip install -r requirements.txt && python -m venv .venv-ml && .venv-ml/bin/pip install -r ml/runtime-requirements.txt && npm ci --prefix frontend && npm run build --prefix frontend
+    startCommand: python scripts/seed.py && uvicorn backend.app:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /api/config
+    autoDeploy: true
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: THEHIVE_API_KEY
+        sync: false
+      - key: SEED_PASSWORD
+        sync: false
+      - key: LLM_PROVIDER
+        value: thehive
+      - key: THEHIVE_MODEL
+        value: deepseek-ai/deepseek-v4.1-flash-1017
+      - key: ASSISTANT_ENABLED
+        value: "true"
+      - key: PYTHON_VERSION
+        value: 3.12.10

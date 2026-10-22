@@ -85,7 +85,7 @@ export function AdminLayout() {
   const location = useLocation();
   if (!user) return <Navigate to={"/ingresar?next=" + encodeURIComponent(location.pathname + location.search)} replace />;
   if (!["admin", "empleado"].includes(user.role)) return <div className="container page"><Empty title="Esta sección es para el equipo de la tienda" text="Tu cuenta tiene acceso a compras, pedidos y cotizaciones." action={<Link className="button" to="/cuenta">Ir a mi cuenta</Link>} /></div>;
-  if (user.role !== "admin" && ["finanzas", "configuracion", "pagos", "calidad", "auditoria", "ml"].includes(location.pathname.split("/")[2])) return <div className="container page"><Empty title="Acceso exclusivo del administrador" text="Puedes continuar con los pedidos, productos e inventario desde el menú de gestión." action={<Link className="button" to="/gestion">Ir al resumen</Link>} /></div>;
+  if (user.role !== "admin" && ["finanzas", "configuracion", "pagos", "calidad", "auditoria", "ml", "agentes"].includes(location.pathname.split("/")[2])) return <div className="container page"><Empty title="Acceso exclusivo del administrador" text="Puedes continuar con los pedidos, productos e inventario desde el menú de gestión." action={<Link className="button" to="/gestion">Ir al resumen</Link>} /></div>;
   return <div className="workspace-content"><div className="admin-main"><Outlet /></div></div>;
 }
 

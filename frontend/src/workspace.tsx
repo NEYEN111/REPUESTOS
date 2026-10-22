@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { LayoutDashboard, Boxes, Package, ShoppingBag, Truck, ChevronDown, ArrowUpRight, Bell, RotateCcw, Users, FileText, MessageSquare, Wallet, ChartNoAxesCombined, CarFront, Tags, Settings } from "lucide-react";
 import { api, useStore } from "./lib";
-import { LogOut, Store } from "lucide-react";
+import { LogOut, Store, Network } from "lucide-react";
 
 const primary = [
   ["", "Resumen", LayoutDashboard],
@@ -23,7 +23,7 @@ export function WorkspaceShell({ children }: { children: ReactNode }) {
     { name: 'Catálogos', links: [['vehiculos', 'Vehículos', CarFront], ['categorias', 'Categorías', Tags], ['marcas', 'Marcas', Package]] },
     ...(user.role === 'admin' ? [{ name: 'Administración', links: [['pagos', 'Pagos', Wallet], ['finanzas', 'Finanzas', ChartNoAxesCombined], ['calidad', 'Calidad de datos', FileText], ['auditoria', 'Auditoría', FileText], ['configuracion', 'Configuración', Settings]] }] : []),
   ];
-  const section = String([...primary, ...groups.flatMap(g => g.links)].find(([path]) => pathname === '/gestion' + (path ? '/' + path : '') || (path === 'productos' && pathname.startsWith('/gestion/productos/')))?.[1] || 'Área de trabajo');
+  const section = pathname === '/gestion/agentes' ? 'Agentes' : String([...primary, ...groups.flatMap(g => g.links)].find(([path]) => pathname === '/gestion' + (path ? '/' + path : '') || (path === 'productos' && pathname.startsWith('/gestion/productos/')))?.[1] || 'Área de trabajo');
   return <div className="management-shell">
     <a className="skip-link" href="#workspace-main">Saltar al contenido</a>
     <aside className="management-sidebar">
@@ -31,6 +31,7 @@ export function WorkspaceShell({ children }: { children: ReactNode }) {
       <nav aria-label="Gestión de la tienda">
         <p className="nav-group-label">OPERACIONES</p>
         {primary.map(([path, label, Icon]) => <NavLink key={path} to={'/gestion' + (path ? '/' + path : '')} end={!path}><Icon size={18} aria-hidden="true" />{label}</NavLink>)}
+        {user.role==='admin'&&<NavLink to="/gestion/agentes"><Network size={18} aria-hidden="true"/>Agentes</NavLink>}
         {groups.map(g => <details key={g.name + pathname} open={g.links.some(([path]) => pathname === '/gestion/' + path)}><summary>{g.name}<ChevronDown size={15} aria-hidden="true" /></summary>{g.links.map(([path, label, Icon]: any) => <NavLink key={path} end to={'/gestion/' + path}><Icon size={16} aria-hidden="true" />{label}</NavLink>)}</details>)}
       </nav>
       <Link className="management-store-link" to="/tienda"><Store size={18} />Ir a la tienda<ArrowUpRight size={16} /></Link>
