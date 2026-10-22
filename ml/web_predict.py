@@ -10,6 +10,23 @@ from ml.inference import load_trusted_bundle, features_from_history, predict_bun
 ROOT=Path(__file__).resolve().parents[1]
 
 
+def reference_groups(path):
+    """Read the SKU-sorted reference history without loading two years at once."""
+    pending=pd.DataFrame()
+    previous=''
+    for chunk in pd.read_csv(path,encoding='utf-8-sig',chunksize=4096):
+        frame=pd.concat((pending,chunk),ignore_index=True) if not pending.empty else chunk
+        if not frame.sku.is_monotonic_increasing or (previous and frame.sku.iloc[0]<previous):
+            raise ValueError('El historial de referencia debe estar ordenado por SKU.')
+        final_sku=frame.sku.iloc[-1]
+        pending=frame.loc[frame.sku.eq(final_sku)].copy()
+        for sku,group in frame.loc[frame.sku.ne(final_sku)].groupby('sku',sort=False):
+            yield sku,group
+            previous=sku
+    if not pending.empty:
+        yield pending.sku.iloc[0],pending
+
+
 def predict(request):
     bundle,contract=load_trusted_bundle(ROOT/'ml/deployed/roda-v2')
     if request['source']=='referencia':
@@ -18,21 +35,25 @@ def predict(request):
         entry=manifest['files']['inventario_ventas_diarias.csv']
         path=folder/entry['gzip_file']
         if sha256(path)!=entry['gzip_sha256']: raise ValueError('El historial de referencia no coincide con su hash.')
-        history=pd.read_csv(path,encoding='utf-8-sig')
-        cutoff=str(history.fecha.max())
+        cutoff=manifest['config']['end_date']
+        groups=reference_groups(path)
     elif request['source']=='operacion':
         history=pd.DataFrame(request['history'])
         cutoff=request['cutoff']
+        if history.empty: return {'items':[],'rejected':[],'cutoff':cutoff}
+        history=history[history.sku.isin(request['skus']) & history.fecha.le(cutoff)]
+        groups=history.groupby('sku',sort=True)
     else: raise ValueError('Origen de historial no permitido.')
     items=[]; rejected=[]
     features=[]; histories={}
     allowed=set(request['skus'])
-    if history.empty: return {'items':[],'rejected':[],'cutoff':cutoff}
-    history=history[history.sku.isin(allowed) & history.fecha.le(cutoff)]
-    rejected.extend({'sku':sku,'reason':'No hay observaciones completas anteriores al corte.'}
-                    for sku in sorted(allowed-set(history.sku)))
-    for sku,group in history.groupby('sku',sort=True):
+    seen=set()
+    for sku,group in groups:
+        if sku not in allowed: continue
+        seen.add(sku)
         try:
+            group=group[group.fecha.le(cutoff)]
+            if group.empty: raise ValueError('No hay observaciones completas anteriores al corte.')
             group=group.sort_values('fecha')
             if sku not in bundle['known_skus']: raise ValueError('Producto nuevo: no existe en el entrenamiento.')
             if str(group.fecha.iloc[-1])!=cutoff: raise ValueError('Falta el cierre de la fecha de corte.')
@@ -45,6 +66,8 @@ def predict(request):
             histories[sku]=group[['fecha','ventas_pagadas','disponible_fin']].tail(56).to_dict('records')
         except ValueError as exc:
             rejected.append({'sku':sku,'reason':str(exc)})
+    rejected.extend({'sku':sku,'reason':'No hay observaciones completas anteriores al corte.'}
+                    for sku in sorted(allowed-seen))
     if features:
         frame=pd.DataFrame(features)
         with threadpool_limits(limits=2): results=predict_bundle(bundle,frame,allow_simulated=True)
