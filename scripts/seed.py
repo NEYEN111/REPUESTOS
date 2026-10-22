@@ -7,7 +7,7 @@ from backend.services.customers import password_hash
 from backend.services.inventory import refresh_alert
 
 def seed(reset=False):
-    if os.getenv('RENDER') == 'true' and not is_postgres():
+    if os.getenv('RENDER') == 'true' and not is_postgres() and os.getenv('RODA_FORCE_SQLITE') != '1':
         raise RuntimeError('Configura DATABASE_URL de Neon antes de iniciar en Render; SQLite local no es persistente allí.')
     if reset and is_postgres():
         raise RuntimeError('El restablecimiento con respaldo SQLite es solo local; no se aplica a Neon.')
