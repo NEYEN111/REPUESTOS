@@ -79,6 +79,9 @@ class _PgCursor:
     def __getattr__(self, name):
         return getattr(self._cursor, name)
 
+    def __iter__(self):
+        return iter(self._cursor)
+
 
 class _PgConnection:
     def __init__(self, connection):
