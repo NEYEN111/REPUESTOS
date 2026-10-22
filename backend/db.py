@@ -42,8 +42,13 @@ class _CompatRow(dict):
         return super().__getitem__(key)
 
 
-def _pg_row(cursor, record):
-    return _CompatRow((column.name, value) for column, value in zip(cursor.description, record))
+def _pg_row(cursor):
+    columns = [column.name for column in cursor.description] if cursor.description else []
+
+    def make_row(record):
+        return _CompatRow(zip(columns, record))
+
+    return make_row
 
 
 _SERIAL_TABLES = {
