@@ -17,7 +17,10 @@ def ml_replay():
     if not p or p['review'] or source['model_hash']!=data.predictions.contract()['model_sha256']:
         return {'passed':False,'note':'El pronóstico tiene observaciones o no pertenece al modelo vigente.'}
     with db.transaction() as c:
-        c.execute('UPDATE products SET stock=2,reserved=0,minimum=1 WHERE id=1')
+        c.execute('UPDATE products SET sku=?,name=?,stock=2,reserved=0,minimum=1 WHERE id=1',
+            (p['sku'],'Producto de referencia '+p['sku']))
+        c.execute('UPDATE brands SET name=? WHERE id=1',(p['features']['marca'],))
+        c.execute('UPDATE categories SET slug=? WHERE id=1',(p['features']['categoria'],))
         c.execute('UPDATE inventory_policy SET maximum=3,lead_days=2 WHERE product_id=1')
     baseline=data.candidates(5)
     with db.transaction() as c:
@@ -31,7 +34,7 @@ def ml_replay():
     before=sum(i['needed'] for i in baseline['items'])
     return {'passed':not before and item.get('basis')=='ml_operativo' and item['needed']>0,
         'before':before,'after':item.get('needed',0),'forecast':p['prediction'],'cutoff':source['cutoff'],
-        'model_hash':source['model_hash'],'origin':'Pronóstico guardado del modelo sobre historial académico. Se repite la fecha y un stock de ejemplo; no se entrena ni se genera evidencia operativa actual.'}
+        'sku':p['sku'],'model_hash':source['model_hash'],'origin':f"Pronóstico guardado para {p['sku']} sobre historial académico. Se conserva su SKU y se repite la fecha con un stock de ejemplo; no se entrena ni se genera evidencia operativa actual."}
 
 async def evaluate():
     deadline=time.monotonic()+245
@@ -44,8 +47,15 @@ async def evaluate():
     cases=[];started=time.monotonic()
     rid=data.create_run(data.RunInput(kind='reposicion',budget_cents=5000,product_limit=5,request_key='presentation-replenishment'),1,agents.model_name())
     try:await asyncio.wait_for(agents.execute(agents.claim()),timeout=190)
-    except Exception:
-        agents.finish({'id':rid,'user_id':1},'error',{'note':'El proveedor LLM no completó el caso; no se interpreta como acierto.'})
+    except Exception as exc:
+        with db.connect() as c:saved=db.one(c,'SELECT checkpoint FROM agent_runs WHERE id=?',(rid,))
+        state=json.loads(saved['checkpoint'] or '{}').get('state',{})
+        detail=('El equipo alcanzó el límite de tiempo.' if isinstance(exc,asyncio.TimeoutError) else
+            agents.redact(str(exc))[:700] if isinstance(exc,(agents.ProviderUnavailable,ValueError)) else
+            f'La ejecución se interrumpió ({type(exc).__name__}).')
+        state.update(note='El caso no se completó; la evidencia parcial se conserva y no se interpreta como acierto.',error=detail)
+        data.event(rid,'orquestador','error',detail)
+        agents.finish({'id':rid,'user_id':1},'error',state)
     result=data.get_run(rid);plan=result['result'].get('plan',{})
     cases.append(case('presupuesto','Presupuesto y corrección','Compras ajusta los lotes; Finanzas y Auditor verifican el resultado.',
         {'por_aprobar':result['status']=='revision','dentro_del_limite':0<plan.get('total_cents',0)<=5000,
@@ -53,7 +63,8 @@ async def evaluate():
          'correccion_registrada':any(v['resolved'] for v in result['result'].get('review_log',{}).values())},result,time.monotonic()-started))
     started=time.monotonic();stock=data.candidates(5)
     cost=data.purchase_plan(stock,'costo',50000);fast=data.purchase_plan(stock,'rapidez',50000)
-    reviewed=any(step['agent']=='compras' and step['kind']=='herramienta' and step['data'].get('result',{}).get('lines') for step in result['steps'])
+    reviewed=(any(step['agent']=='compras' and step['kind']=='herramienta' and step['data'].get('result',{}).get('lines') for step in result['steps'])
+        and 'compras' in result['result'].get('conclusions',{}))
     cases.append(case('proveedores','Precio, plazo y lote','Identificar el costo de recibir antes y las condiciones de cada proveedor.',
         {'seleccion_distinta':cost['lines'][0]['offer_id']!=fast['lines'][0]['offer_id'],
          'rapidez_menor_plazo':fast['lines'][0]['lead_days']<cost['lines'][0]['lead_days'],

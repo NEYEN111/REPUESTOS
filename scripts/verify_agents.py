@@ -407,6 +407,76 @@ class AgentChecks(unittest.TestCase):
         self.assertTrue(result['result']['review_log']['inventario']['resolved'])
         self.assertTrue(result['result']['audit']['passed'])
 
+    def test_invalid_purchasing_selection_gets_bounded_correction(self):
+        visits=[]
+        async def fake(role,run,messages,evidence,forced_strategy=None):
+            visits.append(role)
+            selections=[agents.OfferChoice(product_id=999,offer_id=999,reason='Selección errónea de prueba.')] if role=='compras' and visits.count(role)==1 else []
+            return agents.Decision(action='finish',message='Alternativas revisadas.',selections=selections)
+        rid=data.create_run(data.RunInput(kind='reposicion',request_key='invalid-purchasing-retry'),1,'test')
+        with patch.object(agents,'ask',side_effect=fake):asyncio.run(agents.execute(agents.claim()))
+        result=data.get_run(rid)
+        self.assertEqual(result['status'],'revision')
+        self.assertEqual(visits.count('compras'),2)
+        self.assertTrue(any(s['agent']=='compras' and s['kind']=='validacion' for s in result['steps']))
+        self.assertIn('finanzas',visits)
+        with db.connect() as c:self.assertEqual(c.execute('SELECT COUNT(*) FROM purchase_orders').fetchone()[0],0)
+
+    def test_invalid_provider_decision_is_corrected_without_writes(self):
+        visits=[]
+        async def fake(role,run,messages,evidence,forced_strategy=None):
+            visits.append(role)
+            if role=='orquestador' and visits.count(role)==1:
+                raise agents.InvalidDecision('La respuesta no cumple el formato permitido: message: string_too_long')
+            return agents.Decision(action='finish',message='Evidencia revisada.',decision='continuar')
+        rid=data.create_run(data.RunInput(kind='reposicion',request_key='invalid-provider-decision'),1,'test')
+        with patch.object(agents,'ask',side_effect=fake):asyncio.run(agents.execute(agents.claim()))
+        result=data.get_run(rid)
+        self.assertEqual(result['status'],'revision')
+        self.assertEqual(visits.count('orquestador'),2)
+        self.assertTrue(any(s['agent']=='orquestador' and s['kind']=='validacion' for s in result['steps']))
+        self.assertIn('finanzas',visits)
+        self.assertIn('auditor',visits)
+        with db.connect() as c:
+            self.assertEqual(c.execute('SELECT COUNT(*) FROM purchase_orders').fetchone()[0],0)
+            self.assertEqual(c.execute('SELECT SUM(stock) FROM products').fetchone()[0],0)
+
+    def test_transient_provider_failure_retries_without_writes(self):
+        visits=[]
+        async def fake(role,run,messages,evidence,forced_strategy=None):
+            visits.append(role)
+            if role=='orquestador' and visits.count(role)==1:
+                raise agents.ProviderTransient('Fallo temporal de lectura.')
+            return agents.Decision(action='finish',message='Evidencia revisada.',decision='continuar')
+        rid=data.create_run(data.RunInput(kind='reposicion',request_key='transient-provider-retry'),1,'test')
+        with patch.object(agents,'ask',side_effect=fake):asyncio.run(agents.execute(agents.claim()))
+        result=data.get_run(rid)
+        self.assertEqual(result['status'],'revision')
+        self.assertEqual(visits.count('orquestador'),2)
+        self.assertTrue(any(s['agent']=='orquestador' and s['kind']=='proveedor' for s in result['steps']))
+        self.assertIn('finanzas',visits)
+        self.assertIn('auditor',visits)
+        with db.connect() as c:
+            self.assertEqual(c.execute('SELECT COUNT(*) FROM purchase_orders').fetchone()[0],0)
+            self.assertEqual(c.execute('SELECT SUM(stock) FROM products').fetchone()[0],0)
+
+    def test_changed_evidence_during_purchasing_selection_does_not_retry(self):
+        visits=[]
+        async def fake(role,run,messages,evidence,forced_strategy=None):
+            visits.append(role)
+            if role=='compras':
+                line=evidence['ofertas']['lines'][0]
+                with db.transaction() as c:c.execute('UPDATE products SET stock=1 WHERE id=?',(line['product_id'],))
+                selection=agents.OfferChoice(product_id=line['product_id'],offer_id=line['offer_id'],reason='Oferta del análisis.')
+                return agents.Decision(action='finish',message='Oferta revisada.',selections=[selection])
+            return agents.Decision(action='finish',message='Evidencia revisada.',decision='continuar')
+        data.create_run(data.RunInput(kind='reposicion',request_key='changed-evidence-purchasing'),1,'test')
+        with patch.object(agents,'ask',side_effect=fake):
+            with self.assertRaises(data.EvidenceChanged):asyncio.run(agents.execute(agents.claim()))
+        self.assertEqual(visits.count('compras'),1)
+        self.assertNotIn('finanzas',visits)
+        with db.connect() as c:self.assertEqual(c.execute('SELECT COUNT(*) FROM purchase_orders').fetchone()[0],0)
+
     def test_cancelled_elapsed_stops_at_cancellation(self):
         from backend.services import agent_followup
         rid=self.proposal();orders=data.approve(rid,1,True)

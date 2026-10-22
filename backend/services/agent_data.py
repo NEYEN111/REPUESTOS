@@ -25,6 +25,8 @@ TEAMS = {
     'pedidos': ['calidad', 'inventario', 'pedidos', 'auditor'],
 }
 
+class EvidenceChanged(ValueError): pass
+
 class RunInput(BaseModel):
     model_config = ConfigDict(extra='forbid')
     kind: Literal['reposicion', 'catalogo', 'finanzas', 'pedidos']
@@ -267,7 +269,7 @@ def purchase_plan(stock, strategy, budget, fit_budget=False, selections=None):
         for p in stock['items']:
             current=stock_state(c,p['id'])
             if not current or any(current[k]!=p[k] for k in current):
-                raise ValueError('El inventario cambió durante el análisis. Inicia una revisión nueva.')
+                raise EvidenceChanged('El inventario cambió durante el análisis. Inicia una revisión nueva.')
             offers=rows(c,'''SELECT o.*,s.name supplier,s.active supplier_active FROM supplier_offers o JOIN suppliers s ON s.id=o.supplier_id
                 WHERE o.product_id=? ORDER BY o.id''',(p['id'],))
             choices=[]; comparisons=[]
