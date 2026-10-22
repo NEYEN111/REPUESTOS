@@ -1,4 +1,5 @@
 import csv
+import gzip
 import io
 import json
 import math
@@ -25,6 +26,28 @@ REASONS={
  'plazo_proveedor_mayor_al_horizonte':'El proveedor tarda más de los siete días que cubre el modelo.'}
 
 def load_json(path): return json.loads(Path(path).read_text(encoding='utf-8'))
+
+
+def reference_result(skus, model_hash, cutoff):
+    path=BUNDLE/'reference_predictions.json.gz'
+    with gzip.open(path,'rt',encoding='utf-8') as stream:
+        saved=json.load(stream)
+    manifest=load_json(ROOT/'data/ml/roda-v1/manifest.json')
+    dataset_hash=manifest['files']['inventario_ventas_diarias.csv']['gzip_sha256']
+    if (saved.get('model_sha256')!=model_hash or saved.get('dataset_sha256')!=dataset_hash
+            or saved.get('cutoff')!=cutoff):
+        raise ValueError('El pronóstico de referencia no corresponde al modelo y al historial instalados.')
+    result=saved['result']
+    allowed=set(skus)
+    known={item['sku'] for item in result['items']}
+    known.update(item['sku'] for item in result['rejected'])
+    return {**result,
+        'items':[item for item in result['items'] if item['sku'] in allowed],
+        'rejected':[item for item in result['rejected'] if item['sku'] in allowed]
+            + [{'sku':sku,'reason':'Producto nuevo: no existe en el entrenamiento.'}
+               for sku in sorted(allowed-known)]}
+
+
 def runtime():
     return Path(os.environ.get('ML_PYTHON',str(ROOT/('.venv-ml/Scripts/python.exe' if os.name=='nt' else '.venv-ml/bin/python'))))
 def contract(): return load_json(BUNDLE/'contract.json')
@@ -83,17 +106,20 @@ def calculate(source,uid):
             products=rows(c,'SELECT id,sku FROM products WHERE active=1')
             history=[json.loads(r['payload']) for r in rows(c,'SELECT payload FROM ml_daily WHERE complete=1 AND date<=? ORDER BY product_id,date',(cutoff,))] if source=='operacion' else []
         if source=='operacion' and not history: raise ValueError('Todavía no hay cierres completos. Revisa Calidad del historial.')
-        if not runtime().is_file(): raise ValueError('Falta el entorno de inferencia. Reinicia con start.cmd para prepararlo.')
-        request={'source':source,'skus':[p['sku'] for p in products],'cutoff':cutoff,'history':history}
-        env=dict(os.environ,PYTHONUTF8='1',LOKY_MAX_CPU_COUNT='2')
-        try:
-            result=subprocess.run([str(runtime()),'-m','ml.web_predict'],input=json.dumps(request),
-                    capture_output=True,text=True,encoding='utf-8',cwd=ROOT,env=env,timeout=120,
-                    creationflags=subprocess.CREATE_NO_WINDOW if os.name=='nt' else 0)
-            output=json.loads(result.stdout)
-        except subprocess.TimeoutExpired: raise ValueError('El cálculo excedió el tiempo disponible. Intenta nuevamente.')
-        except (OSError,json.JSONDecodeError): raise ValueError('No se pudo iniciar el modelo. Revisa el entorno de inferencia.')
-        if result.returncode or 'error' in output: raise ValueError(output.get('error','El modelo no pudo completar el cálculo.'))
+        if source=='referencia':
+            output=reference_result([p['sku'] for p in products],info['model_sha256'],cutoff)
+        else:
+            if not runtime().is_file(): raise ValueError('Falta el entorno de inferencia. Reinicia con start.cmd para prepararlo.')
+            request={'source':source,'skus':[p['sku'] for p in products],'cutoff':cutoff,'history':history}
+            env=dict(os.environ,PYTHONUTF8='1',LOKY_MAX_CPU_COUNT='2')
+            try:
+                result=subprocess.run([str(runtime()),'-m','ml.web_predict'],input=json.dumps(request),
+                        capture_output=True,text=True,encoding='utf-8',cwd=ROOT,env=env,timeout=120,
+                        creationflags=subprocess.CREATE_NO_WINDOW if os.name=='nt' else 0)
+                output=json.loads(result.stdout)
+            except subprocess.TimeoutExpired: raise ValueError('El cálculo excedió el tiempo disponible. Intenta nuevamente.')
+            except (OSError,json.JSONDecodeError): raise ValueError('No se pudo iniciar el modelo. Revisa el entorno de inferencia.')
+            if result.returncode or 'error' in output: raise ValueError(output.get('error','El modelo no pudo completar el cálculo.'))
         if not output['items']: raise ValueError('Ningún producto tiene las 56 observaciones continuas requeridas y una última venta conocida.')
         ids={p['sku']:p['id'] for p in products}
         summary={k:v for k,v in output.items() if k!='items'}
