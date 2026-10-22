@@ -87,6 +87,7 @@ async def ask(role, run, messages, evidence, forced_strategy=None):
     Compara el importe del lote, cantidad cubierta, plazo y delivery_risk. dominated_by identifica alternativas superiores en cantidad, costo y plazo; evita elegir una oferta dominada sin una justificación concreta apoyada en evidencia. La cobertura histórica es un indicador descriptivo, no una predicción ML. Un producto agotado no se recupera hasta la recepción.
     Para el auditor: revisa también conclusiones, correcciones, warnings y las alternativas del expediente. Explica el principal compromiso pendiente (plazo, cantidad sin cubrir o referencia académica), aunque passed=true. Nunca afirmes optimización global.
     Para finanzas: si over_budget=true pide decision=revisar para que compras ajuste los lotes; si hay loss_skus pide bloquear.
+    Para inventario: si el stock y la necesidad son consistentes pero el presupuesto no cubre todo, pide revisar y deriva el ajuste a Compras y Finanzas. No bloquees solo por ese límite; el Auditor verificará el resultado final.
     Para auditor: si passed=false pide bloquear. Con passed=true, continuar significa presentar al administrador, nunca ejecutar.
     Solo afirma haber revisado los controles de checks. En informes, pedidos y catálogo no afirmes haber validado un presupuesto de compra.
     Diferencia datos académicos de observados. No bloquees una demostración solo por usar referencias identificadas.
@@ -238,6 +239,17 @@ async def execute(run):
         decision=Decision.model_validate(decisions[role])
         if decision.decision=='bloquear':
             state['blocked_reason']=f"{data.ROLES[role][0]} bloqueó la propuesta: {decision.message}"
+        budget_handoff=(role=='inventario' and run['kind']=='reposicion' and decision.decision=='revisar'
+            and not state.get('quality',{}).get('blocking_errors')
+            and sum(p['needed']*p['cost_cents'] for p in state.get('inventory',{}).get('items',[]))>run['budget_cents'])
+        if budget_handoff:
+            state.setdefault('review_log',{})['inventario']={'requested':decision.message,
+                'resolution':'Ajuste delegado a Compras y Finanzas; pendiente de verificación.', 'resolved':False}
+            message={'from':'orquestador','to':'compras','message':'Inventario confirmó la necesidad; ajusta los lotes al presupuesto y documenta la cantidad sin cubrir.'}
+            messages.append(message)
+            data.event(run['id'],'orquestador','revision',message['message'],target='compras')
+            checkpoint()
+            continue
         budget_revision=role=='finanzas' and run['kind']=='reposicion'
         if decision.decision=='revisar' and not budget_revision:
             revision_key=role+'_correccion'
@@ -270,6 +282,13 @@ async def execute(run):
             state.setdefault('review_log',{})['presupuesto']={'requested':decisions['finanzas']['message'],
                 'resolution':decisions['finanzas_revision']['message'],
                 'resolved':not state['finance']['over_budget'] and not state.get('blocked_reason')}
+        if role=='finanzas' and 'inventario' in state.get('review_log',{}):
+            plan=state.get('plan',{})
+            resolved=(bool(plan.get('lines')) and plan.get('total_cents',0)<=run['budget_cents']
+                and not state.get('finance',{}).get('loss_skus') and not state.get('blocked_reason'))
+            state['review_log']['inventario'].update(
+                resolution='Compras ajustó los lotes; Finanzas comprobó el límite.' if resolved else
+                    'La observación sigue pendiente; el Auditor debe bloquear.', resolved=bool(resolved))
         if (decision.decision=='bloquear' or state.get('blocked_reason')) and role!='auditor':
             state['blocked_reason']=state.get('blocked_reason') or decision.message
             if 'auditor' not in decisions:

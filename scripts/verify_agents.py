@@ -390,6 +390,23 @@ class AgentChecks(unittest.TestCase):
         self.assertLessEqual(totals[1],5000)
         self.assertTrue(result['result']['review_log']['compras']['resolved'])
 
+    def test_inventory_budget_review_reaches_purchasing_and_auditor(self):
+        visits=[]
+        async def fake(role,run,messages,evidence,forced_strategy=None):
+            visits.append(role)
+            over=role=='compras' and evidence['ofertas']['total_cents']>run['budget_cents']
+            decision='revisar' if role=='inventario' or over else 'continuar'
+            return agents.Decision(action='finish',message='Ajustar lote.' if decision=='revisar' else 'Comprobado.',decision=decision)
+        rid=data.create_run(data.RunInput(kind='reposicion',budget_cents=5000,request_key='inventory-budget-handoff'),1,'test')
+        with patch.object(agents,'ask',side_effect=fake):asyncio.run(agents.execute(agents.claim()))
+        result=data.get_run(rid)
+        self.assertEqual(result['status'],'revision')
+        self.assertEqual(visits.count('inventario'),1)
+        self.assertIn('compras',visits)
+        self.assertIn('finanzas',visits)
+        self.assertTrue(result['result']['review_log']['inventario']['resolved'])
+        self.assertTrue(result['result']['audit']['passed'])
+
     def test_cancelled_elapsed_stops_at_cancellation(self):
         from backend.services import agent_followup
         rid=self.proposal();orders=data.approve(rid,1,True)
