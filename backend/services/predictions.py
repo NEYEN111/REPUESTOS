@@ -45,10 +45,10 @@ def readiness():
         sample=one(c,'SELECT MIN(first_seen) first,MAX(last_seen) last,COUNT(DISTINCT date) days FROM ml_daily')
         continuous={r['product_id']:r for r in rows(c, f'''WITH history AS (
           SELECT product_id,date,{continuous_sales_expr} sales,
-            ROW_NUMBER() OVER(PARTITION BY product_id ORDER BY date DESC)-1 offset
+            ROW_NUMBER() OVER(PARTITION BY product_id ORDER BY date DESC)-1 AS day_offset
           FROM ml_daily WHERE complete=1 AND date<=?)
           SELECT product_id,COUNT(*) days,MAX(CASE WHEN sales>0 THEN 1 ELSE 0 END) sold FROM history
-          WHERE {date_offset_expr}=offset GROUP BY product_id''',(cutoff,cutoff))}
+          WHERE {date_offset_expr}=day_offset GROUP BY product_id''',(cutoff,cutoff))}
     known=set(contract()['known_skus'])
     for row in data:
         sequence=continuous.get(row['id'],{})
