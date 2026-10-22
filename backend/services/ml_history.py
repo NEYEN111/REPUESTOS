@@ -59,6 +59,7 @@ def capture():
           SUM(CASE WHEN po.status IN ('pendiente','parcial') AND po.expected_at='' THEN 1 ELSE 0 END) unknown_eta,
           SUM(CASE WHEN substr(po.created_at,1,10)=? THEN i.quantity ELSE 0 END) requested
           FROM purchase_items i JOIN purchase_orders po ON po.id=i.purchase_order_id GROUP BY i.product_id''', (day,day))}
+        observations = []
         for p in products:
             pid=p['id']; mov=movement.get(pid,{}); sample=samples[pid]; sale=sales.get(pid,{}); po=purchases.get(pid,{})
             quantity=lambda k: mov.get(k,{}).get('qty',0)
@@ -85,9 +86,9 @@ def capture():
                  'quiebre_observado':int(sample['stocked']<sample['checks'] or p['stock']==p['reserved']),
                  '_missing_policy':int(p['maximum'] is None or p['lead_days'] is None or p['pack_size'] is None or bool(po.get('unknown_eta',0))),
                  '_audit_max':audit_max}
-            c.execute('''INSERT INTO ml_daily(product_id,date,payload,first_seen,last_seen) VALUES(?,?,?,?,?)
-             ON CONFLICT(product_id,date) DO UPDATE SET payload=excluded.payload,last_seen=excluded.last_seen''',
-             (pid,day,json.dumps(raw,ensure_ascii=False),stamp,stamp))
+            observations.append((pid,day,json.dumps(raw,ensure_ascii=False),stamp,stamp))
+        c.executemany('''INSERT INTO ml_daily(product_id,date,payload,first_seen,last_seen) VALUES(?,?,?,?,?)
+             ON CONFLICT(product_id,date) DO UPDATE SET payload=excluded.payload,last_seen=excluded.last_seen''', observations)
         evaluate_matured(c,day,stamp)
 
 

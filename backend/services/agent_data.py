@@ -5,7 +5,7 @@ import math
 from datetime import datetime, timedelta, date
 from pydantic import BaseModel, Field, ConfigDict
 from typing import Literal
-from backend.db import ROOT, connect, transaction, rows, one, now, audit, postgres_schema
+from backend.db import ROOT, connect, transaction, rows, one, now, audit, postgres_schema, is_postgres
 from backend.services import operations, reports, predictions, catalog_quality, suppliers
 
 ROLES = {
@@ -154,8 +154,9 @@ def import_references(uid):
     with transaction() as c:
         require_admin(c,uid)
         until=(date.fromisoformat(now()[:10])+timedelta(days=30)).isoformat()
-        count=c.execute('''INSERT OR IGNORE INTO supplier_offers(product_id,supplier_id,cost_cents,lead_days,pack_size,minimum_quantity,valid_until,source,updated_at,user_id)
-            SELECT p.id,ip.supplier_id,p.cost_cents,MAX(1,ip.lead_days),ip.pack_size,ip.pack_size,?,'referencia_catalogo',?,?
+        minimum_lead = 'GREATEST(1,ip.lead_days)' if is_postgres() else 'MAX(1,ip.lead_days)'
+        count=c.execute(f'''INSERT OR IGNORE INTO supplier_offers(product_id,supplier_id,cost_cents,lead_days,pack_size,minimum_quantity,valid_until,source,updated_at,user_id)
+            SELECT p.id,ip.supplier_id,p.cost_cents,{minimum_lead},ip.pack_size,ip.pack_size,?,'referencia_catalogo',?,?
             FROM products p JOIN inventory_policy ip ON ip.product_id=p.id JOIN suppliers s ON s.id=ip.supplier_id
             WHERE p.active=1 AND s.active=1 AND p.cost_cents>0''',(until,now(),uid)).rowcount
         audit(c,'supplier_offers','referencias','importar',uid,detail={'count':count,'source':'referencia_catalogo'})
@@ -225,8 +226,9 @@ def candidates(limit):
     return {'items':[{k:p[k] for k in fields} for p in data[:limit]],'total_candidates':len(data),'limit':limit,'demand':info}
 
 def stock_state(c, pid):
-    return one(c,'''SELECT p.stock,p.reserved,p.minimum,p.active,p.price_cents,p.cost_cents,
-        MAX(COALESCE(ip.maximum,MAX(p.minimum*3,10)),p.minimum) maximum,
+    maximum = 'GREATEST' if is_postgres() else 'MAX'
+    return one(c,f'''SELECT p.stock,p.reserved,p.minimum,p.active,p.price_cents,p.cost_cents,
+        {maximum}(COALESCE(ip.maximum,{maximum}(p.minimum*3,10)),p.minimum) maximum,
         COALESCE(ip.lead_days,7) lead_days,COALESCE(ip.pack_size,1) pack_size,ip.supplier_id,COALESCE(ip.source,'pendiente') policy_source,
         COALESCE((SELECT SUM(i.quantity-i.received_quantity) FROM purchase_items i JOIN purchase_orders po ON po.id=i.purchase_order_id
           WHERE i.product_id=p.id AND po.status IN ('pendiente','parcial')),0) incoming

@@ -93,7 +93,9 @@ def save_product(d,user_id,product_id=None):
         for v in d.get('compatibility',[]):
             c.execute('INSERT INTO compatibility(product_id,brand,model,year_from,year_to,version) VALUES(?,?,?,?,?,?)',(product_id,v['brand'],v['model'],int(v['year_from']),int(v['year_to']),v.get('version','')))
         from backend.services.inventory import refresh_alert
-        c.execute('UPDATE inventory_policy SET maximum=MAX(maximum,?) WHERE product_id=?',(d['minimum'],product_id))
+        from backend.db import is_postgres
+        greatest = 'GREATEST' if is_postgres() else 'MAX'
+        c.execute(f'UPDATE inventory_policy SET maximum={greatest}(maximum,?) WHERE product_id=?',(d['minimum'],product_id))
         refresh_alert(c,product_id)
         audit(c,'products',product_id,'guardar',user_id)
         return product_id

@@ -1,12 +1,13 @@
 from datetime import date, datetime, timedelta
 import math
-from backend.db import connect, transaction, rows, one, now, audit
+from backend.db import connect, transaction, rows, one, now, audit, is_postgres
 from backend.services.catalog import normalize
 from backend.services.inventory import move, refresh_alert
 
-INVENTORY_SQL = '''SELECT p.id,p.sku,p.name,p.category_id,p.stock,p.reserved,p.stock-p.reserved available,p.minimum,p.active,
+_MAX = 'GREATEST' if is_postgres() else 'MAX'
+INVENTORY_SQL = f'''SELECT p.id,p.sku,p.name,p.category_id,p.stock,p.reserved,p.stock-p.reserved available,p.minimum,p.active,
  p.price_cents,p.cost_cents,c.name category,b.name brand,
- COALESCE(ip.location,'') location,COALESCE(ip.maximum,MAX(p.minimum*3,10)) maximum,
+ COALESCE(ip.location,'') location,COALESCE(ip.maximum,{_MAX}(p.minimum*3,10)) maximum,
  COALESCE(ip.lead_days,7) lead_days,COALESCE(ip.pack_size,1) pack_size,ip.supplier_id,s.name supplier,
  COALESCE(ip.source,'pendiente') policy_source,
  (SELECT thumb FROM product_images WHERE product_id=p.id ORDER BY is_primary DESC,id LIMIT 1) image,
@@ -73,7 +74,7 @@ def snapshot():
         c.execute('''INSERT INTO stock_observations(product_id,date,stock,reserved,available,incoming,price_cents,cost_cents,minimum,captured_at)
         SELECT p.id,?,p.stock,p.reserved,p.stock-p.reserved,
           COALESCE((SELECT SUM(i.quantity-i.received_quantity) FROM purchase_items i JOIN purchase_orders po ON po.id=i.purchase_order_id
-            WHERE i.product_id=p.id AND po.status IN ('pendiente','parcial')),0),p.price_cents,p.cost_cents,p.minimum,? FROM products p WHERE 1
+            WHERE i.product_id=p.id AND po.status IN ('pendiente','parcial')),0),p.price_cents,p.cost_cents,p.minimum,? FROM products p WHERE 1=1
         ON CONFLICT(product_id,date) DO UPDATE SET stock=excluded.stock,reserved=excluded.reserved,available=excluded.available,
           incoming=excluded.incoming,price_cents=excluded.price_cents,cost_cents=excluded.cost_cents,minimum=excluded.minimum,captured_at=excluded.captured_at''',
           (stamp[:10],stamp))
