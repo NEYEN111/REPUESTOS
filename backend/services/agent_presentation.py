@@ -39,6 +39,7 @@ async def execute_next():
         c.execute("UPDATE agent_presentations SET status='en_curso',started_at=?,lease_until=? WHERE id=?",(now(),lease,job['id']))
     process=None
     try:
+        (ROOT/'.tmp').mkdir(parents=True,exist_ok=True)
         with tempfile.TemporaryDirectory(prefix='agent-controls-presentation-',dir=ROOT/'.tmp') as folder:
             env=os.environ.copy();env.pop('DATABASE_URL',None);env['RODA_FORCE_SQLITE']='1';env['DATABASE_PATH']=os.path.join(folder,'demo.db');env['PYTHONUTF8']='1'
             process=await asyncio.create_subprocess_exec(sys.executable,'-m','backend.agent_presentation',cwd=ROOT,env=env,
