@@ -28,15 +28,21 @@ def metrics(y, pred):
                 r2=float(1-(error**2).sum()/((y-y.mean())**2).sum()) if np.var(y) else None)
 
 
-def frame(records, frequency):
+def frame(records, frequency, *, origins=None):
     monthly = frequency == 'monthly'
     window, horizon, freq = (12, 1, 'M') if monthly else (28, 7, 'D')
+    requested = {pd.Period(origin, freq=freq) for origin in origins} if origins is not None else None
     result = []
     for sku, group in pd.DataFrame(records).groupby('sku', sort=True):
         series = group.set_index(pd.PeriodIndex(group.period, freq=freq)).units.astype(float)
         grid = pd.period_range(series.index.min(), series.index.max(), freq=freq)
         values = series.reindex(grid).to_numpy()
-        for i in range(window, len(grid)+1):
+        # Prediction needs only its requested origins, but each one still sees
+        # the same complete historical grid used by training and comparison.
+        indices = range(window, len(grid)+1) if requested is None else sorted(
+            origin.ordinal-grid[0].ordinal+1 for origin in requested
+            if window <= origin.ordinal-grid[0].ordinal+1 <= len(grid))
+        for i in indices:
             past = values[i-window:i]
             if np.isfinite(past).sum() < (8 if monthly else 21):
                 continue
@@ -64,6 +70,8 @@ def frame(records, frequency):
                                baseline=f['mean']*horizon,
                                seasonal=f[f'mean_{horizon}']*horizon, **f))
     if not result:
+        if requested is not None:
+            raise ValueError('No hay productos conocidos con historial suficiente hasta el corte.')
         raise ValueError('Historial insuficiente: se necesitan 12 meses o 28 días por producto.')
     return pd.DataFrame(result)
 
@@ -180,11 +188,12 @@ def load_model(spec):
 
 def predict(request):
     bundle = load_model(request)
-    data = frame(request['records'], bundle['frequency'])
     cutoff = max(r['period'] for r in request['records'])
-    selected = data[data.cutoff.eq(cutoff) & data.sku.isin(bundle['skus'])].copy()
-    if selected.empty:
+    known = set(bundle['skus'])
+    records = [r for r in request['records'] if r['sku'] in known]
+    if not records:
         raise ValueError('No hay productos conocidos con historial suficiente hasta el corte.')
+    selected = frame(records, bundle['frequency'], origins={cutoff})
     selected['prediction'] = np.maximum(0, bundle['model'].predict(selected[bundle['features']]))
     return dict(cutoff=cutoff, version=request.get('id'), model_sha256=request['sha256'],
                 frequency=bundle['frequency'],
