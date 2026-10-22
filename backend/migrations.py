@@ -1,7 +1,11 @@
 """Additive, repeatable upgrades for existing installations."""
-from backend.db import table_columns
+from backend.db import table_columns, is_postgres
 
 def migrate(c):
+    binary_type = 'BYTEA' if is_postgres() else 'BLOB'
+    c.execute(f'''CREATE TABLE IF NOT EXISTS stored_media(
+      name TEXT PRIMARY KEY, kind TEXT NOT NULL CHECK(kind IN ('product','voucher')),
+      content {binary_type} NOT NULL, created_at TEXT NOT NULL)''')
     for table, column, declaration in [
         ('purchase_orders', 'expected_at', "TEXT NOT NULL DEFAULT ''"),
         ('purchase_orders', 'note', "TEXT NOT NULL DEFAULT ''"),

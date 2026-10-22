@@ -43,7 +43,15 @@ def run():
         r=customer.post(f'/api/orders/{oid}/payment',files={'file':('demo.png',image.getvalue(),'image/png')});assert r.status_code==200,r.text
         assert get(customer,f'/orders/{oid}')['status']=='pago por verificar'
         assert admin.get(f'/api/orders/{oid}/voucher').status_code==200
+        with connect() as c:
+            stored=one(c,'SELECT kind FROM stored_media WHERE name=?',(get(customer,f'/orders/{oid}')['payment']['voucher'],))
+            assert stored and stored['kind']=='voucher'
         assert customer.get('/media/'+get(customer,f'/orders/{oid}')['payment']['voucher']).status_code==404
+        uploaded=admin.post(f'/api/admin/products/{pid}/images',files={'files':('producto.png',image.getvalue(),'image/png')})
+        assert uploaded.status_code==200,uploaded.text
+        photo=get(admin,f'/admin/products/{pid}')['images'][-1]
+        assert photo['url'].startswith('/api/media/') and customer.get(photo['thumb']).status_code==200
+        with connect() as c: assert one(c,'SELECT kind FROM stored_media WHERE name=?',(photo['url'].rsplit('/',1)[-1],))['kind']=='product'
         before=get(admin,'/admin/dashboard')
         post(admin,f'/admin/orders/{oid}/verify',{'accepted':True})
         assert admin.post(f'/api/admin/orders/{oid}/verify',json={'accepted':True}).status_code==400
@@ -136,7 +144,11 @@ def run():
             assert not c.execute('PRAGMA foreign_key_check').fetchall()
             assert not c.execute('SELECT id FROM products WHERE reserved<0 OR stock<reserved').fetchall()
             for row in c.execute('SELECT url,thumb FROM product_images'):
-                for url in row:assert (ROOT/'backend/static'/url.removeprefix('/media/')).is_file(),url
+                for url in row:
+                    if url.startswith('/api/media/'):
+                        assert one(c,'SELECT name FROM stored_media WHERE name=? AND kind=?',(url.rsplit('/',1)[-1],'product')),url
+                    else:
+                        assert (ROOT/'backend/static'/url.removeprefix('/media/')).is_file(),url
         print('PASS: flujos de tienda, pagos, stock, compras parciales, reintentos, cancelacion de saldo, conteos concurrentes, validaciones, captura diaria, roles, finanzas e imagenes.')
 if __name__=='__main__':
     try:run()

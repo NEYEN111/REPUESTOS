@@ -2,23 +2,31 @@ import json,secrets,sqlite3,io,csv,asyncio,logging,os
 from contextlib import asynccontextmanager
 from pathlib import Path
 from urllib.parse import urlsplit
-from PIL import Image,UnidentifiedImageError
 from fastapi import FastAPI,Request,Response,Depends,HTTPException,UploadFile,File,Form
 from fastapi.responses import FileResponse,JSONResponse,StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.exceptions import RequestValidationError
 from backend.db import ROOT,connect,transaction,rows,one,now,config,init_db,audit,IntegrityError,DatabaseError
-from backend.services import catalog,customers,orders,inventory,suppliers,reports,operations,catalog_quality,ml_history,predictions,ml_lab,ml_automation,assistant
+from backend.services import catalog,customers,orders,inventory,suppliers,reports,operations,catalog_quality,ml_history,predictions,ml_lab,ml_automation,assistant,stored_media
 from backend.services.payments import provider
 from backend.services import agent_data,agents
 
-async def expiration_loop():
+def capture_window(stamp):
+    hour,minute=int(stamp[11:13]),int(stamp[14:16])
+    if hour==23 and minute==59: return stamp[:10]+'-close'
+    if hour%2==0 and minute<=2: return stamp[:13]
+    return None
+
+async def expiration_loop(last_capture=None):
     while True:
         await asyncio.sleep(60)
         try:
             with transaction() as c: orders.expire(c)
-            operations.snapshot()
-            await asyncio.to_thread(ml_history.capture)
+            window=capture_window(now())
+            if window and window!=last_capture:
+                await asyncio.to_thread(operations.snapshot)
+                await asyncio.to_thread(ml_history.capture)
+                last_capture=window
             await asyncio.to_thread(ml_automation.tick)
         except Exception: logging.exception('No se pudo actualizar el cierre operativo.')
 @asynccontextmanager
@@ -30,10 +38,10 @@ async def lifespan(app):
     ml_automation.init()
     ml_automation.recover()
     with transaction() as c: orders.expire(c)
-    operations.snapshot()
+    await asyncio.to_thread(operations.snapshot)
     await asyncio.to_thread(ml_history.capture)
     await asyncio.to_thread(ml_automation.tick)
-    task=asyncio.create_task(expiration_loop())
+    task=asyncio.create_task(expiration_loop(capture_window(now())))
     agent_task=asyncio.create_task(agents.worker())
     try:
         yield
@@ -200,30 +208,29 @@ def cancel(oid:int,d:dict,u=Depends(current_user)):
     with transaction() as c:
         o=one(c,'SELECT * FROM orders WHERE id=?',(oid,));owner(o,u,d.get('token',''));orders.transition(c,o,'cancelado',u['id'] if u else None)
     return {'ok':True}
-async def save_image(file,folder):
-    raw=await file.read(8*1024*1024+1)
-    if len(raw)>8*1024*1024: raise ValueError('La imagen supera los 8 MB.')
-    try:
-        im=Image.open(io.BytesIO(raw));im.load()
-        if im.width*im.height>25000000: raise ValueError('La imagen es demasiado grande.')
-        im=im.convert('RGB');im.thumbnail((1400,1400))
-    except (UnidentifiedImageError,OSError): raise ValueError('Adjunta una imagen JPG, PNG o WebP válida.')
-    folder.mkdir(parents=True,exist_ok=True);name=secrets.token_hex(12)
-    im.save(folder/(name+'.webp'),'WEBP',quality=88);im.thumbnail((360,360));im.save(folder/(name+'-thumb.webp'),'WEBP',quality=85)
-    if folder.is_relative_to(ROOT/'backend/static'):
-        return '/media/'+str((folder/(name+'.webp')).relative_to(ROOT/'backend/static')).replace('\\','/'),'/media/'+str((folder/(name+'-thumb.webp')).relative_to(ROOT/'backend/static')).replace('\\','/')
-    return name+'.webp',name+'-thumb.webp'
+@app.get('/api/media/{name}')
+def uploaded_product_image(name:str):
+    if len(name)!=37 or not name.endswith('.webp') or any(c not in '0123456789abcdef' for c in name[:-5]):
+        raise HTTPException(404,'Imagen no encontrada.')
+    with connect() as c: image=stored_media.read(c,name,'product')
+    if not image: raise HTTPException(404,'Imagen no encontrada.')
+    return Response(content=bytes(image['content']),media_type='image/webp')
 @app.post('/api/orders/{oid}/payment')
 async def submit_payment(oid:int,token:str='',file:UploadFile|None=File(None),u=Depends(current_user)):
     o=orders.order_detail(oid);owner(o,u,token)
     if o['status']!='pendiente de pago': raise ValueError('Este pedido no admite un nuevo pago.')
     voucher=''
-    if file: voucher,_=await save_image(file,ROOT/'data/vouchers')
-    provider.submit(oid,voucher,u['id'] if u else None);return {'ok':True}
+    content=None
+    if file:
+        content,_=await stored_media.prepare(file)
+        voucher='db:'
+    provider.submit(oid,voucher,u['id'] if u else None,content);return {'ok':True}
 @app.get('/api/orders/{oid}/voucher')
 def voucher(oid:int,token:str='',u=Depends(current_user)):
     o=orders.order_detail(oid);owner(o,u,token)
     filename=Path(o['payment']['voucher']).name
+    with connect() as c: image=stored_media.read(c,filename,'voucher') if filename else None
+    if image: return Response(content=bytes(image['content']),media_type='image/webp')
     path=ROOT/'data/vouchers'/filename
     if not filename or not path.is_file(): raise HTTPException(404,'No hay constancia adjunta.')
     return FileResponse(path,media_type='image/webp')
@@ -259,13 +266,16 @@ def hide_product(pid:int,u=Depends(staff)):
     return {'ok':True}
 @app.post('/api/admin/products/{pid}/images')
 async def images(pid:int,files:list[UploadFile]=File(...),u=Depends(staff)):
-    p=catalog.product_detail(pid,admin=True)
+    catalog.product_detail(pid,admin=True)
     if len(files)>10: raise ValueError('Sube hasta 10 imágenes por vez.')
-    for file in files:
-        url,thumb=await save_image(file,ROOT/'backend/static/products'/p['sku'])
-        with transaction() as c:
-            has_image=one(c,'SELECT id FROM product_images WHERE product_id=?',(pid,))
+    prepared=[await stored_media.prepare(file) for file in files]
+    with transaction() as c:
+        has_image=one(c,'SELECT id FROM product_images WHERE product_id=?',(pid,))
+        for large,small in prepared:
+            url='/api/media/'+stored_media.save(c,'product',large)
+            thumb='/api/media/'+stored_media.save(c,'product',small)
             c.execute('INSERT INTO product_images(product_id,url,thumb,is_primary) VALUES(?,?,?,?)',(pid,url,thumb,int(not has_image)))
+            has_image=True
     return {'ok':True}
 @app.put('/api/admin/images/{iid}/primary')
 def primary_image(iid:int,u=Depends(staff)):
@@ -276,7 +286,12 @@ def primary_image(iid:int,u=Depends(staff)):
     return {'ok':True}
 @app.delete('/api/admin/images/{iid}')
 def remove_image(iid:int,u=Depends(staff)):
-    with transaction() as c: c.execute('DELETE FROM product_images WHERE id=?',(iid,))
+    with transaction() as c:
+        image=one(c,'SELECT url,thumb FROM product_images WHERE id=?',(iid,))
+        c.execute('DELETE FROM product_images WHERE id=?',(iid,))
+        if image:
+            stored_media.remove(c,image['url'])
+            stored_media.remove(c,image['thumb'])
     return {'ok':True}
 @app.post('/api/admin/inventory')
 def adjust(d:dict,u=Depends(staff)): inventory.adjust(d,u['id']);return {'ok':True}
