@@ -151,19 +151,22 @@ class AgentChecks(unittest.TestCase):
         self.assertEqual(data.get_run(rid)['status'],'bloqueada')
         with self.assertRaises(ValueError):data.approve(rid,1,True)
 
-    def test_provider_retries_temporary_failure_without_writes(self):
+    def test_provider_fallback_after_temporary_failure_without_writes(self):
         rid=data.create_run(data.RunInput(kind='pedidos',request_key='provider-retry-key'),1,'test')
         run=agents.claim()
         req=httpx.Request('POST','https://generativelanguage.googleapis.com')
         message={'action':'tool','tool':'contexto','message':'Consultar contexto','decision':'continuar','strategy':'costo','agents':[]}
-        response={'candidates':[{'finishReason':'STOP','content':{'parts':[{'text':json.dumps(message)}]}}], 'usageMetadata':{'totalTokenCount':42}}
+        response={'choices':[{'message':{'content':json.dumps(message)}}], 'usage':{'total_tokens':42}}
         fake=AsyncMock()
         fake.__aenter__.return_value=fake
         fake.post.side_effect=[httpx.Response(503,request=req),httpx.Response(200,json=response,request=req)]
-        with patch.object(agents.httpx,'AsyncClient',return_value=fake),patch.object(agents,'_env_value',return_value='test-only-key'),patch.object(agents.asyncio,'sleep',new_callable=AsyncMock):
+        with patch.object(agents.httpx,'AsyncClient',return_value=fake), \
+             patch.object(agents.llm_provider,'provider_config',return_value=('gemini','gemini-3.1-flash-lite','test-only-key')), \
+             patch.object(agents.llm_provider,'env_value',side_effect=lambda key: {'LLM_FALLBACK_PROVIDER':'thehive','THEHIVE_API_KEY':'fallback-key'}.get(key,'')):
             result=asyncio.run(agents.ask('orquestador',run,[],{}))
         self.assertEqual(result.tool,'contexto')
-        self.assertEqual(data.get_run(rid)['calls'],2)
+        self.assertEqual(fake.post.call_count,2)
+        self.assertEqual(data.get_run(rid)['calls'],1)
         with db.connect() as c:self.assertEqual(c.execute('SELECT COUNT(*) FROM purchase_orders').fetchone()[0],0)
 
     def test_auditor_schema_requires_conclusion_after_evidence(self):
@@ -173,7 +176,9 @@ class AgentChecks(unittest.TestCase):
         response={'candidates':[{'finishReason':'STOP','content':{'parts':[{'text':decision.model_dump_json()}]}}]}
         fake=AsyncMock();fake.__aenter__.return_value=fake
         fake.post.return_value=httpx.Response(200,json=response,request=httpx.Request('POST','https://generativelanguage.googleapis.com'))
-        with patch.object(agents.httpx,'AsyncClient',return_value=fake),patch.object(agents,'_env_value',return_value='test-only-key'):
+        with patch.object(agents.httpx,'AsyncClient',return_value=fake), \
+             patch.object(agents.llm_provider,'provider_config',return_value=('gemini','gemini-3.1-flash-lite','test-only-key')), \
+             patch.object(agents.llm_provider,'env_value',return_value=''):
             result=asyncio.run(agents.ask('auditor',run,[],{'auditoria':{'passed':True}}))
         properties=fake.post.call_args.kwargs['json']['generationConfig']['responseSchema']['properties']
         self.assertEqual(properties['action']['enum'],['finish'])

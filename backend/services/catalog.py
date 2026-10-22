@@ -10,6 +10,10 @@ FROM products p JOIN brands b ON p.brand_id=b.id JOIN categories c ON c.id=p.cat
 def compatible(c,p,v):
     if p['universal']: return True
     return bool(one(c,"SELECT id FROM compatibility WHERE product_id=? AND brand=? AND model=? AND year_from<=? AND year_to>=? AND (version='' OR version=?)",(p['id'],v['brand'],v['model'],v['year'],v['year'],v['version'])))
+def compatible_product_ids(c,v):
+    return {item['product_id'] for item in rows(c,
+        "SELECT product_id FROM compatibility WHERE brand=? AND model=? AND year_from<=? AND year_to>=? AND (version='' OR version=?)",
+        (v['brand'],v['model'],v['year'],v['year'],v['version']))}
 def buscar_repuestos(vehiculo=None,texto='',category='',brand='',sort='recommended',page=1,limit=20,in_stock=False,offer=False,max_price=None,admin=False,direction='asc',status=''):
     with connect() as c:
         where=[];args=[]
@@ -23,7 +27,9 @@ def buscar_repuestos(vehiculo=None,texto='',category='',brand='',sort='recommend
         if max_price: where.append('p.price_cents<=?');args.append(int(max_price))
         result=rows(c,BASE+(' WHERE '+' AND '.join(where) if where else ''),args)
         v=one(c,'SELECT * FROM vehicles WHERE id=?',(vehiculo,)) if vehiculo else None
-        if v: result=[p for p in result if compatible(c,p,v)]
+        if v:
+            compatible_ids=compatible_product_ids(c,v)
+            result=[p for p in result if p['universal'] or p['id'] in compatible_ids]
         if texto:
             query=normalize(texto).split()
             def match(p):

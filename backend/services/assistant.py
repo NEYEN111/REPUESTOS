@@ -256,9 +256,10 @@ def _search(c, plan, vehicle, exact_id=None):
     terms = [t for t in re.findall(r"[\w.-]+", query) if t not in STOP]
     if not terms:
         return [], 0
+    compatible_ids = catalog.compatible_product_ids(c, vehicle) if vehicle else None
     scored = []
     for product in products:
-        if vehicle and not catalog.compatible(c, product, vehicle):
+        if compatible_ids is not None and not (product['universal'] or product['id'] in compatible_ids):
             continue
         if plan.brand and catalog.normalize(plan.brand) != catalog.normalize(product["brand"]):
             continue

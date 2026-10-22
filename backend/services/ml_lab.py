@@ -1,5 +1,6 @@
 """Laboratorio aislado: importaciones, artefactos inmutables y evaluación temporal."""
 import csv
+import gzip
 import hashlib
 import io
 import json
@@ -8,35 +9,112 @@ import os
 import re
 import sqlite3
 import subprocess
+import tempfile
 import threading
 import uuid
 import zipfile
 from contextlib import contextmanager
 from datetime import date, timedelta
 from pathlib import Path
-from backend.db import ROOT, now
+from backend.db import ROOT, now, is_postgres, connect, transaction
 from backend.services.predictions import runtime
 
 FOLDER = Path(os.getenv('ML_LAB_DIR', str(ROOT/'data/ml/laboratorio')))
 EXAMPLES = ROOT/'ml/examples/carparts'
 SIMULATION = ROOT/'ml/examples/roda-ensayo'
 LOCK = threading.Lock()
+PERSIST_LOCK = threading.Lock()
+RESTORE_LOCK = threading.Lock()
+RESTORED = False
+
+
+def _restore():
+    """Recover the lab and its immutable trained bundles on ephemeral hosts."""
+    global RESTORED
+    if RESTORED or not is_postgres():
+        return
+    with RESTORE_LOCK:
+        if RESTORED:
+            return
+        FOLDER.mkdir(parents=True, exist_ok=True)
+        with connect() as database:
+            artifacts = database.execute('SELECT name,content FROM ml_lab_artifacts').fetchall()
+        for item in artifacts:
+            name = item['name']
+            if name != 'laboratorio.db.gz' and not re.fullmatch(r'[a-f0-9]{32}\.joblib', name):
+                continue
+            data = bytes(item['content'])
+            target = FOLDER / ('laboratorio.db' if name == 'laboratorio.db.gz' else name)
+            temporary = target.with_name(target.name + '.restoring')
+            temporary.write_bytes(gzip.decompress(data) if name == 'laboratorio.db.gz' else data)
+            temporary.replace(target)
+        if (FOLDER / 'laboratorio.db').exists():
+            local = sqlite3.connect(FOLDER / 'laboratorio.db')
+            try:
+                if local.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='versions'").fetchone():
+                    for version, bundle in local.execute('SELECT id,bundle FROM versions').fetchall():
+                        name = Path(bundle).name
+                        if re.fullmatch(r'[a-f0-9]{32}\.joblib', name):
+                            local.execute('UPDATE versions SET bundle=? WHERE id=?', (str(FOLDER / name), version))
+                local.commit()
+            finally:
+                local.close()
+        RESTORED = True
+
+
+def _persist():
+    if not is_postgres():
+        return
+    with PERSIST_LOCK:
+        with tempfile.TemporaryDirectory(dir=FOLDER) as directory:
+            snapshot = Path(directory) / 'snapshot.db'
+            source = sqlite3.connect(FOLDER / 'laboratorio.db', timeout=30)
+            destination = sqlite3.connect(snapshot)
+            try:
+                source.backup(destination)
+            finally:
+                destination.close()
+                source.close()
+            packed = gzip.compress(snapshot.read_bytes(), compresslevel=6)
+        local = sqlite3.connect(FOLDER / 'laboratorio.db')
+        try:
+            bundles = [Path(row[0]) for row in local.execute('SELECT bundle FROM versions')]
+        finally:
+            local.close()
+        with transaction() as remote:
+            stored = {item['name'] for item in remote.execute('SELECT name FROM ml_lab_artifacts')}
+            remote.execute('''INSERT INTO ml_lab_artifacts(name,content,updated_at) VALUES(?,?,?)
+              ON CONFLICT(name) DO UPDATE SET content=excluded.content,updated_at=excluded.updated_at''',
+              ('laboratorio.db.gz', packed, now()))
+            for bundle in bundles:
+                if not re.fullmatch(r'[a-f0-9]{32}\.joblib', bundle.name) or not bundle.is_file():
+                    raise RuntimeError('Falta un modelo entrenado del laboratorio; no se puede guardar el estado.')
+                if bundle.name in stored:
+                    continue
+                remote.execute('''INSERT INTO ml_lab_artifacts(name,content,updated_at) VALUES(?,?,?)
+                  ON CONFLICT(name) DO NOTHING''', (bundle.name, bundle.read_bytes(), now()))
 
 
 @contextmanager
 def connection():
+    _restore()
     FOLDER.mkdir(parents=True, exist_ok=True)
     c = sqlite3.connect(FOLDER/'laboratorio.db', timeout=30)
     c.row_factory = sqlite3.Row
     c.execute('PRAGMA foreign_keys=ON')
+    before = c.total_changes
+    changed = False
     try:
         yield c
+        changed = c.total_changes > before
         c.commit()
     except Exception:
         c.rollback()
         raise
     finally:
         c.close()
+    if changed:
+        _persist()
 
 
 def init():
@@ -365,7 +443,7 @@ def listing(did=None):
         batches = [dict(r) for r in c.execute("SELECT id,filename,summary,status,created_at FROM batches WHERE dataset=? AND status='confirmed' ORDER BY created_at DESC", (did,))]
         for b in batches:
             b['summary'] = json.loads(b['summary'])
-        jobs = [dict(r) for r in c.execute('SELECT * FROM jobs WHERE dataset=? ORDER BY created_at DESC,id DESC LIMIT 30', (did,))]
+        jobs = [dict(r) for r in c.execute('SELECT * FROM jobs WHERE dataset=? ORDER BY rowid DESC LIMIT 30', (did,))]
         for j in jobs:
             if j['result']:
                 value = json.loads(j['result'])
@@ -478,7 +556,7 @@ def activate(did, vid, uid, managed=False):
             return dict(id=vid)
         version = row(c, 'SELECT report FROM versions WHERE id=? AND dataset=?', (vid, did))
         report = json.loads(version['report'])
-        comparison = row(c, "SELECT result FROM jobs WHERE dataset=? AND action='compare' AND status='done' ORDER BY created_at DESC,id DESC LIMIT 1", (did,))
+        comparison = row(c, "SELECT result FROM jobs WHERE dataset=? AND action='compare' AND status='done' ORDER BY rowid DESC LIMIT 1", (did,))
         if not comparison:
             raise ValueError('Primero compara las versiones con ventas posteriores antes de activar una.')
         observed = json.loads(comparison['result'])

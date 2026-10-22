@@ -115,7 +115,7 @@ async def ask(role, run, messages, evidence, forced_strategy=None):
             c.execute('UPDATE agent_runs SET tokens=tokens+? WHERE id=?',(tokens,run['id']))
         return decision
     except (ProviderUnavailable,CancelledRun): raise
-    except (httpx.HTTPError, ValueError, KeyError, IndexError, TypeError) as exc:
+    except (httpx.HTTPError, ValueError, KeyError, IndexError, TypeError, RuntimeError) as exc:
         # Never log request headers, API keys, response bodies or personal information.
         status_code=exc.response.status_code if isinstance(exc,httpx.HTTPStatusError) else None
         logging.getLogger(__name__).warning('Fallo de proveedor de agentes: %s HTTP=%s',type(exc).__name__,status_code)

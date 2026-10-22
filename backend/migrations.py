@@ -6,6 +6,8 @@ def migrate(c):
     c.execute(f'''CREATE TABLE IF NOT EXISTS stored_media(
       name TEXT PRIMARY KEY, kind TEXT NOT NULL CHECK(kind IN ('product','voucher')),
       content {binary_type} NOT NULL, created_at TEXT NOT NULL)''')
+    c.execute(f'''CREATE TABLE IF NOT EXISTS ml_lab_artifacts(
+      name TEXT PRIMARY KEY, content {binary_type} NOT NULL, updated_at TEXT NOT NULL)''')
     for table, column, declaration in [
         ('purchase_orders', 'expected_at', "TEXT NOT NULL DEFAULT ''"),
         ('purchase_orders', 'note', "TEXT NOT NULL DEFAULT ''"),

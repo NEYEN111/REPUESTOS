@@ -32,7 +32,7 @@ def status():
         state['quality'] = json.loads(state['quality'])
         state['dataset'] = DATASET
         state['active_version'] = lab.dataset(c, DATASET)['active_version']
-        prediction = lab.row(c, "SELECT id,result FROM jobs WHERE dataset=? AND action='predict' AND status='done' ORDER BY created_at DESC LIMIT 1", (DATASET,))
+        prediction = lab.row(c, "SELECT id,result FROM jobs WHERE dataset=? AND action='predict' AND status='done' ORDER BY rowid DESC LIMIT 1", (DATASET,))
         state['prediction'] = None
         if prediction:
             result = json.loads(prediction['result'])
@@ -150,7 +150,7 @@ def refresh_prediction(active, cutoff, uid):
     if not active:
         return False
     with lab.connection() as c:
-        last = lab.row(c, "SELECT result FROM jobs WHERE dataset=? AND action='predict' AND status='done' ORDER BY created_at DESC LIMIT 1", (DATASET,))
+        last = lab.row(c, "SELECT result FROM jobs WHERE dataset=? AND action='predict' AND status='done' ORDER BY rowid DESC LIMIT 1", (DATASET,))
     if last:
         result = json.loads(last['result'])
         if result['version'] == active and result['cutoff'] >= cutoff:
