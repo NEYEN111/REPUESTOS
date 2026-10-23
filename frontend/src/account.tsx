@@ -36,7 +36,8 @@ import {
 import { Logo, Garage } from "./store";
 import { UbigeoFields } from "./commerce";
 export function Login() {
-  const { user: currentUser, notify } = useStore(),
+  const { user: currentUser, config, notify } = useStore(),
+    [accountLogin, setAccountLogin] = useState(false),
     [register, setRegister] = useState(false),
     [d, setD] = useState<any>({
       email: "",
@@ -48,6 +49,23 @@ export function Login() {
     [error, setError] = useState(""),
     [busy, setBusy] = useState(false),
     [params] = useSearchParams();
+  const demo = config.DEMO_ACCESS_ENABLED && !accountLogin;
+  const enter = (user: any) => {
+    const next = params.get("next");
+    const staff = ["admin", "empleado"].includes(user.role);
+    const safeNext = next && next.startsWith("/") && !next.startsWith("//") && !next.includes(String.fromCharCode(92)) && !next.includes("ingresar") && (staff || !/^\/(admin|gestion)(\/|$)/.test(next));
+    window.location.assign(safeNext ? next : staff ? "/gestion" : "/cuenta");
+  };
+  const enterDemo = async (role: "admin" | "cliente") => {
+    setBusy(true);
+    setError("");
+    try {
+      enter(await api("/auth/demo", { method: "POST", body: { role } }));
+    } catch (e: any) {
+      setError(e.message);
+      setBusy(false);
+    }
+  };
   const submit = async (e: any) => {
     e.preventDefault();
     setBusy(true);
@@ -58,10 +76,7 @@ export function Login() {
         body: d,
       });
       notify(register ? "Tu cuenta está lista." : "Sesión iniciada.");
-      const next = params.get("next");
-      const staff = ["admin", "empleado"].includes(user.role);
-      const safeNext = next && next.startsWith("/") && !next.startsWith("//") && !next.includes(String.fromCharCode(92)) && !next.includes("ingresar") && (staff || !/^\/(admin|gestion)(\/|$)/.test(next));
-      window.location.assign(safeNext ? next : staff ? "/gestion" : "/cuenta");
+      enter(user);
     } catch (e: any) {
       setError(e.message);
     } finally {
@@ -81,9 +96,24 @@ export function Login() {
         <span><ShieldCheck size={18} />Repuestos para seguir</span>
       </div>
       <div className="login-form">
-        <div className="eyebrow muted">BIENVENIDO A TU ESPACIO</div>
-        <h2>{register ? "Crea tu cuenta" : "Qué bueno verte de nuevo"}</h2>
-        <p>{register ? "Tus próximos kilómetros empiezan aquí." : "Ingresa con tu correo y contraseña. Verás las opciones disponibles para tu cuenta."}</p>
+        <div className="eyebrow muted">{demo ? "DEMOSTRACIÓN DEL PROYECTO" : "BIENVENIDO A TU ESPACIO"}</div>
+        <h2>{demo ? "Elige tu espacio" : register ? "Crea tu cuenta" : "Qué bueno verte de nuevo"}</h2>
+        <p>{demo ? "Accede sin contraseña para recorrer la tienda o revisar su gestión." : register ? "Tus próximos kilómetros empiezan aquí." : "Ingresa con tu correo y contraseña. Verás las opciones disponibles para tu cuenta."}</p>
+        {demo ? <div className="demo-access" aria-busy={busy}>
+          <button className="demo-access-card" disabled={busy} onClick={() => enterDemo("admin")}>
+            <ShieldCheck size={26} aria-hidden="true" />
+            <span><strong>Entrar como administrador</strong><small>Inventario, pronósticos y agentes</small></span>
+            <ArrowRight size={20} aria-hidden="true" />
+          </button>
+          <button className="demo-access-card secondary" disabled={busy} onClick={() => enterDemo("cliente")}>
+            <UserRound size={26} aria-hidden="true" />
+            <span><strong>Entrar como cliente</strong><small>Catálogo, asistente y pedidos</small></span>
+            <ArrowRight size={20} aria-hidden="true" />
+          </button>
+          <p className="demo-access-note" role="status">{busy ? "Abriendo tu espacio..." : "Acceso temporal para la evaluación académica. Las operaciones se guardan en las cuentas de demostración."}</p>
+          <ErrorBox message={error} />
+          <button className="text-link demo-account-link" disabled={busy} onClick={() => { setAccountLogin(true); setError(""); }}>Ingresar con mi cuenta</button>
+        </div> : <>
         <form onSubmit={submit}>
           {register && (
             <>
@@ -150,6 +180,8 @@ export function Login() {
               {register ? "Inicia sesión" : "Crea una cuenta"}
             </button>
           </div>
+        {config.DEMO_ACCESS_ENABLED && <button className="text-link demo-account-link" onClick={() => { setAccountLogin(false); setRegister(false); setError(""); }}>Volver al acceso de demostración</button>}
+        </>}
         <Link className="text-link" to="/">
           Volver a la tienda
         </Link>

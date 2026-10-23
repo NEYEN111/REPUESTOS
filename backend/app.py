@@ -78,6 +78,7 @@ async def secure_headers(request,call_next):
     return response
 def current_user(request:Request):
     token=request.cookies.get('session','')
+    if token.startswith('demo_') and not customers.demo_enabled(): return None
     with connect() as c:
         u=one(c,'SELECT u.* FROM sessions s JOIN users u ON u.id=s.user_id WHERE s.token=? AND s.expires_at>?',(token,now()))
         return customers.public_user(u) if u else None
@@ -98,17 +99,21 @@ def owner(record,u,token=''):
     if u and (u['role'] in ['admin','empleado'] or record['user_id']==u['id']): return
     if token and secrets.compare_digest(record['guest_token'],token): return
     raise HTTPException(403,'No tienes acceso a este registro.')
-def session_response(response,result,request):
+def session_response(response,result,request,max_age=604800):
     token,u=result
     secure=request.headers.get('x-forwarded-proto',request.url.scheme).split(',')[0].strip().lower()=='https'
-    response.set_cookie('session',token,httponly=True,samesite='lax',secure=secure,max_age=604800)
+    response.set_cookie('session',token,httponly=True,samesite='lax',secure=secure,max_age=max_age)
     return u
 @app.get('/api/config')
-def get_config(): return {**config(), 'ASSISTANT_ENABLED': assistant.enabled()}
+def get_config(): return {**config(), 'ASSISTANT_ENABLED': assistant.enabled(), 'DEMO_ACCESS_ENABLED':customers.demo_enabled()}
 @app.get('/api/health')
 def health(): return {'ok':True}
 @app.post('/api/auth/login')
 def login(d:dict,response:Response,request:Request): return session_response(response,customers.login(d.get('email',''),d.get('password',''),d.get('admin',False)),request)
+@app.post('/api/auth/demo')
+def demo_login(d:dict,response:Response,request:Request):
+    if not customers.demo_enabled(): raise HTTPException(404,'El acceso de demostración está desactivado.')
+    return session_response(response,customers.demo_login(d.get('role')),request,max_age=14400)
 @app.post('/api/auth/register')
 def register(d:dict,response:Response,request:Request): return session_response(response,customers.register(d),request)
 @app.post('/api/auth/logout')

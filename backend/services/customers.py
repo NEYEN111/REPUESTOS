@@ -1,4 +1,4 @@
-import hashlib,hmac,secrets,json,re
+import hashlib,hmac,secrets,json,re,os
 from datetime import datetime,timedelta
 from backend.db import transaction,one,rows,now,audit
 
@@ -9,6 +9,22 @@ def verify(password,encoded):
     salt,digest=encoded.split(':')
     return hmac.compare_digest(hashlib.pbkdf2_hmac('sha256',password.encode(),salt.encode(),240000).hex(),digest)
 def public_user(u): return {k:v for k,v in u.items() if k!='password_hash'}
+
+def demo_enabled():
+    return os.getenv('DEMO_ACCESS_ENABLED', '').strip().lower() in {'true', '1', 'yes', 'on'}
+
+def demo_login(role):
+    """Temporary, explicitly enabled classroom access to the seeded accounts."""
+    if not demo_enabled(): raise ValueError('El acceso de demostración está desactivado.')
+    accounts={'admin':'admin@roda.pe','cliente':'cliente@roda.pe'}
+    if role not in accounts: raise ValueError('Selecciona administrador o cliente.')
+    with transaction() as c:
+        u=one(c,'SELECT * FROM users WHERE email=? AND role=?',(accounts[role],role))
+        if not u: raise ValueError('La cuenta de demostración no está disponible.')
+        token='demo_'+secrets.token_urlsafe(32)
+        c.execute('INSERT INTO sessions VALUES(?,?,?)',(token,u['id'],(datetime.fromisoformat(now())+timedelta(hours=4)).isoformat()))
+        audit(c,'users',u['id'],'demo_login',u['id'],detail={'role':role,'access':'demostracion'})
+        return token,public_user(u)
 def login(email,password,admin=False):
     with transaction() as c:
         u=one(c,'SELECT * FROM users WHERE email=?',(email.strip().lower(),))

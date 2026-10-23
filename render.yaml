@@ -21,5 +21,7 @@ services:
         value: deepseek-ai/deepseek-v4.1-flash-1017
       - key: ASSISTANT_ENABLED
         value: "true"
+      - key: DEMO_ACCESS_ENABLED
+        value: "true"
       - key: PYTHON_VERSION
         value: 3.12.10
