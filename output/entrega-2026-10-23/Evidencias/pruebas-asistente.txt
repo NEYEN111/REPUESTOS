@@ -1,0 +1,17 @@
+test_chat_cannot_make_sale_or_change_stock (__main__.AssistantChecks.test_chat_cannot_make_sale_or_change_stock) ... ok
+test_compare_refreshes_previous_products_and_excludes_hidden (__main__.AssistantChecks.test_compare_refreshes_previous_products_and_excludes_hidden) ... ok
+test_context_survives_store_question_and_followup (__main__.AssistantChecks.test_context_survives_store_question_and_followup) ... ok
+test_exact_current_product_warns_incompatibility (__main__.AssistantChecks.test_exact_current_product_warns_incompatibility) ... ok
+test_explicit_sku_overrides_current_page (__main__.AssistantChecks.test_explicit_sku_overrides_current_page) ... ok
+test_invalid_model_claims_do_not_replace_catalog (__main__.AssistantChecks.test_invalid_model_claims_do_not_replace_catalog) ... ok
+test_provider_invalid_response_falls_back_without_leaking_error (__main__.AssistantChecks.test_provider_invalid_response_falls_back_without_leaking_error) ... LLM no disponible: ValidationError. Se utiliza el catálogo.
+ok
+test_search_uses_real_stock_price_compatibility_and_visibility (__main__.AssistantChecks.test_search_uses_real_stock_price_compatibility_and_visibility) ... ok
+test_session_redacts_expires_and_can_be_deleted (__main__.AssistantChecks.test_session_redacts_expires_and_can_be_deleted) ... ok
+test_typo_and_budget_work_during_outage (__main__.AssistantChecks.test_typo_and_budget_work_during_outage) ... ok
+test_vehicle_choice_continues_product_query (__main__.AssistantChecks.test_vehicle_choice_continues_product_query) ... ok
+
+----------------------------------------------------------------------
+Ran 11 tests in 1.555s
+
+OK

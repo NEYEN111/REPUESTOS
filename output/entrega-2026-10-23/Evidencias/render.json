@@ -1,0 +1,16 @@
+{
+  "date": "2026-10-23",
+  "timezone": "America/Lima",
+  "url": "https://roda-repuestos.onrender.com",
+  "deployed_commit": "a89d21d38dd88f8f38dc3dcefefa5b2045a9c0f5",
+  "checks": [
+    {"name":"Arranque tras suspensión", "result":"23/10: Render mostró su página de arranque; después abrió el laboratorio con sesión administradora."},
+    {"name":"Persistencia del laboratorio", "result":"23/10: se restauraron 120,330 observaciones, V1 y el pronóstico guardado del 22/10."},
+    {"name":"Excel y predicción V1", "result":"22/10: importación de 24,066 filas; pronóstico guardado con 2,509 resultados válidos y CSV descargado."},
+    {"name":"Intento de entrenamiento V2", "result":"23/10 a las 11:34:51: se inició en Render. Terminó como Revisar: el servidor se reinició. No se obtuvo V2 en esta prueba cloud."},
+    {"name":"Evaluación posterior cloud", "result":"No ejecutada: depende de que termine V2. El ciclo completo se entrenó y evaluó localmente el 23/10, con notebook ejecutado adjunto."},
+    {"name":"Agentes y asistente", "result":"Exportación Render del 22/10: 5/5 casos aislados. El 23/10 se consultó la propuesta guardada: seis agentes, 23 unidades, S/ 1,617.21 de S/ 2,000, por aprobar y sin pronóstico operativo."},
+    {"name":"Asistente web 23/10", "result":"Consulta RP-010-01: respuesta TheHive/DeepSeek, S/ 160.00, 14 disponibles y compatible con Toyota Yaris 2018 según catálogo. Sin errores de consola capturados."}
+  ],
+  "limitation": "No se atribuye el reinicio a memoria sin registros suficientes. Render Free tiene recursos limitados; no se certifica entrenamiento grande ni planificación continua en ese plan."
+}

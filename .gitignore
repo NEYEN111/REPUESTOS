@@ -35,3 +35,5 @@ data/ml/roda-v1/*
 !ml/deployed/roda-v2/model.joblib
 !ml/evaluations/uci-weekly-v1/selected_model.joblib
 .ipynb_checkpoints/
+output/**/*.zip
+ml/evaluations/entrega-2026-10-23/**/*.zip

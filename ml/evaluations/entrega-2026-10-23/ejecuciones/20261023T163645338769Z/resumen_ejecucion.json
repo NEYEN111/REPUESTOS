@@ -1,0 +1,1296 @@
+{
+  "schema_version": 1,
+  "execution": {
+    "started_at_utc": "2026-10-23T16:36:45.322055+00:00",
+    "finished_at_utc": "2026-10-23T16:44:34.850521+00:00",
+    "duration_seconds": 469.53190140000015,
+    "environment": "Local · Windows",
+    "python": "3.12.10",
+    "libraries": {
+      "numpy": "2.2.6",
+      "pandas": "2.2.3",
+      "scikit-learn": "1.7.2",
+      "scipy": "1.15.3",
+      "joblib": "1.5.1"
+    },
+    "training_executed": true,
+    "models_fitted_for_selection": 10,
+    "selected_models_refitted": 2,
+    "api_calls": 0,
+    "production_database_access": false,
+    "notebook_code_cells": 11,
+    "notebook_error_cells": 0
+  },
+  "git_commit": "a89d21d38dd88f8f38dc3dcefefa5b2045a9c0f5",
+  "engine_sha256": "a5f61bd391d759bda14eb9db5e1362a655d90650cee289c8edf5344509b98dca",
+  "source": {
+    "title": "Car Parts · Monash Forecasting Repository",
+    "source_url": "https://zenodo.org/records/4656022",
+    "download_url": "https://zenodo.org/records/4656022/files/car_parts_dataset_with_missing_values.zip?download=1",
+    "doi": "10.5281/zenodo.4656022",
+    "license": "CC BY 4.0",
+    "authors": [
+      "Rakshitha Godahewa",
+      "Christoph Bergmeir",
+      "Geoff Webb",
+      "Rob Hyndman",
+      "Pablo Montero-Manso"
+    ],
+    "original": "R expsmooth, carparts; Hyndman (2015)",
+    "frequency": "monthly",
+    "start": "1998-01",
+    "end": "2002-03",
+    "series": 2674,
+    "rows": 136374,
+    "missing": 6122,
+    "source_sha256": "80557703397c7dca6c007bd28930b0e213e529f428afd02e5af87804fdc38ee1",
+    "files": [
+      {
+        "name": "01_historial_inicial.csv",
+        "rows": 96264,
+        "sha256": "07ecf6c2d6596dd463e91124408ec49018a6b901822a72d1a6deb318b5f5525e"
+      },
+      {
+        "name": "02_datos_nuevos.csv",
+        "rows": 24066,
+        "sha256": "918a3a85d2ee8fb4e968bce95649735b01e31b3eafe0dc924ec6926178bb11bb"
+      },
+      {
+        "name": "02_datos_nuevos.xlsx",
+        "rows": 24066,
+        "sha256": "636187ef06e87468e73cfb76658ddc8504121bc06171209fdc25126d41dfe874",
+        "derived_from": "02_datos_nuevos.csv",
+        "treatment": "Mismas observaciones y valores; solo cambia el formato y el orden de las filas. Los vacíos siguen siendo desconocidos."
+      },
+      {
+        "name": "03_ventas_posteriores.csv",
+        "rows": 16044,
+        "sha256": "62e0be3fbcfa6f0e47903cf55b5301ffb350bc5a23ce7532ea1f1414f80faf47"
+      }
+    ],
+    "treatment": "Valores ? preservados como vacíos. Ninguna venta ni fecha inventada. Series anónimas, sin asociación al catálogo RODA.",
+    "missing_fields": [
+      "Precios",
+      "Costos",
+      "Stock",
+      "Descripción de pieza",
+      "País verificable de cada serie"
+    ],
+    "limitation": "Evaluación histórica mensual; no acredita precisión actual en Perú ni un horizonte de siete días."
+  },
+  "inputs": [
+    {
+      "name": "01_historial_inicial.csv",
+      "sha256": "07ecf6c2d6596dd463e91124408ec49018a6b901822a72d1a6deb318b5f5525e",
+      "bytes": 1593305
+    },
+    {
+      "name": "02_datos_nuevos.csv",
+      "sha256": "918a3a85d2ee8fb4e968bce95649735b01e31b3eafe0dc924ec6926178bb11bb",
+      "bytes": 397767
+    },
+    {
+      "name": "02_datos_nuevos.xlsx",
+      "sha256": "636187ef06e87468e73cfb76658ddc8504121bc06171209fdc25126d41dfe874",
+      "bytes": 311842
+    },
+    {
+      "name": "03_ventas_posteriores.csv",
+      "sha256": "62e0be3fbcfa6f0e47903cf55b5301ffb350bc5a23ce7532ea1f1414f80faf47",
+      "bytes": 265182
+    },
+    {
+      "name": "provenance.json",
+      "sha256": "20ecb0722223af082011b4682ace7b19d5c08cad4b6e119a0ee55486527c6dd7",
+      "bytes": 1976
+    }
+  ],
+  "data": {
+    "rows": 136374,
+    "series": 2674,
+    "missing": 6122,
+    "frequency": "monthly",
+    "target": "Unidades observadas del mes siguiente por serie",
+    "target_unit": "unidades/serie/mes",
+    "initial_rows": 96264,
+    "excel_new_rows": 24066,
+    "later_test_rows": 16044,
+    "exclude": "Objetivos desconocidos; series sin historial suficiente; sin correspondencia con SKU de RODA."
+  },
+  "splits": {
+    "V1": {
+      "history": [
+        "1998-01",
+        "2000-12"
+      ],
+      "validation": [
+        "2000-07",
+        "2000-12"
+      ]
+    },
+    "V2": {
+      "history": [
+        "1998-01",
+        "2001-09"
+      ],
+      "validation": [
+        "2001-04",
+        "2001-09"
+      ]
+    },
+    "test": [
+      "2001-10",
+      "2002-03"
+    ],
+    "protocol": "Mismas filas posteriores a ambos entrenamientos; avance temporal con historial observado anterior."
+  },
+  "configurations": {
+    "Ridge": [
+      {
+        "step": "simpleimputer",
+        "algorithm": "SimpleImputer",
+        "parameters": {
+          "add_indicator": true,
+          "copy": true,
+          "fill_value": null,
+          "keep_empty_features": false,
+          "missing_values": null,
+          "strategy": "mean"
+        }
+      },
+      {
+        "step": "standardscaler",
+        "algorithm": "StandardScaler",
+        "parameters": {
+          "copy": true,
+          "with_mean": true,
+          "with_std": true
+        }
+      },
+      {
+        "step": "ridge",
+        "algorithm": "Ridge",
+        "parameters": {
+          "alpha": 10,
+          "copy_X": true,
+          "fit_intercept": true,
+          "max_iter": null,
+          "positive": false,
+          "random_state": null,
+          "solver": "auto",
+          "tol": 0.0001
+        }
+      }
+    ],
+    "Poisson": [
+      {
+        "step": "simpleimputer",
+        "algorithm": "SimpleImputer",
+        "parameters": {
+          "add_indicator": true,
+          "copy": true,
+          "fill_value": null,
+          "keep_empty_features": false,
+          "missing_values": null,
+          "strategy": "mean"
+        }
+      },
+      {
+        "step": "standardscaler",
+        "algorithm": "StandardScaler",
+        "parameters": {
+          "copy": true,
+          "with_mean": true,
+          "with_std": true
+        }
+      },
+      {
+        "step": "poissonregressor",
+        "algorithm": "PoissonRegressor",
+        "parameters": {
+          "alpha": 0.1,
+          "fit_intercept": true,
+          "max_iter": 500,
+          "solver": "lbfgs",
+          "tol": 0.0001,
+          "verbose": 0,
+          "warm_start": false
+        }
+      }
+    ],
+    "Random Forest": [
+      {
+        "step": "simpleimputer",
+        "algorithm": "SimpleImputer",
+        "parameters": {
+          "add_indicator": true,
+          "copy": true,
+          "fill_value": null,
+          "keep_empty_features": false,
+          "missing_values": null,
+          "strategy": "mean"
+        }
+      },
+      {
+        "step": "randomforestregressor",
+        "algorithm": "RandomForestRegressor",
+        "parameters": {
+          "bootstrap": true,
+          "ccp_alpha": 0.0,
+          "criterion": "squared_error",
+          "max_depth": 10,
+          "max_features": 1.0,
+          "max_leaf_nodes": null,
+          "max_samples": null,
+          "min_impurity_decrease": 0.0,
+          "min_samples_leaf": 5,
+          "min_samples_split": 2,
+          "min_weight_fraction_leaf": 0.0,
+          "monotonic_cst": null,
+          "n_estimators": 60,
+          "n_jobs": 2,
+          "oob_score": false,
+          "random_state": 42,
+          "verbose": 0,
+          "warm_start": false
+        }
+      }
+    ],
+    "Extra Trees": [
+      {
+        "step": "simpleimputer",
+        "algorithm": "SimpleImputer",
+        "parameters": {
+          "add_indicator": true,
+          "copy": true,
+          "fill_value": null,
+          "keep_empty_features": false,
+          "missing_values": null,
+          "strategy": "mean"
+        }
+      },
+      {
+        "step": "extratreesregressor",
+        "algorithm": "ExtraTreesRegressor",
+        "parameters": {
+          "bootstrap": false,
+          "ccp_alpha": 0.0,
+          "criterion": "squared_error",
+          "max_depth": 10,
+          "max_features": 1.0,
+          "max_leaf_nodes": null,
+          "max_samples": null,
+          "min_impurity_decrease": 0.0,
+          "min_samples_leaf": 5,
+          "min_samples_split": 2,
+          "min_weight_fraction_leaf": 0.0,
+          "monotonic_cst": null,
+          "n_estimators": 60,
+          "n_jobs": 2,
+          "oob_score": false,
+          "random_state": 42,
+          "verbose": 0,
+          "warm_start": false
+        }
+      }
+    ],
+    "Hist. Gradient Boosting": [
+      {
+        "step": "simpleimputer",
+        "algorithm": "SimpleImputer",
+        "parameters": {
+          "add_indicator": true,
+          "copy": true,
+          "fill_value": null,
+          "keep_empty_features": false,
+          "missing_values": null,
+          "strategy": "mean"
+        }
+      },
+      {
+        "step": "histgradientboostingregressor",
+        "algorithm": "HistGradientBoostingRegressor",
+        "parameters": {
+          "categorical_features": "from_dtype",
+          "early_stopping": "auto",
+          "interaction_cst": null,
+          "l2_regularization": 1,
+          "learning_rate": 0.1,
+          "loss": "squared_error",
+          "max_bins": 255,
+          "max_depth": null,
+          "max_features": 1.0,
+          "max_iter": 150,
+          "max_leaf_nodes": 31,
+          "min_samples_leaf": 20,
+          "monotonic_cst": null,
+          "n_iter_no_change": 10,
+          "quantile": null,
+          "random_state": 42,
+          "scoring": "loss",
+          "tol": 1e-07,
+          "validation_fraction": 0.1,
+          "verbose": 0,
+          "warm_start": false
+        }
+      }
+    ]
+  },
+  "features": [
+    "lag1",
+    "lag2",
+    "lag3",
+    "lag6",
+    "lag12",
+    "mean",
+    "std",
+    "recent",
+    "zero_share",
+    "missing",
+    "month_sin",
+    "month_cos"
+  ],
+  "versions": [
+    {
+      "winner": "Hist. Gradient Boosting",
+      "candidates": [
+        {
+          "model": "Ridge",
+          "folds": [
+            {
+              "n": 15054,
+              "mae": 0.661212420262516,
+              "rmse": 1.1427268892804239,
+              "wape": 137.90373752607255,
+              "bias": 0.017290528686636383,
+              "r2": 0.05541603096915748
+            }
+          ],
+          "segments": [
+            {
+              "segment": "Sin ventas",
+              "n": 11188,
+              "mae": 0.45263391668746056,
+              "rmse": 0.5266670174436852,
+              "wape": null,
+              "bias": 0.45263391668746056,
+              "r2": null
+            },
+            {
+              "segment": "Con ventas",
+              "n": 3866,
+              "mae": 1.2648276033969494,
+              "rmse": 2.0693223345261953,
+              "wape": 67.74485334902477,
+              "bias": -1.2425702641103684,
+              "r2": -0.5334473688883936
+            }
+          ],
+          "n": 15054,
+          "mae": 0.661212420262516,
+          "rmse": 1.1427268892804239,
+          "wape": 137.90373752607255,
+          "bias": 0.017290528686636383,
+          "r2": 0.05541603096915748
+        },
+        {
+          "model": "Poisson",
+          "folds": [
+            {
+              "n": 15054,
+              "mae": 0.6696004510967369,
+              "rmse": 1.1675337205230971,
+              "wape": 139.65316141327622,
+              "bias": 0.007092178252024111,
+              "r2": 0.013959978747580704
+            }
+          ],
+          "segments": [
+            {
+              "segment": "Sin ventas",
+              "n": 11188,
+              "mae": 0.45132146121886674,
+              "rmse": 0.5621404089105448,
+              "wape": null,
+              "bias": 0.45132146121886674,
+              "r2": null
+            },
+            {
+              "segment": "Con ventas",
+              "n": 3866,
+              "mae": 1.3012883297189854,
+              "rmse": 2.0960637079054023,
+              "wape": 69.69770965216954,
+              "bias": -1.2784839256882337,
+              "r2": -0.573336222006245
+            }
+          ],
+          "n": 15054,
+          "mae": 0.6696004510967369,
+          "rmse": 1.1675337205230971,
+          "wape": 139.65316141327622,
+          "bias": 0.007092178252024111,
+          "r2": 0.013959978747580704
+        },
+        {
+          "model": "Random Forest",
+          "folds": [
+            {
+              "n": 15054,
+              "mae": 0.6559616849761369,
+              "rmse": 1.153722849288203,
+              "wape": 136.80863404863902,
+              "bias": 0.0009599292790182991,
+              "r2": 0.03714993338908412
+            }
+          ],
+          "segments": [
+            {
+              "segment": "Sin ventas",
+              "n": 11188,
+              "mae": 0.43733319449717023,
+              "rmse": 0.5512868689691544,
+              "wape": null,
+              "bias": 0.43733319449717023,
+              "r2": null
+            },
+            {
+              "segment": "Con ventas",
+              "n": 3866,
+              "mae": 1.2886609998956091,
+              "rmse": 2.0745170377762743,
+              "wape": 69.02138300909428,
+              "bias": -1.2618812738406622,
+              "r2": -0.541155981836078
+            }
+          ],
+          "n": 15054,
+          "mae": 0.6559616849761369,
+          "rmse": 1.153722849288203,
+          "wape": 136.80863404863902,
+          "bias": 0.0009599292790182991,
+          "r2": 0.03714993338908412
+        },
+        {
+          "model": "Extra Trees",
+          "folds": [
+            {
+              "n": 15054,
+              "mae": 0.6553781586904707,
+              "rmse": 1.1455093311928195,
+              "wape": 136.686932681163,
+              "bias": 0.002351407491757629,
+              "r2": 0.05081046890261742
+            }
+          ],
+          "segments": [
+            {
+              "segment": "Sin ventas",
+              "n": 11188,
+              "mae": 0.4388367473254061,
+              "rmse": 0.5285791200931641,
+              "wape": null,
+              "bias": 0.4388367473254061,
+              "r2": null
+            },
+            {
+              "segment": "Con ventas",
+              "n": 3866,
+              "mae": 1.2820375767847134,
+              "rmse": 2.073896816602458,
+              "wape": 68.66662887018151,
+              "bias": -1.2608141336512477,
+              "r2": -0.5402345966002209
+            }
+          ],
+          "n": 15054,
+          "mae": 0.6553781586904707,
+          "rmse": 1.1455093311928195,
+          "wape": 136.686932681163,
+          "bias": 0.002351407491757629,
+          "r2": 0.05081046890261742
+        },
+        {
+          "model": "Hist. Gradient Boosting",
+          "folds": [
+            {
+              "n": 15054,
+              "mae": 0.6538099062594925,
+              "rmse": 1.1464168034128406,
+              "wape": 136.3598549297645,
+              "bias": -0.006679941019485108,
+              "r2": 0.049305977767757136
+            }
+          ],
+          "segments": [
+            {
+              "segment": "Sin ventas",
+              "n": 11188,
+              "mae": 0.4321709142012119,
+              "rmse": 0.5180058087968148,
+              "wape": null,
+              "bias": 0.4321709142012119,
+              "r2": null
+            },
+            {
+              "segment": "Con ventas",
+              "n": 3866,
+              "mae": 1.2952214538921991,
+              "rmse": 2.083547673336811,
+              "wape": 69.37276448804714,
+              "bias": -1.276691158869759,
+              "r2": -0.5546028808852397
+            }
+          ],
+          "n": 15054,
+          "mae": 0.6538099062594925,
+          "rmse": 1.1464168034128406,
+          "wape": 136.3598549297645,
+          "bias": -0.006679941019485108,
+          "r2": 0.049305977767757136
+        }
+      ],
+      "validation_baseline": {
+        "n": 15054,
+        "mae": 0.6446071918869847,
+        "rmse": 1.1800304333605371,
+        "wape": 134.44051907268866,
+        "bias": 0.01755347415969177,
+        "r2": -0.007261172309986019
+      },
+      "validation_references": [
+        {
+          "model": "Promedio histórico",
+          "n": 15054,
+          "mae": 0.6446071918869847,
+          "rmse": 1.1800304333605371,
+          "wape": 134.44051907268866,
+          "bias": 0.01755347415969177,
+          "r2": -0.007261172309986019
+        },
+        {
+          "model": "Último periodo equivalente",
+          "n": 15054,
+          "mae": 0.69649262654444,
+          "rmse": 1.538207432183343,
+          "wape": 145.26184538653365,
+          "bias": 0.015079048757805235,
+          "r2": -0.7115338305551446
+        },
+        {
+          "model": "Cero ventas (diagnóstico)",
+          "n": 15054,
+          "mae": 0.479473893981666,
+          "rmse": 1.2697751569142128,
+          "wape": 100.0,
+          "bias": -0.479473893981666,
+          "r2": -0.16629745740291613
+        }
+      ],
+      "zero_target_share": 0.743191178424339,
+      "feature_set": "stable",
+      "beats_baseline": false,
+      "cutoff": "2000-12",
+      "split": "2000-06",
+      "fit_rows": 45475,
+      "validation_rows": 15054,
+      "refit_rows": 60529,
+      "features": [
+        "lag1",
+        "lag2",
+        "lag3",
+        "lag6",
+        "lag12",
+        "mean",
+        "std",
+        "recent",
+        "zero_share",
+        "missing",
+        "month_sin",
+        "month_cos"
+      ],
+      "model_sha256": "1fdbb77da21d44882e175ac5284381f087121672c54aaad233c5ff75cdd9c55b",
+      "temporal_windows": 1,
+      "windows": [
+        {
+          "train_rows": 45475,
+          "validation_rows": 15054,
+          "training_end": "2000-06",
+          "validation_start": "2000-06",
+          "validation_end": "2000-12"
+        }
+      ],
+      "validation_protocol": "Últimos seis meses.",
+      "reason": "Menor MAE en validación temporal. Reajustado con el historial disponible hasta el corte.",
+      "limitations": [
+        "No estima demanda perdida ni stock: solo cantidades observadas.",
+        "Las entradas ausentes se imputan dentro del entrenamiento; los objetivos ausentes se excluyen.",
+        "No demuestra precisión en Perú ni correspondencia con los SKU de RODA."
+      ],
+      "version": "V1",
+      "elapsed_seconds": 74.69124699999998,
+      "environment": {
+        "numpy": "2.2.6",
+        "pandas": "2.2.3",
+        "scikit-learn": "1.7.2",
+        "scipy": "1.15.3",
+        "joblib": "1.5.1"
+      },
+      "source": "10.5281/zenodo.4656022",
+      "data_sha256": "5df0a99616cb964ad04a0c194ba1d871a7fac58724661bf31d3a9147c5362659"
+    },
+    {
+      "winner": "Extra Trees",
+      "candidates": [
+        {
+          "model": "Ridge",
+          "folds": [
+            {
+              "n": 15054,
+              "mae": 0.6394056019208683,
+              "rmse": 1.1259497988632123,
+              "wape": 142.91925658970678,
+              "bias": 0.03624175110198547,
+              "r2": 0.06583161986437436
+            }
+          ],
+          "segments": [
+            {
+              "segment": "Sin ventas",
+              "n": 11449,
+              "mae": 0.4420361687629007,
+              "rmse": 0.5172393821531202,
+              "wape": null,
+              "bias": 0.4420361687629007,
+              "r2": null
+            },
+            {
+              "segment": "Con ventas",
+              "n": 3605,
+              "mae": 1.2662246422053538,
+              "rmse": 2.108162404953522,
+              "wape": 67.77638953452563,
+              "bias": -1.2525072885096147,
+              "r2": -0.4752548260855489
+            }
+          ],
+          "n": 15054,
+          "mae": 0.6394056019208683,
+          "rmse": 1.1259497988632123,
+          "wape": 142.91925658970678,
+          "bias": 0.03624175110198547,
+          "r2": 0.06583161986437436
+        },
+        {
+          "model": "Poisson",
+          "folds": [
+            {
+              "n": 15054,
+              "mae": 0.6470839544662739,
+              "rmse": 1.140128237151453,
+              "wape": 144.63551374217204,
+              "bias": 0.02599810355296792,
+              "r2": 0.04215659921466175
+            }
+          ],
+          "segments": [
+            {
+              "segment": "Sin ventas",
+              "n": 11449,
+              "mae": 0.4402684184632926,
+              "rmse": 0.5155277419299078,
+              "wape": null,
+              "bias": 0.4402684184632926,
+              "r2": null
+            },
+            {
+              "segment": "Con ventas",
+              "n": 3605,
+              "mae": 1.3039025596529952,
+              "rmse": 2.1410584023853922,
+              "wape": 69.79315111431399,
+              "bias": -1.2896692571705572,
+              "r2": -0.5216541095687712
+            }
+          ],
+          "n": 15054,
+          "mae": 0.6470839544662739,
+          "rmse": 1.140128237151453,
+          "wape": 144.63551374217204,
+          "bias": 0.02599810355296792,
+          "r2": 0.04215659921466175
+        },
+        {
+          "model": "Random Forest",
+          "folds": [
+            {
+              "n": 15054,
+              "mae": 0.6349864285091817,
+              "rmse": 1.1289280718815142,
+              "wape": 141.93148767300997,
+              "bias": 0.033110040546072424,
+              "r2": 0.060883107732806474
+            }
+          ],
+          "segments": [
+            {
+              "segment": "Sin ventas",
+              "n": 11449,
+              "mae": 0.4361589530761044,
+              "rmse": 0.5474076067434448,
+              "wape": null,
+              "bias": 0.4361589530761044,
+              "r2": null
+            },
+            {
+              "segment": "Con ventas",
+              "n": 3605,
+              "mae": 1.2664360169234123,
+              "rmse": 2.0905473547850755,
+              "wape": 67.78770365269341,
+              "bias": -1.2469196403294718,
+              "r2": -0.45070442144589196
+            }
+          ],
+          "n": 15054,
+          "mae": 0.6349864285091817,
+          "rmse": 1.1289280718815142,
+          "wape": 141.93148767300997,
+          "bias": 0.033110040546072424,
+          "r2": 0.060883107732806474
+        },
+        {
+          "model": "Extra Trees",
+          "folds": [
+            {
+              "n": 15054,
+              "mae": 0.6316805552360298,
+              "rmse": 1.1250514365596802,
+              "wape": 141.19256241311348,
+              "bias": 0.026983856343383097,
+              "r2": 0.06732171624974692
+            }
+          ],
+          "segments": [
+            {
+              "segment": "Sin ventas",
+              "n": 11449,
+              "mae": 0.43091273474477965,
+              "rmse": 0.526031793751349,
+              "wape": null,
+              "bias": 0.43091273474477965,
+              "r2": null
+            },
+            {
+              "segment": "Con ventas",
+              "n": 3605,
+              "mae": 1.2692924212011678,
+              "rmse": 2.0992313864980683,
+              "wape": 67.94059656169577,
+              "bias": -1.2558404789735629,
+              "r2": -0.4627817645736234
+            }
+          ],
+          "n": 15054,
+          "mae": 0.6316805552360298,
+          "rmse": 1.1250514365596802,
+          "wape": 141.19256241311348,
+          "bias": 0.026983856343383097,
+          "r2": 0.06732171624974692
+        },
+        {
+          "model": "Hist. Gradient Boosting",
+          "folds": [
+            {
+              "n": 15054,
+              "mae": 0.6327333876045703,
+              "rmse": 1.1278766685503845,
+              "wape": 141.4278903786073,
+              "bias": 0.023183044197398705,
+              "r2": 0.06263154655848757
+            }
+          ],
+          "segments": [
+            {
+              "segment": "Sin ventas",
+              "n": 11449,
+              "mae": 0.4288658006635685,
+              "rmse": 0.5224098926551944,
+              "wape": null,
+              "bias": 0.4288658006635685,
+              "r2": null
+            },
+            {
+              "segment": "Con ventas",
+              "n": 3605,
+              "mae": 1.2801896990851611,
+              "rmse": 2.10841454113342,
+              "wape": 68.52388812475138,
+              "bias": -1.2652113743271998,
+              "r2": -0.47560772808101337
+            }
+          ],
+          "n": 15054,
+          "mae": 0.6327333876045703,
+          "rmse": 1.1278766685503845,
+          "wape": 141.4278903786073,
+          "bias": 0.023183044197398705,
+          "r2": 0.06263154655848757
+        }
+      ],
+      "validation_baseline": {
+        "n": 15054,
+        "mae": 0.6071420663389576,
+        "rmse": 1.1432195742449245,
+        "wape": 135.7077456075229,
+        "bias": 0.022590895000221427,
+        "r2": 0.036955375387535794
+      },
+      "validation_references": [
+        {
+          "model": "Promedio histórico",
+          "n": 15054,
+          "mae": 0.6071420663389576,
+          "rmse": 1.1432195742449245,
+          "wape": 135.7077456075229,
+          "bias": 0.022590895000221427,
+          "r2": 0.036955375387535794
+        },
+        {
+          "model": "Último periodo equivalente",
+          "n": 15054,
+          "mae": 0.6722465789823303,
+          "rmse": 1.5892056500382379,
+          "wape": 150.25983667409056,
+          "bias": 0.02882954696426199,
+          "r2": -0.8610040087146997
+        },
+        {
+          "model": "Cero ventas (diagnóstico)",
+          "n": 15054,
+          "mae": 0.4473893981666002,
+          "rmse": 1.2479024516215678,
+          "wape": 100.0,
+          "bias": -0.4473893981666002,
+          "r2": -0.1474886106338429
+        }
+      ],
+      "zero_target_share": 0.7605287631194367,
+      "feature_set": "stable",
+      "beats_baseline": false,
+      "cutoff": "2001-09",
+      "split": "2001-03",
+      "fit_rows": 68056,
+      "validation_rows": 15054,
+      "refit_rows": 83110,
+      "features": [
+        "lag1",
+        "lag2",
+        "lag3",
+        "lag6",
+        "lag12",
+        "mean",
+        "std",
+        "recent",
+        "zero_share",
+        "missing",
+        "month_sin",
+        "month_cos"
+      ],
+      "model_sha256": "e8f5912e2063a7d64337a7345742ea7f5fecd211711ff53fe0ed4d780bf519bf",
+      "temporal_windows": 1,
+      "windows": [
+        {
+          "train_rows": 68056,
+          "validation_rows": 15054,
+          "training_end": "2001-03",
+          "validation_start": "2001-03",
+          "validation_end": "2001-09"
+        }
+      ],
+      "validation_protocol": "Últimos seis meses.",
+      "reason": "Menor MAE en validación temporal. Reajustado con el historial disponible hasta el corte.",
+      "limitations": [
+        "No estima demanda perdida ni stock: solo cantidades observadas.",
+        "Las entradas ausentes se imputan dentro del entrenamiento; los objetivos ausentes se excluyen.",
+        "No demuestra precisión en Perú ni correspondencia con los SKU de RODA."
+      ],
+      "version": "V2",
+      "elapsed_seconds": 100.28322950000006,
+      "environment": {
+        "numpy": "2.2.6",
+        "pandas": "2.2.3",
+        "scikit-learn": "1.7.2",
+        "scipy": "1.15.3",
+        "joblib": "1.5.1"
+      },
+      "source": "10.5281/zenodo.4656022",
+      "data_sha256": "2c3cd527dd10694b757eabbb435f4fd4f5e113f40a2a58cce7ab3b8a2814de22"
+    }
+  ],
+  "comparison": {
+    "start": "2001-10",
+    "end": "2002-03",
+    "rows": 15054,
+    "products": 2509,
+    "scores": [
+      {
+        "version": "V1",
+        "segments": [
+          {
+            "segment": "Sin ventas",
+            "n": 11973,
+            "mae": 0.38807076903998206,
+            "rmse": 0.47023438094221287,
+            "wape": null,
+            "bias": 0.38807076903998206,
+            "r2": null
+          },
+          {
+            "segment": "Con ventas",
+            "n": 3081,
+            "mae": 1.3000892070953052,
+            "rmse": 2.0891572175808584,
+            "wape": 68.81248663564054,
+            "bias": -1.2764216753110276,
+            "r2": -0.46464280257947665
+          }
+        ],
+        "n": 15054,
+        "mae": 0.5747273923725482,
+        "rmse": 1.0339892150987169,
+        "wape": 148.6333304376626,
+        "bias": 0.04741039830493083,
+        "r2": 0.10226523802185594
+      },
+      {
+        "version": "V2",
+        "segments": [
+          {
+            "segment": "Sin ventas",
+            "n": 11973,
+            "mae": 0.3857649776866654,
+            "rmse": 0.47765810335647135,
+            "wape": null,
+            "bias": 0.3857649776866654,
+            "r2": null
+          },
+          {
+            "segment": "Con ventas",
+            "n": 3081,
+            "mae": 1.290911409418311,
+            "rmse": 2.080510711579408,
+            "wape": 68.32671452358386,
+            "bias": -1.2718107133591574,
+            "r2": -0.4525443008461498
+          }
+        ],
+        "n": 15054,
+        "mae": 0.5710151541291525,
+        "rmse": 1.0331271268063842,
+        "wape": 147.6732886146755,
+        "bias": 0.0465202119026758,
+        "r2": 0.10376158631261712
+      }
+    ],
+    "baseline": {
+      "n": 15054,
+      "mae": 0.5410743545458572,
+      "rmse": 1.0460479800658267,
+      "wape": 139.93013800607,
+      "bias": 0.05207918161286037,
+      "r2": 0.08120370613095573
+    },
+    "baseline_wins": true,
+    "references": [
+      {
+        "model": "Promedio histórico",
+        "n": 15054,
+        "mae": 0.5410743545458572,
+        "rmse": 1.0460479800658267,
+        "wape": 139.93013800607,
+        "bias": 0.05207918161286037,
+        "r2": 0.08120370613095573
+      },
+      {
+        "model": "Último periodo equivalente",
+        "n": 15054,
+        "mae": 0.549820645675568,
+        "rmse": 1.3827449244069432,
+        "wape": 142.19206321937813,
+        "bias": -0.005646339843231035,
+        "r2": -0.6054625165286867
+      },
+      {
+        "model": "Cero ventas (diagnóstico)",
+        "n": 15054,
+        "mae": 0.38667463796997475,
+        "rmse": 1.1577741916207356,
+        "wape": 100.0,
+        "bias": -0.38667463796997475,
+        "r2": -0.12554730643200385
+      }
+    ],
+    "zero_target_share": 0.7953367875647669,
+    "approved_recommendation": false,
+    "periods": [
+      {
+        "version": "V1",
+        "period": "2001-10",
+        "actual": 1194.0,
+        "predicted": 1119.810541600677,
+        "n": 2509,
+        "mae": 0.6604986240918873,
+        "rmse": 1.351986235982154,
+        "wape": 138.79322008765035,
+        "bias": -0.029569333758199715,
+        "r2": 0.07496753770292275
+      },
+      {
+        "version": "V1",
+        "period": "2001-11",
+        "actual": 918.0,
+        "predicted": 1126.072292027301,
+        "n": 2509,
+        "mae": 0.5700568697890389,
+        "rmse": 0.9796187090635067,
+        "wape": 155.80312486935713,
+        "bias": 0.08293036748796374,
+        "r2": 0.07610957634589499
+      },
+      {
+        "version": "V1",
+        "period": "2001-12",
+        "actual": 836.0,
+        "predicted": 1023.8764420598819,
+        "n": 2509,
+        "mae": 0.5214456523547563,
+        "rmse": 0.8488052509792287,
+        "wape": 156.49606958828747,
+        "bias": 0.07488100520521399,
+        "r2": 0.11016018047566356
+      },
+      {
+        "version": "V1",
+        "period": "2002-01",
+        "actual": 1022.0,
+        "predicted": 1080.0677322810716,
+        "n": 2509,
+        "mae": 0.5825848005216551,
+        "rmse": 1.0661500293061772,
+        "wape": 143.0239984842302,
+        "bias": 0.023143775321272004,
+        "r2": 0.12456169562427077
+      },
+      {
+        "version": "V1",
+        "period": "2002-02",
+        "actual": 916.0,
+        "predicted": 1073.9949141131624,
+        "n": 2509,
+        "mae": 0.5517439537289168,
+        "rmse": 0.9184275400324793,
+        "wape": 151.12724671461268,
+        "bias": 0.06297126907658926,
+        "r2": 0.11655502339116086
+      },
+      {
+        "version": "V1",
+        "period": "2002-03",
+        "actual": 935.0,
+        "predicted": 1110.8942140003348,
+        "n": 2509,
+        "mae": 0.5620344537490354,
+        "rmse": 0.9626147717756756,
+        "wape": 150.8175876423882,
+        "bias": 0.07010530649674572,
+        "r2": 0.12220081575502695
+      },
+      {
+        "version": "V2",
+        "period": "2001-10",
+        "actual": 1194.0,
+        "predicted": 1093.5923706233755,
+        "n": 2509,
+        "mae": 0.6465625506833668,
+        "rmse": 1.3462480643406967,
+        "wape": 135.86477719133728,
+        "bias": -0.04001898341037246,
+        "r2": 0.08280301807197255
+      },
+      {
+        "version": "V2",
+        "period": "2001-11",
+        "actual": 918.0,
+        "predicted": 1147.1060796341828,
+        "n": 2509,
+        "mae": 0.5752282754086554,
+        "rmse": 0.9802410578141563,
+        "wape": 157.21652973859656,
+        "bias": 0.09131370252458461,
+        "r2": 0.07493531397679076
+      },
+      {
+        "version": "V2",
+        "period": "2001-12",
+        "actual": 836.0,
+        "predicted": 1043.4123504041977,
+        "n": 2509,
+        "mae": 0.5206913734083954,
+        "rmse": 0.8530525933568529,
+        "wape": 156.2696956796249,
+        "bias": 0.08266733774579427,
+        "r2": 0.1012325486328155
+      },
+      {
+        "version": "V2",
+        "period": "2002-01",
+        "actual": 1022.0,
+        "predicted": 1065.5388539937799,
+        "n": 2509,
+        "mae": 0.5763669804793846,
+        "rmse": 1.0633948875885255,
+        "wape": 141.49752974782544,
+        "bias": 0.017353070543555157,
+        "r2": 0.12908045947906355
+      },
+      {
+        "version": "V2",
+        "period": "2002-02",
+        "actual": 916.0,
+        "predicted": 1069.5467021327067,
+        "n": 2509,
+        "mae": 0.5485953956739968,
+        "rmse": 0.9204530317836924,
+        "wape": 150.26483053996267,
+        "bias": 0.061198366732844525,
+        "r2": 0.11265404348903163
+      },
+      {
+        "version": "V2",
+        "period": "2002-03",
+        "actual": 935.0,
+        "predicted": 1102.1189131946385,
+        "n": 2509,
+        "mae": 0.5586463491211159,
+        "rmse": 0.9618276254046472,
+        "wape": 149.90841603688554,
+        "bias": 0.06660777727964874,
+        "r2": 0.12363581126774825
+      }
+    ],
+    "protocol": "Mismas filas posteriores a ambos entrenamientos; avance temporal con historial observado anterior.",
+    "recommended": "V1"
+  },
+  "new_data_effect": {
+    "excel_records": 24066,
+    "v1_hash": "1fdbb77da21d44882e175ac5284381f087121672c54aaad233c5ff75cdd9c55b",
+    "v2_hash": "e8f5912e2063a7d64337a7345742ea7f5fecd211711ff53fe0ed4d780bf519bf",
+    "mae_improvement_pct": 0.6459128784641937,
+    "promotion_threshold_pct": 1,
+    "ml_beats_baseline": false
+  },
+  "prior_evidence": {
+    "location": "ml/evaluations/carparts/comparison.json",
+    "kind": "Resultado previo conservado; no creado en esta ejecución",
+    "sha256": "4f4806ca9bca0433daf84d0c597f76d1e657d890ea0196c2cff7a3799f17ea07",
+    "numeric_differences": {
+      "V1": {
+        "mae": 0.0,
+        "rmse": 0.0,
+        "r2": 0.0
+      },
+      "V2": {
+        "mae": 0.0,
+        "rmse": 0.0,
+        "r2": 0.0
+      }
+    },
+    "matches_within_1e_10": true
+  },
+  "artifacts": [
+    {
+      "path": "modelos\\V1.joblib",
+      "sha256": "1fdbb77da21d44882e175ac5284381f087121672c54aaad233c5ff75cdd9c55b",
+      "bytes": 149074
+    },
+    {
+      "path": "modelos\\V2.joblib",
+      "sha256": "e8f5912e2063a7d64337a7345742ea7f5fecd211711ff53fe0ed4d780bf519bf",
+      "bytes": 4266883
+    },
+    {
+      "path": "modelos\\predicciones.csv",
+      "sha256": "fe5c2ab8218c441fa47fd0ca4baefedfbf55059e75768dfc8c720150e07bf0a3",
+      "bytes": 150662
+    },
+    {
+      "path": "resultados\\01_historial.png",
+      "sha256": "d9079ced88585f7d1aa749524c8d19d9efe9f451851dbe661eac609155152c24",
+      "bytes": 83370
+    },
+    {
+      "path": "resultados\\02_matriz_validacion.png",
+      "sha256": "961dc1a89189f9fd9f6def47961d9efca128f7e60aee484e363d288ae959acf2",
+      "bytes": 78345
+    },
+    {
+      "path": "resultados\\03_evolucion_versiones.png",
+      "sha256": "de163e21692192115009ca510cb00813edfcd20cb228947a49bd1a46310c197a",
+      "bytes": 119818
+    },
+    {
+      "path": "resultados\\04_errores.png",
+      "sha256": "2439c0c6f5bbe809fbbf25e4d6c06bc5cef3198eef99af0ec6cf2361b73c79e4",
+      "bytes": 62428
+    },
+    {
+      "path": "resultados\\comparison.json",
+      "sha256": "70c5a37fa008aed5a551173c1ea732b7291ae5703e518d1a425f402a08084441",
+      "bytes": 6765
+    },
+    {
+      "path": "resultados\\errores_por_serie.csv",
+      "sha256": "edc03f26feaf326af273554dd49bf7cd2c57d35f1bcbe21df3b7b04859a793f0",
+      "bytes": 121880
+    },
+    {
+      "path": "resultados\\figura_2a_mae_84mm.png",
+      "sha256": "c2daf9a7758eb3748ff71e7b9c1868393c3335882f86de34721f8b295eba2954",
+      "bytes": 30058
+    },
+    {
+      "path": "resultados\\figura_2b_residuales_84mm.png",
+      "sha256": "e0e0b0bf4b897ff4844f1d59e76074cd93016f763a00cf2ea207e8ade0a023cf",
+      "bytes": 39570
+    },
+    {
+      "path": "resultados\\metricas_comparacion.csv",
+      "sha256": "5f3c0f7bf280485420d7433605aae56f3071b2aab31985c2fb99276b1029d8c2",
+      "bytes": 1035
+    },
+    {
+      "path": "resultados\\V1.json",
+      "sha256": "b45b634ba47255f8dde7f2a507fe84f992bc20586d8071828cb29ad11658f250",
+      "bytes": 7840
+    },
+    {
+      "path": "resultados\\V2.json",
+      "sha256": "a7558738bf18f2ee83c35fa8902455aaf363d3905c063afae7ba49500ce62fa3",
+      "bytes": 7826
+    }
+  ],
+  "conclusion": "Comparación académica reproducible. El promedio histórico mantiene menor MAE; no se aprueba reposición automática con estos resultados.",
+  "limitations": [
+    "Ventas mensuales históricas de series anónimas; no son ventas actuales de RODA ni Perú.",
+    "La comparación ya había sido examinada; esta repetición confirma reproducibilidad, no es una nueva prueba independiente.",
+    "Cada predicción mensual usa observaciones previas disponibles; no es un pronóstico fijo de seis meses.",
+    "WAPE no es exactitud porcentual; no hay precios, stock ni plazos en esta fuente.",
+    "La revisión humana y una evaluación posterior nueva son necesarias para una promoción operativa."
+  ],
+  "executed_notebook": {
+    "path": "ml\\evaluations\\entrega-2026-10-23\\RODA_ML_Datos_Reales_Ejecutado.ipynb",
+    "sha256": "c414c4c26561bd51f0c0c100713bbcef9758673b7b049bc5b731e4e605ec3fad",
+    "origin": "Ejecución local completa; no se afirma ejecución en Colab."
+  }
+}

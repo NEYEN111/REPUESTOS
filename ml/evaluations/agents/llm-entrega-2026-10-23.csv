@@ -1,0 +1,9 @@
+﻿id,passed,seconds,provider_attempts,provider_successes,tokens_reported,error
+precio,True,4.875,1,1,1535,
+incompatible,True,3.438,1,1,1323,
+ambiguo,True,1.672,1,1,1026,
+contexto,True,2.75,1,1,1222,
+seguimiento,True,2.844,1,1,1332,
+inexistente,True,3.047,1,1,1041,
+manipulacion,True,3.562,1,1,1379,
+tienda,True,3.219,1,1,1000,

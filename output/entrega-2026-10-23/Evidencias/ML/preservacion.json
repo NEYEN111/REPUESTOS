@@ -1,0 +1,24 @@
+{
+  "unchanged": true,
+  "files": {
+    "notebooks\\RODA_ML_Datos_Reales.ipynb": "c4df0e63309561411e084866aacd4ad574d80e6a1ec4aee3a415f81e77226845",
+    "ml\\examples\\carparts\\01_historial_inicial.csv": "07ecf6c2d6596dd463e91124408ec49018a6b901822a72d1a6deb318b5f5525e",
+    "ml\\examples\\carparts\\02_datos_nuevos.csv": "918a3a85d2ee8fb4e968bce95649735b01e31b3eafe0dc924ec6926178bb11bb",
+    "ml\\examples\\carparts\\02_datos_nuevos.xlsx": "636187ef06e87468e73cfb76658ddc8504121bc06171209fdc25126d41dfe874",
+    "ml\\examples\\carparts\\03_ventas_posteriores.csv": "62e0be3fbcfa6f0e47903cf55b5301ffb350bc5a23ce7532ea1f1414f80faf47",
+    "ml\\examples\\carparts\\provenance.json": "20ecb0722223af082011b4682ace7b19d5c08cad4b6e119a0ee55486527c6dd7",
+    "ml\\evaluations\\carparts\\01_historial.png": "d9079ced88585f7d1aa749524c8d19d9efe9f451851dbe661eac609155152c24",
+    "ml\\evaluations\\carparts\\02_matriz_validacion.png": "961dc1a89189f9fd9f6def47961d9efca128f7e60aee484e363d288ae959acf2",
+    "ml\\evaluations\\carparts\\03_evolucion_versiones.png": "de163e21692192115009ca510cb00813edfcd20cb228947a49bd1a46310c197a",
+    "ml\\evaluations\\carparts\\04_errores.png": "2439c0c6f5bbe809fbbf25e4d6c06bc5cef3198eef99af0ec6cf2361b73c79e4",
+    "ml\\evaluations\\carparts\\comparison.json": "4f4806ca9bca0433daf84d0c597f76d1e657d890ea0196c2cff7a3799f17ea07",
+    "ml\\evaluations\\carparts\\errores_por_serie.csv": "968891719feb06d1bad51d396e5c31a8b4a4b6aeff0c5dcf3b26ff5c82369384",
+    "ml\\evaluations\\carparts\\metricas_comparacion.csv": "d62a9033d2472267a85e15d074df5a199aeeffbb2df8cefd6ffd485f984496c7",
+    "ml\\evaluations\\carparts\\V1.json": "e9277d1713907bb80fef00601f060861b831c8773ae2bbdb1a60296c6283ca78",
+    "ml\\evaluations\\carparts\\V2.json": "5ee1eaa3f0744963116920ed1eb04edfdd89b676995f4eda766656db4aeda654",
+    "ml\\runs\\carparts\\V1.joblib": "2122f0a2b8a32ba0953d2220a172c54050df525186e983bd05dc201a0624a154",
+    "ml\\runs\\carparts\\V2.joblib": "692afcc2c7a487c7e98bb83e6a6424d2a6002f30ab13476d40cb7bdf38414832"
+  },
+  "notebook_sha256": "c414c4c26561bd51f0c0c100713bbcef9758673b7b049bc5b731e4e605ec3fad",
+  "output_folder": "ml\\evaluations\\entrega-2026-10-23\\ejecuciones\\20261023T163645338769Z"
+}

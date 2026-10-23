@@ -1,0 +1,82 @@
+{
+  "source": {
+    "title": "Car Parts · Monash Forecasting Repository",
+    "source_url": "https://zenodo.org/records/4656022",
+    "download_url": "https://zenodo.org/records/4656022/files/car_parts_dataset_with_missing_values.zip?download=1",
+    "doi": "10.5281/zenodo.4656022",
+    "license": "CC BY 4.0",
+    "authors": [
+      "Rakshitha Godahewa",
+      "Christoph Bergmeir",
+      "Geoff Webb",
+      "Rob Hyndman",
+      "Pablo Montero-Manso"
+    ],
+    "original": "R expsmooth, carparts; Hyndman (2015)",
+    "frequency": "monthly",
+    "start": "1998-01",
+    "end": "2002-03",
+    "series": 2674,
+    "rows": 136374,
+    "missing": 6122,
+    "source_sha256": "80557703397c7dca6c007bd28930b0e213e529f428afd02e5af87804fdc38ee1",
+    "files": [
+      {
+        "name": "01_historial_inicial.csv",
+        "rows": 96264,
+        "sha256": "07ecf6c2d6596dd463e91124408ec49018a6b901822a72d1a6deb318b5f5525e"
+      },
+      {
+        "name": "02_datos_nuevos.csv",
+        "rows": 24066,
+        "sha256": "918a3a85d2ee8fb4e968bce95649735b01e31b3eafe0dc924ec6926178bb11bb"
+      },
+      {
+        "name": "02_datos_nuevos.xlsx",
+        "rows": 24066,
+        "sha256": "636187ef06e87468e73cfb76658ddc8504121bc06171209fdc25126d41dfe874",
+        "derived_from": "02_datos_nuevos.csv",
+        "treatment": "Mismas observaciones y valores; solo cambia el formato y el orden de las filas. Los vacíos siguen siendo desconocidos."
+      },
+      {
+        "name": "03_ventas_posteriores.csv",
+        "rows": 16044,
+        "sha256": "62e0be3fbcfa6f0e47903cf55b5301ffb350bc5a23ce7532ea1f1414f80faf47"
+      }
+    ],
+    "treatment": "Valores ? preservados como vacíos. Ninguna venta ni fecha inventada. Series anónimas, sin asociación al catálogo RODA.",
+    "missing_fields": [
+      "Precios",
+      "Costos",
+      "Stock",
+      "Descripción de pieza",
+      "País verificable de cada serie"
+    ],
+    "limitation": "Evaluación histórica mensual; no acredita precisión actual en Perú ni un horizonte de siete días."
+  },
+  "environment": {
+    "numpy": "2.2.6",
+    "pandas": "2.2.3",
+    "scikit-learn": "1.7.2",
+    "scipy": "1.15.3",
+    "joblib": "1.5.1"
+  },
+  "versions": [
+    {
+      "version": "V1",
+      "model_sha256": "1fdbb77da21d44882e175ac5284381f087121672c54aaad233c5ff75cdd9c55b",
+      "cutoff": "2000-12"
+    },
+    {
+      "version": "V2",
+      "model_sha256": "e8f5912e2063a7d64337a7345742ea7f5fecd211711ff53fe0ed4d780bf519bf",
+      "cutoff": "2001-09"
+    }
+  ],
+  "recommended": "V1",
+  "comparison_period": [
+    "2001-10",
+    "2002-03"
+  ],
+  "scope": "Histórico mensual externo; no asignado a SKU de RODA"
+}
