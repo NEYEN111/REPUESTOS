@@ -24,6 +24,8 @@ El acceso con dos botones se habilita para la entrega mediante
 como administrador sin contraseña mientras el modo esté activo. Se desactiva
 cambiando la variable a `false`, que también invalida esas sesiones de demostración.
 Su valor predeterminado es `false`; las contraseñas originales se conservan.
+El Blueprint de esta entrega lo activa expresamente. Las sesiones demo duran
+cuatro horas; al desactivarlo se recupera el acceso habitual con contraseña.
 
 ## Recorrido sugerido de revisión
 
@@ -126,6 +128,8 @@ los reintentos de JSON se conservan en los registros.
 Requisitos: Python 3.12 y Node.js con npm. Desde la carpeta del proyecto:
 
 ```powershell
+git clone https://github.com/NEYEN111/REPUESTOS.git
+cd REPUESTOS
 powershell -ExecutionPolicy Bypass -File .\start.ps1
 ```
 
