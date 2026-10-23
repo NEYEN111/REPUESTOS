@@ -1,6 +1,7 @@
-import hashlib,hmac,secrets,json,re,os
+import hashlib,hmac,secrets,json,re
 from datetime import datetime,timedelta
 from backend.db import transaction,one,rows,now,audit
+from backend.services.assistant_config import env_value
 
 def password_hash(password):
     salt=secrets.token_hex(16)
@@ -11,13 +12,13 @@ def verify(password,encoded):
 def public_user(u): return {k:v for k,v in u.items() if k!='password_hash'}
 
 def demo_enabled():
-    return os.getenv('DEMO_ACCESS_ENABLED', '').strip().lower() in {'true', '1', 'yes', 'on'}
+    return env_value('DEMO_ACCESS_ENABLED').lower() in {'true', '1', 'yes', 'on'}
 
 def demo_login(role):
     """Temporary, explicitly enabled classroom access to the seeded accounts."""
     if not demo_enabled(): raise ValueError('El acceso de demostración está desactivado.')
     accounts={'admin':'admin@roda.pe','cliente':'cliente@roda.pe'}
-    if role not in accounts: raise ValueError('Selecciona administrador o cliente.')
+    if not isinstance(role,str) or role not in accounts: raise ValueError('Selecciona administrador o cliente.')
     with transaction() as c:
         u=one(c,'SELECT * FROM users WHERE email=? AND role=?',(accounts[role],role))
         if not u: raise ValueError('La cuenta de demostración no está disponible.')

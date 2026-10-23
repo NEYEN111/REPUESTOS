@@ -31,6 +31,7 @@ with tempfile.TemporaryDirectory(dir=db.ROOT / '.tmp') as folder:
                 if role == 'cliente':
                     assert client.put('/api/admin/config', json={}).status_code == 403
             assert client.post('/api/auth/demo', json={'role': 'empleado'}).status_code == 400
+            assert client.post('/api/auth/demo', json={'role': []}).status_code == 400
             client.post('/api/auth/demo', json={'role': 'admin'})
         with patch.dict(os.environ, {'DEMO_ACCESS_ENABLED': 'false'}):
             assert client.get('/api/auth/me').json() is None
