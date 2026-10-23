@@ -258,6 +258,7 @@ footer { background:var(--color-canvas);border-color:var(--color-border); }
 .demo-access-card span { flex:1;display:grid;gap:5px; }
 .demo-access-card strong { font-size:15px;font-weight:600; }
 .demo-access-card small { font-size:12px;opacity:.85; }
+.demo-access-card:not(.secondary) small { color:var(--white); }
 .demo-access-card.secondary { background:var(--white);color:var(--ink-950);border:1px solid var(--line); }
 .demo-access-card.secondary:hover { border-color:var(--color-action); }
 .demo-access-note { font-size:12px;color:var(--color-muted);line-height:1.6;margin:5px 0; }
