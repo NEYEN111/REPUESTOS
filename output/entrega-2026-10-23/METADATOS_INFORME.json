@@ -1,0 +1,14 @@
+{
+  "file": "Informe_RODA.pdf",
+  "pages": 15,
+  "cover_included": false,
+  "tables": 11,
+  "figures": 7,
+  "title_words": 13,
+  "abstract_words": 185,
+  "generated_at": "2026-10-23T14:03:39.692944-05:00",
+  "experimental_code_version": "a89d21d38dd88f8f38dc3dcefefa5b2045a9c0f5",
+  "last_verified_deployment": "0243a2aab72018b5304a5464839f75fb2b2da3f0",
+  "sha256": "0a56ea79631535b91c361d124b1731fa789e2b2814cbdda15ccd0485006f2efc",
+  "format": "A4; Times New Roman 11; dos columnas de texto y anexos con tablas y figuras a ancho completo"
+}

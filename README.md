@@ -26,6 +26,8 @@ cambiando la variable a `false`, que también invalida esas sesiones de demostra
 Su valor predeterminado es `false`; las contraseñas originales se conservan.
 El Blueprint de esta entrega lo activa expresamente. Las sesiones demo duran
 cuatro horas; al desactivarlo se recupera el acceso habitual con contraseña.
+Para conservar esa desactivación en futuros despliegues, cambia también el valor
+de `DEMO_ACCESS_ENABLED` a `"false"` en `render.yaml`.
 
 ## Recorrido sugerido de revisión
 

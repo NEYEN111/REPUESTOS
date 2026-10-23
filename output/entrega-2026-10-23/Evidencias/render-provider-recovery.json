@@ -1,0 +1,11 @@
+{
+  "date": "2026-10-23T13:58:15-05:00",
+  "url": "https://roda-repuestos.onrender.com/api/assistant/chat",
+  "code_version": "0243a2aab72018b5304a5464839f75fb2b2da3f0",
+  "http_status": 200,
+  "seconds": 10.703,
+  "mode": "thehive",
+  "reply": "Pastillas de freno Bosch · Toyota Yaris: S/ 160.00, incluye IGV. 14 unidades disponibles.\nSelecciona tu auto para verificar la compatibilidad.\nPuedes consultar referencias y especificaciones en «Ver detalles».",
+  "passed": true,
+  "scope": "Una consulta posterior al endurecimiento del parser. No reemplaza el fallo registrado en render-demo.json ni acredita disponibilidad permanente. Sin creación de ventas ni cambios de stock."
+}

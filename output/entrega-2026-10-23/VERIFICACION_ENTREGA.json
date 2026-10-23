@@ -1,0 +1,42 @@
+{
+  "date": "2026-10-23T14:04:45.126151-05:00",
+  "scope": "Control documental y de integridad; no son nuevas pruebas ML ni llamadas a proveedores.",
+  "pdf": {
+    "pages": 15,
+    "page_size": "A4",
+    "cover": false,
+    "title_words": 13,
+    "abstract_words": 185,
+    "tables": 11,
+    "figures": 7,
+    "clickable_link_annotations": 15,
+    "sha256": "0a56ea79631535b91c361d124b1731fa789e2b2814cbdda15ccd0485006f2efc"
+  },
+  "visual_review": {
+    "render_dpi": 110,
+    "inspected_pages": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15
+    ],
+    "final_revision_pages": [
+      9,
+      14
+    ],
+    "unchanged_other_pages_verified_by_png_sha256": true,
+    "result": "Todas las páginas se renderizaron e inspeccionaron; sin texto recortado, solapamientos, glifos sustituidos ni tablas desbordadas."
+  },
+  "evidence_notice": "Experimentos a89d21d; acceso demo 85de0ea: 12/13; recuperación TheHive separada en 0243a2a: HTTP200,10.703s. No se reemplaza el fallo inicial ni se afirma entrenamiento Colab/Render V2."
+}

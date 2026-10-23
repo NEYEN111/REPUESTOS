@@ -156,7 +156,7 @@ class AgentChecks(unittest.TestCase):
         run=agents.claim()
         req=httpx.Request('POST','https://generativelanguage.googleapis.com')
         message={'action':'tool','tool':'contexto','message':'Consultar contexto','decision':'continuar','strategy':'costo','agents':[]}
-        response={'choices':[{'message':{'content':json.dumps(message)}}], 'usage':{'total_tokens':42}}
+        response={'choices':[{'finish_reason':'stop','message':{'content':json.dumps(message)}}], 'usage':{'total_tokens':42}}
         fake=AsyncMock()
         fake.__aenter__.return_value=fake
         fake.post.side_effect=[httpx.Response(503,request=req),httpx.Response(200,json=response,request=req)]

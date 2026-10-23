@@ -1,0 +1,127 @@
+{
+  "schema_version": 1,
+  "created_at_utc": "2026-10-23T18:55:33.810721+00:00",
+  "real_calls_completed_at_utc": "2026-10-23T18:51:12.617709+00:00",
+  "scope": "Diagnóstico puntual del adaptador compartido; dos llamadas reales a TheHive previas al parche y seis controles HTTP simulados posteriores.",
+  "real_calls": {
+    "provider": "thehive",
+    "model": "deepseek-ai/deepseek-v4.1-flash-1017",
+    "calls": 2,
+    "max_tokens": 1600,
+    "metadata": [
+      {
+        "http_status": 200,
+        "finish_reason": "stop",
+        "content_type": "str",
+        "content_characters": 174,
+        "starts_fence": false,
+        "ends_fence": false,
+        "reasoning_characters": 1948,
+        "usage": {
+          "prompt_tokens": 1844,
+          "total_tokens": 2386,
+          "completion_tokens": 542,
+          "prompt_tokens_details": null,
+          "reasoning_tokens": 490
+        },
+        "json_type": "dict",
+        "success": true,
+        "parsed_type": "dict",
+        "tokens": 2386,
+        "attempt": 1,
+        "seconds": 5.281
+      },
+      {
+        "http_status": 200,
+        "finish_reason": "stop",
+        "content_type": "str",
+        "content_characters": 174,
+        "starts_fence": false,
+        "ends_fence": false,
+        "reasoning_characters": 1063,
+        "usage": {
+          "prompt_tokens": 1844,
+          "total_tokens": 2161,
+          "completion_tokens": 317,
+          "prompt_tokens_details": null,
+          "reasoning_tokens": 265
+        },
+        "json_type": "dict",
+        "success": true,
+        "parsed_type": "dict",
+        "tokens": 2161,
+        "attempt": 2,
+        "seconds": 2.641
+      }
+    ]
+  },
+  "live_failure": {
+    "observed_by": "Revisión desplegada del equipo principal",
+    "symptom": "JSONDecodeError en consulta de precio; catálogo de respaldo disponible.",
+    "cause": "No reproducida en las dos consultas locales. No se atribuye a truncamiento, fences ni proveedor caído sin evidencia."
+  },
+  "patch": {
+    "file": "backend/services/llm_provider.py",
+    "sha256": "fd70f20da3e2fccad43ab97d3f140f47f5e3aa1073c31aee1463b34ccc6fdb68",
+    "max_tokens_before": 1600,
+    "max_tokens_after": 1600,
+    "reasoning_configuration_changed": false,
+    "changes": [
+      "Comprueba finish_reason y rechaza respuestas incompletas o bloqueadas.",
+      "Acepta un objeto JSON completo o un único bloque JSON cercado; no reconstruye fragmentos.",
+      "Rechaza objetos ambiguos con llaves duplicadas y constantes numéricas ajenas a JSON.",
+      "Distingue JSON inválido en cuerpo HTTP frente a contenido del modelo.",
+      "Registra solo código HTTP, motivo, finalización, longitud y posición de error; no guarda contenido ni credenciales."
+    ]
+  },
+  "isolated_checks": {
+    "command": ".venv/Scripts/python.exe -X utf8 scripts/verify_llm_provider.py",
+    "tests": 6,
+    "passed": 6,
+    "duration_seconds": 0.442,
+    "api_calls": 0,
+    "transport": "httpx.MockTransport",
+    "test_file": "scripts/verify_llm_provider.py",
+    "acceptance": [
+      "Objeto completo y único fence JSON válido se aceptan.",
+      "Contenido parcial, mezclado, no objeto, duplicado o no estándar se rechaza.",
+      "Respuestas con finalización length/content_filter o ausente se rechazan.",
+      "Cuerpo HTTP inválido y estructura inválida se distinguen.",
+      "Gemini excluye partes thought y valida finalización STOP.",
+      "Logs contienen metadatos precisos sin clave, instrucción ni contenido."
+    ]
+  },
+  "assistant_regression": {
+    "tests": 11,
+    "passed": 11,
+    "duration_seconds": 1.375,
+    "api_calls": 0
+  },
+  "limitations": [
+    "Las dos respuestas reales contenían JSON simple sin fences; su aceptación de fences se verificó únicamente en pruebas simuladas.",
+    "Dos consultas correctas no garantizan disponibilidad o validez permanente del proveedor.",
+    "No se vuelve a ejecutar ni se reemplaza la evaluación histórica de ocho consultas."
+  ],
+  "agent_regression": {
+    "initial_run": {
+      "tests": 41,
+      "passed": 40,
+      "fixture_errors": 1,
+      "duration_seconds": 13.403,
+      "error": "La respuesta HTTP simulada del respaldo TheHive no incluía finish_reason; el parser nuevo la rechazó por finalización desconocida."
+    },
+    "fixture_change": {
+      "file": "scripts/verify_agents.py",
+      "change": "Añadir finish_reason=stop al choice simulado de una respuesta completa, coherente con las dos respuestas reales observadas.",
+      "production_parser_relaxed": false
+    },
+    "focused_rerun": {
+      "command": ".venv/Scripts/python.exe -X utf8 scripts/verify_agents.py AgentChecks.test_provider_fallback_after_temporary_failure_without_writes",
+      "tests": 1,
+      "passed": 1,
+      "duration_seconds": 0.168,
+      "api_calls": 0
+    },
+    "scope": "Los otros 40 controles ya habían pasado. Se repitió únicamente el caso cuya fixture cambió; no se afirma una nueva corrida conjunta de 41."
+  }
+}

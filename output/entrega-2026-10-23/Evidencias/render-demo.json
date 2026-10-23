@@ -1,0 +1,84 @@
+{
+  "date": "2026-10-23T13:48:08-05:00",
+  "url": "https://roda-repuestos.onrender.com",
+  "code_version": "85de0eaa5ec2ec0ccd8592105581a7ab8274bfc7",
+  "checks": [
+    {
+      "name": "Configuración y acceso demo",
+      "http_status": 200,
+      "passed": true
+    },
+    {
+      "name": "Entrada sin contraseña: cliente",
+      "http_status": 200,
+      "passed": true
+    },
+    {
+      "name": "Sesión: cliente",
+      "http_status": 200,
+      "passed": true
+    },
+    {
+      "name": "Cliente sin acceso al ML administrativo",
+      "http_status": 403,
+      "passed": true
+    },
+    {
+      "name": "Entrada sin contraseña: admin",
+      "http_status": 200,
+      "passed": true
+    },
+    {
+      "name": "Sesión: admin",
+      "http_status": 200,
+      "passed": true
+    },
+    {
+      "name": "Pronósticos",
+      "http_status": 200,
+      "passed": true,
+      "seconds": 2.032
+    },
+    {
+      "name": "Modelos y evaluación",
+      "http_status": 200,
+      "passed": true,
+      "seconds": 1.531
+    },
+    {
+      "name": "Laboratorio",
+      "http_status": 200,
+      "passed": true,
+      "seconds": 1.047
+    },
+    {
+      "name": "Proveedor de agentes",
+      "http_status": 200,
+      "passed": true,
+      "seconds": 0.656,
+      "provider_configured": true
+    },
+    {
+      "name": "Expedientes de agentes",
+      "http_status": 200,
+      "passed": true,
+      "seconds": 1.437
+    },
+    {
+      "name": "Consulta comercial con LLM",
+      "http_status": 200,
+      "passed": false,
+      "seconds": 14.157,
+      "provider": "catalog",
+      "reply": "Pastillas de freno Bosch · Toyota Yaris: S/ 160.00, incluye IGV. 14 unidades disponibles.\nSelecciona tu auto para verificar la compatibilidad.\nPuedes consultar referencias y especificaciones en «Ver detalles»."
+    },
+    {
+      "name": "Cerrar sesión",
+      "http_status": 200,
+      "passed": true
+    }
+  ],
+  "all_passed": false,
+  "scope": "Comprobaciones breves HTTP en Render, sin crear ventas, compras ni entrenamientos. Acceso público temporal solicitado para evaluación; no protege la identidad del administrador mientras esté habilitado. Las cuentas del seed y su historial son académicos.",
+  "local_checks": "scripts/verify_demo_access.py: modo desactivado, roles, permisos, rol inválido, revocación y contraseña original; satisfactorios."
+}

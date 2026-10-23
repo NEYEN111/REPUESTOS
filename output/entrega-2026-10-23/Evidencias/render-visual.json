@@ -1,0 +1,16 @@
+{
+  "date": "2026-10-23",
+  "timezone": "America/Lima",
+  "code_version": "85de0eaa5ec2ec0ccd8592105581a7ab8274bfc7",
+  "method": "Navegación real del navegador integrado, lectura de DOM y capturas de pantalla. Sin crear ventas ni compras.",
+  "checks": [
+    {"name": "Acceso temporal", "observed": "Dos botones visibles; cuenta personal disponible como alternativa", "passed": true, "screenshot": "render-demo.jpg"},
+    {"name": "Cliente", "observed": "El botón abre /cuenta y muestra pedidos del cliente de demostración", "passed": true, "screenshot": "render-demo-cliente.jpg"},
+    {"name": "Administrador", "observed": "El botón abre /gestion con navegación administrativa", "passed": true, "screenshot": "render-demo-admin.jpg"},
+    {"name": "Pronósticos", "observed": "La pantalla carga los 952 resultados guardados del historial de referencia", "passed": true, "screenshot": "render-pronosticos-final.jpg"},
+    {"name": "Anchura 1366 x 768", "viewport_width": 1366, "document_width": 1351, "broken_images": 0, "passed": true, "screenshot": "render-pronosticos-1366.jpg"},
+    {"name": "Anchura 1920 x 1080", "viewport_width": 1920, "document_width": 1905, "broken_images": 0, "passed": true},
+    {"name": "Consola del recorrido", "observed": "Ninguna entrada de nivel error en la consulta del registro del navegador", "passed": true}
+  ],
+  "limits": "Revisión puntual de las pantallas indicadas, sin navegación exhaustiva ni prueba de carga. El historial de referencia no equivale a ventas observadas de un negocio real. La última revisión 0243a2a cambia el adaptador LLM, no la interfaz."
+}

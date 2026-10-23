@@ -1,0 +1,667 @@
+{
+  "schema_version": 1,
+  "project": "RODA · reposición asistida de repuestos",
+  "date": "2026-10-23",
+  "purpose": "Índice de artefactos y resultados comprobados para una entrega académica; no sustituye los archivos fuente.",
+  "package_scope": "Paquete de informe y evidencias; la aplicación completa se obtiene clonando el repositorio GitHub. Los comandos de reproducción se ejecutan desde ese clon.",
+  "links": {
+    "system": "https://roda-repuestos.onrender.com",
+    "repository": "https://github.com/NEYEN111/REPUESTOS",
+    "colab": "https://colab.research.google.com/github/NEYEN111/REPUESTOS/blob/main/notebooks/RODA_ML_Datos_Reales.ipynb"
+  },
+  "report": {
+    "file": "Informe_RODA.pdf",
+    "pages": 15,
+    "cover_included": false,
+    "tables": 11,
+    "figures": 7,
+    "title_words": 13,
+    "abstract_words": 185,
+    "generated_at": "2026-10-23T14:03:39.692944-05:00",
+    "experimental_code_version": "a89d21d38dd88f8f38dc3dcefefa5b2045a9c0f5",
+    "last_verified_deployment": "0243a2aab72018b5304a5464839f75fb2b2da3f0",
+    "sha256": "0a56ea79631535b91c361d124b1731fa789e2b2814cbdda15ccd0485006f2efc",
+    "format": "A4; Times New Roman 11; dos columnas de texto y anexos con tablas y figuras a ancho completo"
+  },
+  "ml": {
+    "task": "Unidades observadas del siguiente mes por serie anónima externa",
+    "algorithms": [
+      "Ridge",
+      "Poisson",
+      "Random Forest",
+      "Extra Trees",
+      "Hist. Gradient Boosting"
+    ],
+    "execution": {
+      "started_at_utc": "2026-10-23T16:36:45.322055+00:00",
+      "finished_at_utc": "2026-10-23T16:44:34.850521+00:00",
+      "duration_seconds": 469.53190140000015,
+      "environment": "Local · Windows",
+      "python": "3.12.10",
+      "libraries": {
+        "numpy": "2.2.6",
+        "pandas": "2.2.3",
+        "scikit-learn": "1.7.2",
+        "scipy": "1.15.3",
+        "joblib": "1.5.1"
+      },
+      "training_executed": true,
+      "models_fitted_for_selection": 10,
+      "selected_models_refitted": 2,
+      "api_calls": 0,
+      "production_database_access": false,
+      "notebook_code_cells": 11,
+      "notebook_error_cells": 0
+    },
+    "source": {
+      "title": "Car Parts · Monash Forecasting Repository",
+      "source_url": "https://zenodo.org/records/4656022",
+      "download_url": "https://zenodo.org/records/4656022/files/car_parts_dataset_with_missing_values.zip?download=1",
+      "doi": "10.5281/zenodo.4656022",
+      "license": "CC BY 4.0",
+      "authors": [
+        "Rakshitha Godahewa",
+        "Christoph Bergmeir",
+        "Geoff Webb",
+        "Rob Hyndman",
+        "Pablo Montero-Manso"
+      ],
+      "original": "R expsmooth, carparts; Hyndman (2015)",
+      "frequency": "monthly",
+      "start": "1998-01",
+      "end": "2002-03",
+      "series": 2674,
+      "rows": 136374,
+      "missing": 6122,
+      "source_sha256": "80557703397c7dca6c007bd28930b0e213e529f428afd02e5af87804fdc38ee1",
+      "files": [
+        {
+          "name": "01_historial_inicial.csv",
+          "rows": 96264,
+          "sha256": "07ecf6c2d6596dd463e91124408ec49018a6b901822a72d1a6deb318b5f5525e"
+        },
+        {
+          "name": "02_datos_nuevos.csv",
+          "rows": 24066,
+          "sha256": "918a3a85d2ee8fb4e968bce95649735b01e31b3eafe0dc924ec6926178bb11bb"
+        },
+        {
+          "name": "02_datos_nuevos.xlsx",
+          "rows": 24066,
+          "sha256": "636187ef06e87468e73cfb76658ddc8504121bc06171209fdc25126d41dfe874",
+          "derived_from": "02_datos_nuevos.csv",
+          "treatment": "Mismas observaciones y valores; solo cambia el formato y el orden de las filas. Los vacíos siguen siendo desconocidos."
+        },
+        {
+          "name": "03_ventas_posteriores.csv",
+          "rows": 16044,
+          "sha256": "62e0be3fbcfa6f0e47903cf55b5301ffb350bc5a23ce7532ea1f1414f80faf47"
+        }
+      ],
+      "treatment": "Valores ? preservados como vacíos. Ninguna venta ni fecha inventada. Series anónimas, sin asociación al catálogo RODA.",
+      "missing_fields": [
+        "Precios",
+        "Costos",
+        "Stock",
+        "Descripción de pieza",
+        "País verificable de cada serie"
+      ],
+      "limitation": "Evaluación histórica mensual; no acredita precisión actual en Perú ni un horizonte de siete días."
+    },
+    "evaluation": {
+      "start": "2001-10",
+      "end": "2002-03",
+      "rows": 15054,
+      "products": 2509,
+      "scores": [
+        {
+          "version": "V1",
+          "segments": [
+            {
+              "segment": "Sin ventas",
+              "n": 11973,
+              "mae": 0.38807076903998206,
+              "rmse": 0.47023438094221287,
+              "wape": null,
+              "bias": 0.38807076903998206,
+              "r2": null
+            },
+            {
+              "segment": "Con ventas",
+              "n": 3081,
+              "mae": 1.3000892070953052,
+              "rmse": 2.0891572175808584,
+              "wape": 68.81248663564054,
+              "bias": -1.2764216753110276,
+              "r2": -0.46464280257947665
+            }
+          ],
+          "n": 15054,
+          "mae": 0.5747273923725482,
+          "rmse": 1.0339892150987169,
+          "wape": 148.6333304376626,
+          "bias": 0.04741039830493083,
+          "r2": 0.10226523802185594
+        },
+        {
+          "version": "V2",
+          "segments": [
+            {
+              "segment": "Sin ventas",
+              "n": 11973,
+              "mae": 0.3857649776866654,
+              "rmse": 0.47765810335647135,
+              "wape": null,
+              "bias": 0.3857649776866654,
+              "r2": null
+            },
+            {
+              "segment": "Con ventas",
+              "n": 3081,
+              "mae": 1.290911409418311,
+              "rmse": 2.080510711579408,
+              "wape": 68.32671452358386,
+              "bias": -1.2718107133591574,
+              "r2": -0.4525443008461498
+            }
+          ],
+          "n": 15054,
+          "mae": 0.5710151541291525,
+          "rmse": 1.0331271268063842,
+          "wape": 147.6732886146755,
+          "bias": 0.0465202119026758,
+          "r2": 0.10376158631261712
+        }
+      ],
+      "baseline": {
+        "n": 15054,
+        "mae": 0.5410743545458572,
+        "rmse": 1.0460479800658267,
+        "wape": 139.93013800607,
+        "bias": 0.05207918161286037,
+        "r2": 0.08120370613095573
+      },
+      "baseline_wins": true,
+      "references": [
+        {
+          "model": "Promedio histórico",
+          "n": 15054,
+          "mae": 0.5410743545458572,
+          "rmse": 1.0460479800658267,
+          "wape": 139.93013800607,
+          "bias": 0.05207918161286037,
+          "r2": 0.08120370613095573
+        },
+        {
+          "model": "Último periodo equivalente",
+          "n": 15054,
+          "mae": 0.549820645675568,
+          "rmse": 1.3827449244069432,
+          "wape": 142.19206321937813,
+          "bias": -0.005646339843231035,
+          "r2": -0.6054625165286867
+        },
+        {
+          "model": "Cero ventas (diagnóstico)",
+          "n": 15054,
+          "mae": 0.38667463796997475,
+          "rmse": 1.1577741916207356,
+          "wape": 100.0,
+          "bias": -0.38667463796997475,
+          "r2": -0.12554730643200385
+        }
+      ],
+      "zero_target_share": 0.7953367875647669,
+      "approved_recommendation": false,
+      "periods": [
+        {
+          "version": "V1",
+          "period": "2001-10",
+          "actual": 1194.0,
+          "predicted": 1119.810541600677,
+          "n": 2509,
+          "mae": 0.6604986240918873,
+          "rmse": 1.351986235982154,
+          "wape": 138.79322008765035,
+          "bias": -0.029569333758199715,
+          "r2": 0.07496753770292275
+        },
+        {
+          "version": "V1",
+          "period": "2001-11",
+          "actual": 918.0,
+          "predicted": 1126.072292027301,
+          "n": 2509,
+          "mae": 0.5700568697890389,
+          "rmse": 0.9796187090635067,
+          "wape": 155.80312486935713,
+          "bias": 0.08293036748796374,
+          "r2": 0.07610957634589499
+        },
+        {
+          "version": "V1",
+          "period": "2001-12",
+          "actual": 836.0,
+          "predicted": 1023.8764420598819,
+          "n": 2509,
+          "mae": 0.5214456523547563,
+          "rmse": 0.8488052509792287,
+          "wape": 156.49606958828747,
+          "bias": 0.07488100520521399,
+          "r2": 0.11016018047566356
+        },
+        {
+          "version": "V1",
+          "period": "2002-01",
+          "actual": 1022.0,
+          "predicted": 1080.0677322810716,
+          "n": 2509,
+          "mae": 0.5825848005216551,
+          "rmse": 1.0661500293061772,
+          "wape": 143.0239984842302,
+          "bias": 0.023143775321272004,
+          "r2": 0.12456169562427077
+        },
+        {
+          "version": "V1",
+          "period": "2002-02",
+          "actual": 916.0,
+          "predicted": 1073.9949141131624,
+          "n": 2509,
+          "mae": 0.5517439537289168,
+          "rmse": 0.9184275400324793,
+          "wape": 151.12724671461268,
+          "bias": 0.06297126907658926,
+          "r2": 0.11655502339116086
+        },
+        {
+          "version": "V1",
+          "period": "2002-03",
+          "actual": 935.0,
+          "predicted": 1110.8942140003348,
+          "n": 2509,
+          "mae": 0.5620344537490354,
+          "rmse": 0.9626147717756756,
+          "wape": 150.8175876423882,
+          "bias": 0.07010530649674572,
+          "r2": 0.12220081575502695
+        },
+        {
+          "version": "V2",
+          "period": "2001-10",
+          "actual": 1194.0,
+          "predicted": 1093.5923706233755,
+          "n": 2509,
+          "mae": 0.6465625506833668,
+          "rmse": 1.3462480643406967,
+          "wape": 135.86477719133728,
+          "bias": -0.04001898341037246,
+          "r2": 0.08280301807197255
+        },
+        {
+          "version": "V2",
+          "period": "2001-11",
+          "actual": 918.0,
+          "predicted": 1147.1060796341828,
+          "n": 2509,
+          "mae": 0.5752282754086554,
+          "rmse": 0.9802410578141563,
+          "wape": 157.21652973859656,
+          "bias": 0.09131370252458461,
+          "r2": 0.07493531397679076
+        },
+        {
+          "version": "V2",
+          "period": "2001-12",
+          "actual": 836.0,
+          "predicted": 1043.4123504041977,
+          "n": 2509,
+          "mae": 0.5206913734083954,
+          "rmse": 0.8530525933568529,
+          "wape": 156.2696956796249,
+          "bias": 0.08266733774579427,
+          "r2": 0.1012325486328155
+        },
+        {
+          "version": "V2",
+          "period": "2002-01",
+          "actual": 1022.0,
+          "predicted": 1065.5388539937799,
+          "n": 2509,
+          "mae": 0.5763669804793846,
+          "rmse": 1.0633948875885255,
+          "wape": 141.49752974782544,
+          "bias": 0.017353070543555157,
+          "r2": 0.12908045947906355
+        },
+        {
+          "version": "V2",
+          "period": "2002-02",
+          "actual": 916.0,
+          "predicted": 1069.5467021327067,
+          "n": 2509,
+          "mae": 0.5485953956739968,
+          "rmse": 0.9204530317836924,
+          "wape": 150.26483053996267,
+          "bias": 0.061198366732844525,
+          "r2": 0.11265404348903163
+        },
+        {
+          "version": "V2",
+          "period": "2002-03",
+          "actual": 935.0,
+          "predicted": 1102.1189131946385,
+          "n": 2509,
+          "mae": 0.5586463491211159,
+          "rmse": 0.9618276254046472,
+          "wape": 149.90841603688554,
+          "bias": 0.06660777727964874,
+          "r2": 0.12363581126774825
+        }
+      ],
+      "protocol": "Mismas filas posteriores a ambos entrenamientos; avance temporal con historial observado anterior.",
+      "recommended": "V1"
+    },
+    "executed_notebook": "ML/RODA_ML_Datos_Reales_Ejecutado.ipynb",
+    "environment_notice": "La ejecución adjunta fue local en Windows; el enlace Colab permite repetirla, pero no es evidencia de una ejecución realizada allí."
+  },
+  "agents": {
+    "roles": 8,
+    "provider": {
+      "provider": "thehive",
+      "model": "deepseek-ai/deepseek-v4.1-flash-1017",
+      "configured": true,
+      "fallback_provider": null
+    },
+    "isolated_database": true,
+    "real_provider_calls": true,
+    "results_file": "Agentes/entrega-2026-10-23.json",
+    "modalities": {
+      "reglas": {
+        "passed": 6,
+        "total": 6,
+        "mean_seconds": 0.06483333333333333,
+        "provider_attempts": 0
+      },
+      "un_agente": {
+        "passed": 4,
+        "total": 6,
+        "mean_seconds": 23.190166666666666,
+        "provider_attempts": 12
+      },
+      "multiagente": {
+        "passed": 6,
+        "total": 6,
+        "mean_seconds": 51.48983333333334,
+        "provider_attempts": 42
+      }
+    },
+    "limit": "Muestra exploratoria de tres escenarios con dos repeticiones; no demuestra superioridad estadística ni económica del equipo."
+  },
+  "assistant": {
+    "passed": 8,
+    "total": 8,
+    "results_file": "Agentes/llm-entrega-2026-10-23.json"
+  },
+  "deployment_evidence": {
+    "date": "2026-10-23",
+    "timezone": "America/Lima",
+    "url": "https://roda-repuestos.onrender.com",
+    "deployed_commit": "a89d21d38dd88f8f38dc3dcefefa5b2045a9c0f5",
+    "checks": [
+      {
+        "name": "Arranque tras suspensión",
+        "result": "23/10: Render mostró su página de arranque; después abrió el laboratorio con sesión administradora."
+      },
+      {
+        "name": "Persistencia del laboratorio",
+        "result": "23/10: se restauraron 120,330 observaciones, V1 y el pronóstico guardado del 22/10."
+      },
+      {
+        "name": "Excel y predicción V1",
+        "result": "22/10: importación de 24,066 filas; pronóstico guardado con 2,509 resultados válidos y CSV descargado."
+      },
+      {
+        "name": "Intento de entrenamiento V2",
+        "result": "23/10 a las 11:34:51: se inició en Render. Terminó como Revisar: el servidor se reinició. No se obtuvo V2 en esta prueba cloud."
+      },
+      {
+        "name": "Evaluación posterior cloud",
+        "result": "No ejecutada: depende de que termine V2. El ciclo completo se entrenó y evaluó localmente el 23/10, con notebook ejecutado adjunto."
+      },
+      {
+        "name": "Agentes y asistente",
+        "result": "Exportación Render del 22/10: 5/5 casos aislados. El 23/10 se consultó la propuesta guardada: seis agentes, 23 unidades, S/ 1,617.21 de S/ 2,000, por aprobar y sin pronóstico operativo."
+      },
+      {
+        "name": "Asistente web 23/10",
+        "result": "Consulta RP-010-01: respuesta TheHive/DeepSeek, S/ 160.00, 14 disponibles y compatible con Toyota Yaris 2018 según catálogo. Sin errores de consola capturados."
+      }
+    ],
+    "limitation": "No se atribuye el reinicio a memoria sin registros suficientes. Render Free tiene recursos limitados; no se certifica entrenamiento grande ni planificación continua en ese plan."
+  },
+  "demo_access_evidence": {
+    "date": "2026-10-23T13:48:08-05:00",
+    "url": "https://roda-repuestos.onrender.com",
+    "code_version": "85de0eaa5ec2ec0ccd8592105581a7ab8274bfc7",
+    "checks": [
+      {
+        "name": "Configuración y acceso demo",
+        "http_status": 200,
+        "passed": true
+      },
+      {
+        "name": "Entrada sin contraseña: cliente",
+        "http_status": 200,
+        "passed": true
+      },
+      {
+        "name": "Sesión: cliente",
+        "http_status": 200,
+        "passed": true
+      },
+      {
+        "name": "Cliente sin acceso al ML administrativo",
+        "http_status": 403,
+        "passed": true
+      },
+      {
+        "name": "Entrada sin contraseña: admin",
+        "http_status": 200,
+        "passed": true
+      },
+      {
+        "name": "Sesión: admin",
+        "http_status": 200,
+        "passed": true
+      },
+      {
+        "name": "Pronósticos",
+        "http_status": 200,
+        "passed": true,
+        "seconds": 2.032
+      },
+      {
+        "name": "Modelos y evaluación",
+        "http_status": 200,
+        "passed": true,
+        "seconds": 1.531
+      },
+      {
+        "name": "Laboratorio",
+        "http_status": 200,
+        "passed": true,
+        "seconds": 1.047
+      },
+      {
+        "name": "Proveedor de agentes",
+        "http_status": 200,
+        "passed": true,
+        "seconds": 0.656,
+        "provider_configured": true
+      },
+      {
+        "name": "Expedientes de agentes",
+        "http_status": 200,
+        "passed": true,
+        "seconds": 1.437
+      },
+      {
+        "name": "Consulta comercial con LLM",
+        "http_status": 200,
+        "passed": false,
+        "seconds": 14.157,
+        "provider": "catalog",
+        "reply": "Pastillas de freno Bosch · Toyota Yaris: S/ 160.00, incluye IGV. 14 unidades disponibles.\nSelecciona tu auto para verificar la compatibilidad.\nPuedes consultar referencias y especificaciones en «Ver detalles»."
+      },
+      {
+        "name": "Cerrar sesión",
+        "http_status": 200,
+        "passed": true
+      }
+    ],
+    "all_passed": false,
+    "scope": "Comprobaciones breves HTTP en Render, sin crear ventas, compras ni entrenamientos. Acceso público temporal solicitado para evaluación; no protege la identidad del administrador mientras esté habilitado. Las cuentas del seed y su historial son académicos.",
+    "local_checks": "scripts/verify_demo_access.py: modo desactivado, roles, permisos, rol inválido, revocación y contraseña original; satisfactorios."
+  },
+  "provider_recovery_evidence": {
+    "date": "2026-10-23T13:58:15-05:00",
+    "url": "https://roda-repuestos.onrender.com/api/assistant/chat",
+    "code_version": "0243a2aab72018b5304a5464839f75fb2b2da3f0",
+    "http_status": 200,
+    "seconds": 10.703,
+    "mode": "thehive",
+    "reply": "Pastillas de freno Bosch · Toyota Yaris: S/ 160.00, incluye IGV. 14 unidades disponibles.\nSelecciona tu auto para verificar la compatibilidad.\nPuedes consultar referencias y especificaciones en «Ver detalles».",
+    "passed": true,
+    "scope": "Una consulta posterior al endurecimiento del parser. No reemplaza el fallo registrado en render-demo.json ni acredita disponibilidad permanente. Sin creación de ventas ni cambios de stock."
+  },
+  "provider_diagnostics": {
+    "schema_version": 1,
+    "created_at_utc": "2026-10-23T18:55:33.810721+00:00",
+    "real_calls_completed_at_utc": "2026-10-23T18:51:12.617709+00:00",
+    "scope": "Diagnóstico puntual del adaptador compartido; dos llamadas reales a TheHive previas al parche y seis controles HTTP simulados posteriores.",
+    "real_calls": {
+      "provider": "thehive",
+      "model": "deepseek-ai/deepseek-v4.1-flash-1017",
+      "calls": 2,
+      "max_tokens": 1600,
+      "metadata": [
+        {
+          "http_status": 200,
+          "finish_reason": "stop",
+          "content_type": "str",
+          "content_characters": 174,
+          "starts_fence": false,
+          "ends_fence": false,
+          "reasoning_characters": 1948,
+          "usage": {
+            "prompt_tokens": 1844,
+            "total_tokens": 2386,
+            "completion_tokens": 542,
+            "prompt_tokens_details": null,
+            "reasoning_tokens": 490
+          },
+          "json_type": "dict",
+          "success": true,
+          "parsed_type": "dict",
+          "tokens": 2386,
+          "attempt": 1,
+          "seconds": 5.281
+        },
+        {
+          "http_status": 200,
+          "finish_reason": "stop",
+          "content_type": "str",
+          "content_characters": 174,
+          "starts_fence": false,
+          "ends_fence": false,
+          "reasoning_characters": 1063,
+          "usage": {
+            "prompt_tokens": 1844,
+            "total_tokens": 2161,
+            "completion_tokens": 317,
+            "prompt_tokens_details": null,
+            "reasoning_tokens": 265
+          },
+          "json_type": "dict",
+          "success": true,
+          "parsed_type": "dict",
+          "tokens": 2161,
+          "attempt": 2,
+          "seconds": 2.641
+        }
+      ]
+    },
+    "live_failure": {
+      "observed_by": "Revisión desplegada del equipo principal",
+      "symptom": "JSONDecodeError en consulta de precio; catálogo de respaldo disponible.",
+      "cause": "No reproducida en las dos consultas locales. No se atribuye a truncamiento, fences ni proveedor caído sin evidencia."
+    },
+    "patch": {
+      "file": "backend/services/llm_provider.py",
+      "sha256": "fd70f20da3e2fccad43ab97d3f140f47f5e3aa1073c31aee1463b34ccc6fdb68",
+      "max_tokens_before": 1600,
+      "max_tokens_after": 1600,
+      "reasoning_configuration_changed": false,
+      "changes": [
+        "Comprueba finish_reason y rechaza respuestas incompletas o bloqueadas.",
+        "Acepta un objeto JSON completo o un único bloque JSON cercado; no reconstruye fragmentos.",
+        "Rechaza objetos ambiguos con llaves duplicadas y constantes numéricas ajenas a JSON.",
+        "Distingue JSON inválido en cuerpo HTTP frente a contenido del modelo.",
+        "Registra solo código HTTP, motivo, finalización, longitud y posición de error; no guarda contenido ni credenciales."
+      ]
+    },
+    "isolated_checks": {
+      "command": ".venv/Scripts/python.exe -X utf8 scripts/verify_llm_provider.py",
+      "tests": 6,
+      "passed": 6,
+      "duration_seconds": 0.442,
+      "api_calls": 0,
+      "transport": "httpx.MockTransport",
+      "test_file": "scripts/verify_llm_provider.py",
+      "acceptance": [
+        "Objeto completo y único fence JSON válido se aceptan.",
+        "Contenido parcial, mezclado, no objeto, duplicado o no estándar se rechaza.",
+        "Respuestas con finalización length/content_filter o ausente se rechazan.",
+        "Cuerpo HTTP inválido y estructura inválida se distinguen.",
+        "Gemini excluye partes thought y valida finalización STOP.",
+        "Logs contienen metadatos precisos sin clave, instrucción ni contenido."
+      ]
+    },
+    "assistant_regression": {
+      "tests": 11,
+      "passed": 11,
+      "duration_seconds": 1.375,
+      "api_calls": 0
+    },
+    "limitations": [
+      "Las dos respuestas reales contenían JSON simple sin fences; su aceptación de fences se verificó únicamente en pruebas simuladas.",
+      "Dos consultas correctas no garantizan disponibilidad o validez permanente del proveedor.",
+      "No se vuelve a ejecutar ni se reemplaza la evaluación histórica de ocho consultas."
+    ],
+    "agent_regression": {
+      "initial_run": {
+        "tests": 41,
+        "passed": 40,
+        "fixture_errors": 1,
+        "duration_seconds": 13.403,
+        "error": "La respuesta HTTP simulada del respaldo TheHive no incluía finish_reason; el parser nuevo la rechazó por finalización desconocida."
+      },
+      "fixture_change": {
+        "file": "scripts/verify_agents.py",
+        "change": "Añadir finish_reason=stop al choice simulado de una respuesta completa, coherente con las dos respuestas reales observadas.",
+        "production_parser_relaxed": false
+      },
+      "focused_rerun": {
+        "command": ".venv/Scripts/python.exe -X utf8 scripts/verify_agents.py AgentChecks.test_provider_fallback_after_temporary_failure_without_writes",
+        "tests": 1,
+        "passed": 1,
+        "duration_seconds": 0.168,
+        "api_calls": 0
+      },
+      "scope": "Los otros 40 controles ya habían pasado. Se repitió únicamente el caso cuya fixture cambió; no se afirma una nueva corrida conjunta de 41."
+    }
+  },
+  "reproduction": "README.md; scripts/prepare_ml_delivery.py; scripts/build_submission.py; scripts/package_submission.py",
+  "integrity": "MANIFIESTO_SHA256.json dentro del ZIP: tamaño y hash de todos los archivos incluidos."
+}
